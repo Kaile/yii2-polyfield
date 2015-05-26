@@ -1,0 +1,25 @@
+/* 
+    Created on : 26.05.2015, 15:59:58
+    Author     : Mihail Kornilov <fix-06 at yandex.ru>
+*/
+
+.collapse-open,
+.collapse-close {
+	display: block;
+	height: 40px;
+	border: 1px solid #ccc;
+	text-align: center;
+	font-weight: bold;
+	margin: 5px 0;
+	padding: 10px;
+	border-radius: 6px;
+	cursor: pointer;
+}
+
+.collapse-open {
+	background-color: #eee;
+}
+.collapse-close {
+	background-color: #444;
+	color: #fff;
+}

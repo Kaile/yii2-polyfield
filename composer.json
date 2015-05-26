@@ -1,0 +1,21 @@
+{
+    "name": "kaile/yii2-polyfield",
+    "description": "Dynamicaly adds new fields in form.",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension","dynamic fields"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "kaile",
+            "email": "fix-06@yandex.ru"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "kaile\\polyfield\\": ""
+        }
+    }
+}
