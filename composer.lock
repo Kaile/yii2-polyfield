@@ -4,24 +4,9 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "887bcc50bc0aea21a86213bfd2499476",
-    "packages": [
-        {
-            "name": "bower-asset/collapsible",
-            "version": "1.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/markitosgv/Collapsible.git",
-                "reference": "5128df45cc8ee28224545407bd387d9503ebaed2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/markitosgv/Collapsible/zipball/5128df45cc8ee28224545407bd387d9503ebaed2",
-                "reference": "5128df45cc8ee28224545407bd387d9503ebaed2",
-                "shasum": ""
-            },
-            "type": "bower-asset-library"
-        },
+    "hash": "0b002981d4c16e2834a24919da7ae3d6",
+    "packages": [],
+    "packages-dev": [
         {
             "name": "bower-asset/jquery",
             "version": "2.1.4",
@@ -419,12 +404,13 @@
             "time": "2015-03-01 06:22:44"
         }
     ],
-    "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "php": ">=5.4.0"
+    },
     "platform-dev": []
 }
