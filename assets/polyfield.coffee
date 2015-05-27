@@ -80,6 +80,7 @@ class Polyfield
 		collapsible.setAttribute 'id', sectionId
 		collapsible.setAttribute 'class', id
 		collapsible.appendChild document.createTextNode model.counter + '. ' + model.label
+		collapsible.appendChild document.createElement 'span'
 
 		container = document.createElement 'div'
 		container.setAttribute 'class', 'container'

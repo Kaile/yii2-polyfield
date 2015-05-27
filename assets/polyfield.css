@@ -1,4 +1,4 @@
-/* 
+/*
     Created on : 26.05.2015, 15:59:58
     Author     : Mihail Kornilov <fix-06 at yandex.ru>
 */
@@ -16,10 +16,27 @@
 	cursor: pointer;
 }
 
-.collapse-open {
+.collapse-close span,
+.collapse-open span {
+	display: block;
+	float: right;
+	width: 30px;
+	height: 20px;
+}
+
+.collapse-close {
 	background-color: #eee;
 }
-.collapse-close {
+
+.collapse-close span {
+	background: url("plus.png") no-repeat center;
+}
+
+.collapse-open span {
+	background: url("minus.png") no-repeat center;
+}
+
+.collapse-open {
 	background-color: #444;
 	color: #fff;
 }

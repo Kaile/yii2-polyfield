@@ -10,7 +10,10 @@
             "email": "fix-06@yandex.ru"
         }
     ],
-    "require": {
+	"require": {
+		"php": ">=5.4.0"
+	},
+    "require-dev": {
         "yiisoft/yii2": "*"
     },
     "autoload": {
