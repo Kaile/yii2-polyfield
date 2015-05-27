@@ -125,14 +125,12 @@ class Polyfield extends Widget
 		echo Html::beginTag('div', [
 			'class' => 'row',
 		]);
-		echo Html::beginTag('div', [
-			'class' => 'col-lg-offset-5 col-sm-offset-5 col-lg-4',
-		]);
+		
 		echo Html::button(($this->buttonCaption) ? $this->buttonCaption : Yii::t('app', 'Добавить поле'), [
 			'id' => 'button_' . $modelId,
-			'class' => 'btn btn-success'
+			'class' => 'btn btn-success center-block'
 		]);
-		echo Html::endTag('div');
+		
 		echo Html::endTag('div');
 		
 		$this->getView()->registerJs("polyfield.push('$modelId')");
