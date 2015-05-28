@@ -19,7 +19,7 @@
 .collapse-close span,
 .collapse-open span {
 	display: block;
-	float: right;
+	float: left;
 	width: 30px;
 	height: 20px;
 }
@@ -39,4 +39,20 @@
 .collapse-open {
 	background-color: #444;
 	color: #fff;
+}
+
+.polyfield-exit {
+	float: right;
+	margin-bottom: 20px;
+	width: 10px;
+	height: 10px;
+	font-size: 10pt;
+}
+
+.collapse-open.polyfield-exit {
+	color: #eee;
+}
+
+.collapse-close.polyfield-exit {
+	color: #444;
 }

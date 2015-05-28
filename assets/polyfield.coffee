@@ -82,13 +82,21 @@ class Polyfield
 		collapsible.appendChild document.createTextNode model.counter + '. ' + model.label
 		collapsible.appendChild document.createElement 'span'
 
+		closer = document.createElement 'div'
+		closer.appendChild document.createTextNode 'x'
+		closer.setAttribute 'id', 'exit_' + id + model.counter
+		closer.setAttribute 'class', 'polyfield-exit'
+		closer.setAttribute 'title', 'Удалить элемент'
+		collapsible.appendChild closer
+		@bindClose id + model.counter
+
 		container = document.createElement 'div'
 		container.setAttribute 'class', 'container'
 
 		content = document.createElement 'div'
 		content.setAttribute 'class', 'content'
 		content.appendChild(
-			document.createElement('div')
+			document.createElement 'div'
 		)
 		contentBody = document.createElement 'p'
 
@@ -125,5 +133,13 @@ class Polyfield
 		document.getElementById('content_' + id).appendChild collapseFragment
 		jQuery('#' + sectionId).collapsible
 			defaultOpen: "#{sectionId}"
+
+	# Public: bind close event to element by identifier
+	#
+	# id - The identifier of element as {String}.
+	bindClose: (id) ->
+		jQuery('#exit_' + id).on 'click', =>
+			if confirm('Вы уверены, что хотите выполнить удаление?')
+				jQuery('#section_' + id).remove()
 
 window.polyfield = new Polyfield()

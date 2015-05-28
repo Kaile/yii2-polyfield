@@ -60,7 +60,7 @@ Polyfield = (function() {
   };
 
   Polyfield.prototype.appendTemplate = function(id) {
-    var collapseFragment, collapsible, container, content, contentBody, div, formGroup, i, input, j, label, model, ref, sectionId;
+    var closer, collapseFragment, collapsible, container, content, contentBody, div, formGroup, i, input, j, label, model, ref, sectionId;
     model = this.models[id];
     model.counter++;
     sectionId = 'section_' + id + model.counter;
@@ -70,6 +70,13 @@ Polyfield = (function() {
     collapsible.setAttribute('class', id);
     collapsible.appendChild(document.createTextNode(model.counter + '. ' + model.label));
     collapsible.appendChild(document.createElement('span'));
+    closer = document.createElement('div');
+    closer.appendChild(document.createTextNode('x'));
+    closer.setAttribute('id', 'exit_' + id + model.counter);
+    closer.setAttribute('class', 'polyfield-exit');
+    closer.setAttribute('title', 'Удалить элемент');
+    collapsible.appendChild(closer);
+    this.bindClose(id + model.counter);
     container = document.createElement('div');
     container.setAttribute('class', 'container');
     content = document.createElement('div');
@@ -104,6 +111,16 @@ Polyfield = (function() {
     return jQuery('#' + sectionId).collapsible({
       defaultOpen: "" + sectionId
     });
+  };
+
+  Polyfield.prototype.bindClose = function(id) {
+    return jQuery('#exit_' + id).on('click', (function(_this) {
+      return function() {
+        if (confirm('Вы уверены, что хотите выполнить удаление?')) {
+          return jQuery('#section_' + id).remove();
+        }
+      };
+    })(this));
   };
 
   return Polyfield;
