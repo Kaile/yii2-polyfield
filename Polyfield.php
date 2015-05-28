@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Widget;
 use yii\helpers\Html;
 use kaile\polyfield\assets\PolyfieldAsset;
+use yii\helpers\Json;
 
 /**
  * Widget that generates form with dynamic fields and dictionary filters for 
@@ -105,21 +106,14 @@ class Polyfield extends Widget
 			echo Html::tag('legend', $this->displayName);
 		}
 		
-		echo Html::beginTag('div', [
+		$model = [
 			'id' => $modelId,
-		]);
+			'name' => $this->model->formName(),
+			'label' => ($this->displayName) ? $this->displayName : $this->model->formName(),
+			'attributes' => $this->attributes,
+			'attributeLabels' => $labels,
+		];
 		
-		foreach ($this->attributes as $attribute) {
-			echo Html::tag('span', '', [
-				'class' => 'polyfield-template',
-				'data-model-name' => $this->model->formName(),
-				'data-model-label' => ($this->displayName) ? $this->displayName : $this->model->formName(),
-				'data-attribute-name' => $attribute,
-				'data-attribute-label' => $labels[$attribute],
-			]);
-		}
-						
-		echo Html::endTag('div');
 		echo Html::endTag('fieldset');
 		
 		echo Html::beginTag('div', [
@@ -133,6 +127,6 @@ class Polyfield extends Widget
 		
 		echo Html::endTag('div');
 		
-		$this->getView()->registerJs("polyfield.push('$modelId')");
+		$this->getView()->registerJs('polyfield.push(' . Json::encode($model) . ')');
 	}
 }
