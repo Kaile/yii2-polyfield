@@ -1,45 +1,28 @@
 # Public: Polyfield widget class that allows to add new model fields
 class Polyfield
+
+	constructor: ->
+		jQuery('body').on 'blur', 'input[type="text"]', ->
+			jQuery(this).val jQuery(this).val().trim()
+
 	# Private: list of active models.
 	models: {}
 
 	# Public: add new model to monitoring by Polyfield
 	#
-	# id - The HTML identifier of element as {String}.
+	# model - The JSON {Object}.
 	#
 	# Returns the void.
-	push: (id) ->
-		console.log id
-		selectorId = jQuery('#' + id);
-		unless selectorId.length
-			return console.log 'Bad identifier for polyfield ' + id
+	push: (model) ->
+		console.log model
+		unless typeof model is 'object'
+			return console.log 'Bad identifier for polyfield ' + model
 
-		model = {}
-		model.selector = selectorId
-		# jQuery selector where model will be rendered
-		model.container = []
-		# String name of model
-		model.name = no
-		# String human-readeable name of model
-		model.label = no
 		# Number counter for model
 		model.counter = 0
-		# Array attribute list of model
-		model.attribute = []
-		# Array template for attribute
-		model.attributeLabel = []
 
-		selectorId
-			.find('span')
-			.each( (index) ->
-				span =  $(this)
-				model.name = span.attr('data-model-name') if model.name is no
-				model.label = span.attr('data-model-label') if model.label is no
-				model.attribute[index] = span.attr('data-attribute-name')
-				model.attributeLabel[index] = span.attr('data-attribute-label')
-			)
-		@models[id] = model
-		@bindEvent(id)
+		@models[model.id] = model
+		@bindEvent(model.id)
 
 	# Public: binds event for a HEML element
 	#
@@ -60,9 +43,8 @@ class Polyfield
 	#
 	# Returns the void as.
 	hideExcess: (id) ->
-		model = @models[id]
-		return unless model.container.length
-		jQuery('.' + id).collapsible('closeAll')
+		if jQuery('.' + id).length
+			jQuery('.' + id).collapsible('closeAll')
 
 	# Public: generates template for a model
 	#
@@ -74,7 +56,6 @@ class Polyfield
 		model.counter++
 
 		sectionId = 'section_' + id + model.counter
-		model.container[model.counter] = sectionId
 
 		collapsible = document.createElement 'div'
 		collapsible.setAttribute 'id', sectionId
@@ -82,38 +63,56 @@ class Polyfield
 		collapsible.appendChild document.createTextNode model.counter + '. ' + model.label
 		collapsible.appendChild document.createElement 'span'
 
+		closer = document.createElement 'div'
+		closer.appendChild document.createTextNode 'x'
+		closer.setAttribute 'id', 'exit_' + id + model.counter
+		closer.setAttribute 'class', 'polyfield-exit'
+		closer.setAttribute 'title', 'Удалить элемент'
+		collapsible.appendChild closer
+		@bindClose id + model.counter
+
 		container = document.createElement 'div'
 		container.setAttribute 'class', 'container'
 
 		content = document.createElement 'div'
 		content.setAttribute 'class', 'content'
 		content.appendChild(
-			document.createElement('div')
+			document.createElement 'div'
 		)
 		contentBody = document.createElement 'p'
 
-		for i in [0..model.attribute.length-1]
+		for index, attribute of model.attributes
 			formGroup = document.createElement 'div'
 			formGroup.setAttribute 'class', 'form-group'
 
 			label = document.createElement 'label'
 			label.setAttribute 'class', 'col-lg-3 control-label'
-			label.setAttribute 'for', model.attribute[i] + model.counter
-			label.appendChild document.createTextNode model.attributeLabel[i]
+			label.setAttribute 'for', attribute + model.counter
+			label.appendChild document.createTextNode model.attributeLabels[attribute]
 
 			div = document.createElement 'div'
 			div.setAttribute 'class', 'col-lg-5'
 
-			input = document.createElement 'input'
-			input.setAttribute 'type', 'text'
-			input.setAttribute 'id', model.attribute[i] + model.counter
+			if model.dropdown is yes
+				input = document.createElement 'select'
+				for dropdownValue in model.dropdownValues
+					option = document.createElement 'option'
+					option.setAttribute 'value', dropdownValue.id
+					option.appendChild document.createTextNode dropdownValue[model.dropdownAttribute]
+					input.appendChild option
+			else
+				input = document.createElement 'input'
+				input.setAttribute 'type', 'text'
+			input.setAttribute 'id', attribute + model.counter
 			input.setAttribute 'class', 'form-control'
-			input.setAttribute 'name', "#{model.name}[#{model.counter}][#{model.attribute[i]}]"
+			input.setAttribute 'name', "#{model.name}[#{model.counter}][#{attribute}]"
 
 			div.appendChild input
 			formGroup.appendChild label
 			formGroup.appendChild div
 			contentBody.appendChild formGroup
+
+			if model.dropdown then break
 
 		content.appendChild contentBody
 		container.appendChild content
@@ -125,5 +124,14 @@ class Polyfield
 		document.getElementById('content_' + id).appendChild collapseFragment
 		jQuery('#' + sectionId).collapsible
 			defaultOpen: "#{sectionId}"
+
+	# Public: bind close event to element by identifier
+	#
+	# id - The identifier of element as {String}.
+	bindClose: (id) ->
+		jQuery('body').on 'click', '#exit_' + id, =>
+			if confirm('Вы уверены, что хотите выполнить удаление?')
+				jQuery('#section_' + id).next().remove()
+				jQuery('#section_' + id).remove()
 
 window.polyfield = new Polyfield()
