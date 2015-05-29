@@ -1,4 +1,4 @@
-Polyfield - dynamic active fields
+Polyfield - dynamic model fields
 =================================
 Dynamicaly adds new fields in form.
 
@@ -28,4 +28,5 @@ Usage
 Once the extension is installed, simply use it in your code by  :
 
 ```php
-<?= \kaile\polyfield\AutoloadExample::widget(); ?>```
+<?= \kaile\polyfield\Polyfield::widget(); ?>
+```
