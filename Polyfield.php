@@ -93,7 +93,9 @@ class Polyfield extends Widget
 	 */
 	public function init()
 	{
-		$this->attributes = array_keys($this->model->getAttributes());
+		if (empty($this->attributes)) {
+			$this->attributes = array_keys($this->model->getAttributes());
+		}
 		if (YII_DEBUG) {
 			\Yii::$app->assetManager->forceCopy = true;
 		}
@@ -129,12 +131,18 @@ class Polyfield extends Widget
 			'dropdown' => $this->dropdown,
 		];
 
+		echo Html::endTag('fieldset');
+		
 		if ($this->dropdown) {
 			$model['dropdownValues'] = $this->model->find()->all();
+			if (empty($model['dropdownValues'])) {
+				echo Html::tag('div', Yii::t('app', 'Данные для выбора отсутствуют'), [
+					'class' => 'alert alert-info',
+				]);
+				return;
+			}
 			$model['dropdownAttribute'] = $this->dropdownAttribute;
 		}
-
-		echo Html::endTag('fieldset');
 
 		echo Html::beginTag('div', [
 			'class' => 'row',
