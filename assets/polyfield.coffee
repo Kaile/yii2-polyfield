@@ -2,7 +2,7 @@
 class Polyfield
 
 	constructor: ->
-		jQuery('div').on 'blur', 'input[type="text"]', ->
+		jQuery('body').on 'blur', 'input[type="text"]', ->
 			jQuery(this).val jQuery(this).val().trim()
 
 	# Private: list of active models.
@@ -129,8 +129,9 @@ class Polyfield
 	#
 	# id - The identifier of element as {String}.
 	bindClose: (id) ->
-		jQuery('#exit_' + id).on 'click', =>
+		jQuery('body').on 'click', '#exit_' + id, =>
 			if confirm('Вы уверены, что хотите выполнить удаление?')
+				jQuery('#section_' + id).next().remove()
 				jQuery('#section_' + id).remove()
 
 window.polyfield = new Polyfield()

@@ -2,7 +2,7 @@ var Polyfield;
 
 Polyfield = (function() {
   function Polyfield() {
-    jQuery('div').on('blur', 'input[type="text"]', function() {
+    jQuery('body').on('blur', 'input[type="text"]', function() {
       return jQuery(this).val(jQuery(this).val().trim());
     });
   }
@@ -110,9 +110,10 @@ Polyfield = (function() {
   };
 
   Polyfield.prototype.bindClose = function(id) {
-    return jQuery('#exit_' + id).on('click', (function(_this) {
+    return jQuery('body').on('click', '#exit_' + id, (function(_this) {
       return function() {
         if (confirm('Вы уверены, что хотите выполнить удаление?')) {
+          jQuery('#section_' + id).next().remove();
           return jQuery('#section_' + id).remove();
         }
       };
