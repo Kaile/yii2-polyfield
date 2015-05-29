@@ -95,6 +95,7 @@ class Polyfield
 
 			if model.dropdown is yes
 				input = document.createElement 'select'
+				input.setAttribute 'name', "#{model.name}[#{model.counter}][id]"
 				for dropdownValue in model.dropdownValues
 					option = document.createElement 'option'
 					option.setAttribute 'value', dropdownValue.id
@@ -103,9 +104,9 @@ class Polyfield
 			else
 				input = document.createElement 'input'
 				input.setAttribute 'type', 'text'
+				input.setAttribute 'name', "#{model.name}[#{model.counter}][#{attribute}]"
 			input.setAttribute 'id', attribute + model.counter
 			input.setAttribute 'class', 'form-control'
-			input.setAttribute 'name', "#{model.name}[#{model.counter}][#{attribute}]"
 
 			div.appendChild input
 			formGroup.appendChild label
