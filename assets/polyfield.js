@@ -75,6 +75,7 @@ Polyfield = (function() {
       div.setAttribute('class', 'col-lg-5');
       if (model.dropdown === true) {
         input = document.createElement('select');
+        input.setAttribute('name', model.name + "[" + model.counter + "][id]");
         ref1 = model.dropdownValues;
         for (i = 0, len = ref1.length; i < len; i++) {
           dropdownValue = ref1[i];
@@ -86,10 +87,10 @@ Polyfield = (function() {
       } else {
         input = document.createElement('input');
         input.setAttribute('type', 'text');
+        input.setAttribute('name', model.name + "[" + model.counter + "][" + attribute + "]");
       }
       input.setAttribute('id', attribute + model.counter);
       input.setAttribute('class', 'form-control');
-      input.setAttribute('name', model.name + "[" + model.counter + "][" + attribute + "]");
       div.appendChild(input);
       formGroup.appendChild(label);
       formGroup.appendChild(div);
