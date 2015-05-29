@@ -1,39 +1,22 @@
 var Polyfield;
 
 Polyfield = (function() {
-  function Polyfield() {}
+  function Polyfield() {
+    jQuery('div').on('blur', 'input[type="text"]', function() {
+      return jQuery(this).val(jQuery(this).val().trim());
+    });
+  }
 
   Polyfield.prototype.models = {};
 
-  Polyfield.prototype.push = function(id) {
-    var model, selectorId;
-    console.log(id);
-    selectorId = jQuery('#' + id);
-    if (!selectorId.length) {
-      return console.log('Bad identifier for polyfield ' + id);
+  Polyfield.prototype.push = function(model) {
+    console.log(model);
+    if (typeof model !== 'object') {
+      return console.log('Bad identifier for polyfield ' + model);
     }
-    model = {};
-    model.selector = selectorId;
-    model.container = [];
-    model.name = false;
-    model.label = false;
     model.counter = 0;
-    model.attribute = [];
-    model.attributeLabel = [];
-    selectorId.find('span').each(function(index) {
-      var span;
-      span = $(this);
-      if (model.name === false) {
-        model.name = span.attr('data-model-name');
-      }
-      if (model.label === false) {
-        model.label = span.attr('data-model-label');
-      }
-      model.attribute[index] = span.attr('data-attribute-name');
-      return model.attributeLabel[index] = span.attr('data-attribute-label');
-    });
-    this.models[id] = model;
-    return this.bindEvent(id);
+    this.models[model.id] = model;
+    return this.bindEvent(model.id);
   };
 
   Polyfield.prototype.bindEvent = function(id) {
@@ -51,20 +34,16 @@ Polyfield = (function() {
   };
 
   Polyfield.prototype.hideExcess = function(id) {
-    var model;
-    model = this.models[id];
-    if (!model.container.length) {
-      return;
+    if (jQuery('.' + id).length) {
+      return jQuery('.' + id).collapsible('closeAll');
     }
-    return jQuery('.' + id).collapsible('closeAll');
   };
 
   Polyfield.prototype.appendTemplate = function(id) {
-    var closer, collapseFragment, collapsible, container, content, contentBody, div, formGroup, i, input, j, label, model, ref, sectionId;
+    var attribute, closer, collapseFragment, collapsible, container, content, contentBody, div, dropdownValue, formGroup, i, index, input, label, len, model, option, ref, ref1, sectionId;
     model = this.models[id];
     model.counter++;
     sectionId = 'section_' + id + model.counter;
-    model.container[model.counter] = sectionId;
     collapsible = document.createElement('div');
     collapsible.setAttribute('id', sectionId);
     collapsible.setAttribute('class', id);
@@ -83,24 +62,41 @@ Polyfield = (function() {
     content.setAttribute('class', 'content');
     content.appendChild(document.createElement('div'));
     contentBody = document.createElement('p');
-    for (i = j = 0, ref = model.attribute.length - 1; 0 <= ref ? j <= ref : j >= ref; i = 0 <= ref ? ++j : --j) {
+    ref = model.attributes;
+    for (index in ref) {
+      attribute = ref[index];
       formGroup = document.createElement('div');
       formGroup.setAttribute('class', 'form-group');
       label = document.createElement('label');
       label.setAttribute('class', 'col-lg-3 control-label');
-      label.setAttribute('for', model.attribute[i] + model.counter);
-      label.appendChild(document.createTextNode(model.attributeLabel[i]));
+      label.setAttribute('for', attribute + model.counter);
+      label.appendChild(document.createTextNode(model.attributeLabels[attribute]));
       div = document.createElement('div');
       div.setAttribute('class', 'col-lg-5');
-      input = document.createElement('input');
-      input.setAttribute('type', 'text');
-      input.setAttribute('id', model.attribute[i] + model.counter);
+      if (model.dropdown === true) {
+        input = document.createElement('select');
+        ref1 = model.dropdownValues;
+        for (i = 0, len = ref1.length; i < len; i++) {
+          dropdownValue = ref1[i];
+          option = document.createElement('option');
+          option.setAttribute('value', dropdownValue.id);
+          option.appendChild(document.createTextNode(dropdownValue[model.dropdownAttribute]));
+          input.appendChild(option);
+        }
+      } else {
+        input = document.createElement('input');
+        input.setAttribute('type', 'text');
+      }
+      input.setAttribute('id', attribute + model.counter);
       input.setAttribute('class', 'form-control');
-      input.setAttribute('name', model.name + "[" + model.counter + "][" + model.attribute[i] + "]");
+      input.setAttribute('name', model.name + "[" + model.counter + "][" + attribute + "]");
       div.appendChild(input);
       formGroup.appendChild(label);
       formGroup.appendChild(div);
       contentBody.appendChild(formGroup);
+      if (model.dropdown) {
+        break;
+      }
     }
     content.appendChild(contentBody);
     container.appendChild(content);
