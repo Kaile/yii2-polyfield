@@ -1,5 +1,10 @@
 # Public: Polyfield widget class that allows to add new model fields
 class Polyfield
+
+	constructor: ->
+		jQuery('div').on 'blur', 'input[type="text"]', ->
+			jQuery(this).val jQuery(this).val().trim()
+
 	# Private: list of active models.
 	models: {}
 
@@ -80,8 +85,16 @@ class Polyfield
 			div = document.createElement 'div'
 			div.setAttribute 'class', 'col-lg-5'
 
-			input = document.createElement 'input'
-			input.setAttribute 'type', 'text'
+			if model.dropdown is yes
+				input = document.createElement 'select'
+				for dropdownValue in model.dropdownValues
+					option = document.createElement 'option'
+					option.setAttribute 'value', dropdownValue.id
+					option.appendChild document.createTextNode dropdownValue[model.dropdownAttribute]
+					input.appendChild option
+			else
+				input = document.createElement 'input'
+				input.setAttribute 'type', 'text'
 			input.setAttribute 'id', attribute + model.counter
 			input.setAttribute 'class', 'form-control'
 			input.setAttribute 'name', "#{model.name}[#{model.counter}][#{attribute}]"
@@ -90,6 +103,8 @@ class Polyfield
 			formGroup.appendChild label
 			formGroup.appendChild div
 			contentBody.appendChild formGroup
+
+			if model.dropdown then break
 
 		content.appendChild contentBody
 		container.appendChild content
@@ -101,5 +116,6 @@ class Polyfield
 		document.getElementById('content_' + id).appendChild collapseFragment
 		jQuery('#' + sectionId).collapsible
 			defaultOpen: "#{sectionId}"
+
 
 window.polyfield = new Polyfield()

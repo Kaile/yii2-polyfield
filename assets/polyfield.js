@@ -1,7 +1,11 @@
 var Polyfield;
 
 Polyfield = (function() {
-  function Polyfield() {}
+  function Polyfield() {
+    jQuery('div').on('blur', 'input[type="text"]', function() {
+      return jQuery(this).val(jQuery(this).val().trim());
+    });
+  }
 
   Polyfield.prototype.models = {};
 
@@ -36,7 +40,7 @@ Polyfield = (function() {
   };
 
   Polyfield.prototype.appendTemplate = function(id) {
-    var attribute, collapseFragment, collapsible, container, content, contentBody, div, formGroup, index, input, label, model, ref, sectionId;
+    var attribute, collapseFragment, collapsible, container, content, contentBody, div, dropdownValue, formGroup, i, index, input, label, len, model, option, ref, ref1, sectionId;
     model = this.models[id];
     model.counter++;
     sectionId = 'section_' + id + model.counter;
@@ -62,8 +66,20 @@ Polyfield = (function() {
       label.appendChild(document.createTextNode(model.attributeLabels[attribute]));
       div = document.createElement('div');
       div.setAttribute('class', 'col-lg-5');
-      input = document.createElement('input');
-      input.setAttribute('type', 'text');
+      if (model.dropdown === true) {
+        input = document.createElement('select');
+        ref1 = model.dropdownValues;
+        for (i = 0, len = ref1.length; i < len; i++) {
+          dropdownValue = ref1[i];
+          option = document.createElement('option');
+          option.setAttribute('value', dropdownValue.id);
+          option.appendChild(document.createTextNode(dropdownValue[model.dropdownAttribute]));
+          input.appendChild(option);
+        }
+      } else {
+        input = document.createElement('input');
+        input.setAttribute('type', 'text');
+      }
       input.setAttribute('id', attribute + model.counter);
       input.setAttribute('class', 'form-control');
       input.setAttribute('name', model.name + "[" + model.counter + "][" + attribute + "]");
@@ -71,6 +87,9 @@ Polyfield = (function() {
       formGroup.appendChild(label);
       formGroup.appendChild(div);
       contentBody.appendChild(formGroup);
+      if (model.dropdown) {
+        break;
+      }
     }
     content.appendChild(contentBody);
     container.appendChild(content);
