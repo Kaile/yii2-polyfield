@@ -19,7 +19,7 @@
 .collapse-close span,
 .collapse-open span {
 	display: block;
-	float: right;
+	float: left;
 	width: 30px;
 	height: 20px;
 }
@@ -39,4 +39,30 @@
 .collapse-open {
 	background-color: #444;
 	color: #fff;
+}
+
+div.polyfield-exit {
+	float: right;
+	width: 20px;
+	height: 20px;
+	font-size: 10pt;
+	border-radius: 50%;
+}
+
+.collapse-open div.polyfield-exit {
+	color: #eee;
+}
+
+.collapse-close div.polyfield-exit {
+	color: #444;
+}
+
+.collapse-open div.polyfield-exit:hover {
+	background-color: #eee;
+	color: #444;
+}
+
+.collapse-close div.polyfield-exit:hover {
+	background-color: #444;
+	color: #eee;
 }

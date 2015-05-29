@@ -2,7 +2,7 @@ var Polyfield;
 
 Polyfield = (function() {
   function Polyfield() {
-    jQuery('div').on('blur', 'input[type="text"]', function() {
+    jQuery('body').on('blur', 'input[type="text"]', function() {
       return jQuery(this).val(jQuery(this).val().trim());
     });
   }
@@ -40,7 +40,7 @@ Polyfield = (function() {
   };
 
   Polyfield.prototype.appendTemplate = function(id) {
-    var attribute, collapseFragment, collapsible, container, content, contentBody, div, dropdownValue, formGroup, i, index, input, label, len, model, option, ref, ref1, sectionId;
+    var attribute, closer, collapseFragment, collapsible, container, content, contentBody, div, dropdownValue, formGroup, i, index, input, label, len, model, option, ref, ref1, sectionId;
     model = this.models[id];
     model.counter++;
     sectionId = 'section_' + id + model.counter;
@@ -49,6 +49,13 @@ Polyfield = (function() {
     collapsible.setAttribute('class', id);
     collapsible.appendChild(document.createTextNode(model.counter + '. ' + model.label));
     collapsible.appendChild(document.createElement('span'));
+    closer = document.createElement('div');
+    closer.appendChild(document.createTextNode('x'));
+    closer.setAttribute('id', 'exit_' + id + model.counter);
+    closer.setAttribute('class', 'polyfield-exit');
+    closer.setAttribute('title', 'Удалить элемент');
+    collapsible.appendChild(closer);
+    this.bindClose(id + model.counter);
     container = document.createElement('div');
     container.setAttribute('class', 'container');
     content = document.createElement('div');
@@ -100,6 +107,17 @@ Polyfield = (function() {
     return jQuery('#' + sectionId).collapsible({
       defaultOpen: "" + sectionId
     });
+  };
+
+  Polyfield.prototype.bindClose = function(id) {
+    return jQuery('body').on('click', '#exit_' + id, (function(_this) {
+      return function() {
+        if (confirm('Вы уверены, что хотите выполнить удаление?')) {
+          jQuery('#section_' + id).next().remove();
+          return jQuery('#section_' + id).remove();
+        }
+      };
+    })(this));
   };
 
   return Polyfield;
