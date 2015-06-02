@@ -8,13 +8,15 @@ class Polyfield
 	# Private: list of active models.
 	models: {}
 
+	# Public: array of autocomleting objects.
+	completes: []
+
 	# Public: add new model to monitoring by Polyfield
 	#
 	# model - The JSON {Object}.
 	#
 	# Returns the void.
 	push: (model) ->
-		console.log model
 		unless typeof model is 'object'
 			return console.log 'Bad identifier for polyfield ' + model
 
@@ -105,7 +107,8 @@ class Polyfield
 				input = document.createElement 'input'
 				input.setAttribute 'type', 'text'
 				input.setAttribute 'name', "#{model.name}[#{model.counter}][#{attribute}]"
-			input.setAttribute 'id', attribute + model.counter
+			inputId = attribute + id + model.counter;
+			input.setAttribute 'id', inputId
 			input.setAttribute 'class', 'form-control'
 
 			div.appendChild input
@@ -113,7 +116,9 @@ class Polyfield
 			formGroup.appendChild div
 			contentBody.appendChild formGroup
 
-			if model.dropdown then break
+			if model.dropdown is 'yes' then break
+			else
+				@addToAutocomplete inputId, model.name, attribute
 
 		content.appendChild contentBody
 		container.appendChild content
@@ -126,6 +131,8 @@ class Polyfield
 		jQuery('#' + sectionId).collapsible
 			defaultOpen: "#{sectionId}"
 
+		@bindAutocomplete()
+
 	# Public: bind close event to element by identifier
 	#
 	# id - The identifier of element as {String}.
@@ -134,5 +141,31 @@ class Polyfield
 			if confirm('Вы уверены, что хотите выполнить удаление?')
 				jQuery('#section_' + id).next().remove()
 				jQuery('#section_' + id).remove()
+
+	# Public: adds to autocompleting input elements
+	#
+	# inputId   - The html identifier of input as {Number}.
+	# modelName - The model's name as {String}.
+	# attribute - The attribute's name as {String}.
+	addToAutocomplete: (inputId, modelName, attribute) ->
+		@completes.push
+			id: inputId
+			modelName: modelName
+			attribute: attribute
+
+	# Public: binds autocomplete jQuery plugin for model input attribute
+	bindAutocomplete: ->
+		for object in @completes
+			selector = jQuery '#' + object.id
+			if typeof selector is 'undefined'
+				console.error 'Bad selector identifier gets for input autocomplete'
+			url = location.protocol + '//' + location.host + '/content/autocomplete'
+			selector.autocomplete
+				serviceUrl: url
+				noSuggestionNotice: 'Результатов нет'
+				deferRequestBy: 200
+				params:
+					modelName: object.modelName
+					attributeName: object.attribute
 
 window.polyfield = new Polyfield()
