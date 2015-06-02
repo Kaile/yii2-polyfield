@@ -9,8 +9,9 @@ Polyfield = (function() {
 
   Polyfield.prototype.models = {};
 
+  Polyfield.prototype.completes = [];
+
   Polyfield.prototype.push = function(model) {
-    console.log(model);
     if (typeof model !== 'object') {
       return console.log('Bad identifier for polyfield ' + model);
     }
@@ -40,7 +41,7 @@ Polyfield = (function() {
   };
 
   Polyfield.prototype.appendTemplate = function(id) {
-    var attribute, closer, collapseFragment, collapsible, container, content, contentBody, div, dropdownValue, formGroup, i, index, input, label, len, model, option, ref, ref1, sectionId;
+    var attribute, closer, collapseFragment, collapsible, container, content, contentBody, div, dropdownValue, formGroup, i, index, input, inputId, label, len, model, option, ref, ref1, sectionId;
     model = this.models[id];
     model.counter++;
     sectionId = 'section_' + id + model.counter;
@@ -89,14 +90,17 @@ Polyfield = (function() {
         input.setAttribute('type', 'text');
         input.setAttribute('name', model.name + "[" + model.counter + "][" + attribute + "]");
       }
-      input.setAttribute('id', attribute + model.counter);
+      inputId = attribute + id + model.counter;
+      input.setAttribute('id', inputId);
       input.setAttribute('class', 'form-control');
       div.appendChild(input);
       formGroup.appendChild(label);
       formGroup.appendChild(div);
       contentBody.appendChild(formGroup);
-      if (model.dropdown) {
+      if (model.dropdown === 'yes') {
         break;
+      } else {
+        this.addToAutocomplete(inputId, model.name, attribute);
       }
     }
     content.appendChild(contentBody);
@@ -105,9 +109,10 @@ Polyfield = (function() {
     collapseFragment.appendChild(collapsible);
     collapseFragment.appendChild(container);
     document.getElementById('content_' + id).appendChild(collapseFragment);
-    return jQuery('#' + sectionId).collapsible({
+    jQuery('#' + sectionId).collapsible({
       defaultOpen: "" + sectionId
     });
+    return this.bindAutocomplete();
   };
 
   Polyfield.prototype.bindClose = function(id) {
@@ -119,6 +124,38 @@ Polyfield = (function() {
         }
       };
     })(this));
+  };
+
+  Polyfield.prototype.addToAutocomplete = function(inputId, modelName, attribute) {
+    return this.completes.push({
+      id: inputId,
+      modelName: modelName,
+      attribute: attribute
+    });
+  };
+
+  Polyfield.prototype.bindAutocomplete = function() {
+    var i, len, object, ref, results, selector, url;
+    ref = this.completes;
+    results = [];
+    for (i = 0, len = ref.length; i < len; i++) {
+      object = ref[i];
+      selector = jQuery('#' + object.id);
+      if (typeof selector === 'undefined') {
+        console.error('Bad selector identifier gets for input autocomplete');
+      }
+      url = location.protocol + '//' + location.host + '/content/autocomplete';
+      results.push(selector.autocomplete({
+        serviceUrl: url,
+        noSuggestionNotice: 'Результатов нет',
+        deferRequestBy: 200,
+        params: {
+          modelName: object.modelName,
+          attributeName: object.attribute
+        }
+      }));
+    }
+    return results;
   };
 
   return Polyfield;
