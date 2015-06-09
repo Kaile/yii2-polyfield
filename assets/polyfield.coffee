@@ -22,6 +22,8 @@ class Polyfield
 
 		# Number counter for model
 		model.counter = 0
+		# Tells if existing models are showen
+		model.existsShowen = if model.exists then off else on
 
 		@models[model.id] = model
 		@bindEvent(model.id)
@@ -42,90 +44,150 @@ class Polyfield
 	# Public: hides excess models
 	#
 	# id - The HTML identifier of element as {String}.
-	#
-	# Returns the void as.
 	hideExcess: (id) ->
 		if jQuery('.' + id).length
 			jQuery('.' + id).collapsible('closeAll')
 
-	# Public: generates template for a model
+	# Public: Generates label HTML element
 	#
-	# id - The HTML identifier as {String}.
+	# * `forId` The identifier for what label creates as {String}.
+	# * `name`  The label value as {String}.
 	#
-	# Returns the void as.
-	appendTemplate: (id) ->
-		model = @models[id]
-		model.counter++
+	# Returns the document element as Node.
+	generateLabel: (forId, name) ->
+		label = document.createElement 'label'
+		label.setAttribute 'class', 'col-lg-3 control-label'
+		label.setAttribute 'for', forId
+		label.appendChild document.createTextNode name
+		label
 
-		sectionId = 'section_' + id + model.counter
+	# Private: Generates input HTML elmenet
+	#
+	# * `id`        The model unique identifier as {String}.
+	# * `modelName` The model name as {String}.
+	# * `attribute` The attribute name in model as {String}.
+	# * `counter`   The sequence model number as {Number}.
+	# * `value`     The value of attribute as {String}.
+	# * `type`		The type of input ['text', 'hidden'] avalable as {String}
+	# * `label`     The label for attribute as {String}.
+	#
+	# Returns the document element as Node.
+	generateInput: (id, modelName, attribute, counter, value, type, label) ->
+		value = '' if typeof value is 'undefined'
+		type  = 'hidden' if typeof type is 'undefined'
+		label = off if typeof label is 'undefined'
+
+		formGroup = document.createElement 'div'
+		formGroup.setAttribute 'class', 'form-group'
+
+		formGroup.appendChild @generateLabel(attribute + counter, label) if label
+
+		div = document.createElement 'div'
+		div.setAttribute 'class', 'col-lg-5'
+
+		input = document.createElement 'input'
+		input.setAttribute 'type', type
+		input.setAttribute 'name', "#{modelName}[#{counter}][#{attribute}]"
+		unless type is 'hidden'
+			inputId = attribute + id + counter;
+			input.setAttribute 'id', inputId
+			@addToAutocomplete inputId, modelName, attribute
+		input.setAttribute 'class', 'form-control'
+		input.setAttribute 'value', value
+
+		div.appendChild input
+		formGroup.appendChild div
+		formGroup
+
+	generateDropdown: (id, modelName, attribute, counter, label, values) ->
+		formGroup = document.createElement 'div'
+		formGroup.setAttribute 'class', 'form-group'
+
+		formGroup.appendChild @generateLabel(attribute + counter, label)
+
+		div = document.createElement 'div'
+		div.setAttribute 'class', 'col-lg-5'
+
+		select = document.createElement 'select'
+		select.setAttribute 'name', "#{modelName}[#{counter}][id]"
+
+		for value in values
+			option = document.createElement 'option'
+			option.setAttribute 'value', value.id
+			option.appendChild document.createTextNode value[attribute]
+			select.appendChild option
+
+		selectId = attribute + id + counter;
+		select.setAttribute 'id', selectId
+		select.setAttribute 'class', 'form-control'
+
+		div.appendChild select
+		formGroup.appendChild div
+		formGroup
+
+	# Private: Generates the header of collapse HTML data
+	#
+	# * `id` 	     The identifier of model as {String}.
+	# * `label`      The model caption as {String}.
+	# * `counter`    The sequence number among models {Number}
+	#
+	# Returns the document element as Node.
+	generateCollapsible: (id, label, counter) ->
+		relativeId = id + counter;
+		sectionId = 'section_' + relativeId
 
 		collapsible = document.createElement 'div'
 		collapsible.setAttribute 'id', sectionId
 		collapsible.setAttribute 'class', id
-		collapsible.appendChild document.createTextNode model.counter + '. ' + model.label
+		collapsible.appendChild document.createTextNode counter + '. ' + label
 		collapsible.appendChild document.createElement 'span'
 
 		closer = document.createElement 'div'
 		closer.appendChild document.createTextNode 'x'
-		closer.setAttribute 'id', 'exit_' + id + model.counter
+		closer.setAttribute 'id', 'exit_' + relativeId
 		closer.setAttribute 'class', 'polyfield-exit'
 		closer.setAttribute 'title', 'Удалить элемент'
 		collapsible.appendChild closer
-		@bindClose id + model.counter
+		@bindClose relativeId
+		collapsible
+
+	# Private: Generates container for collapsible structure
+	#
+	# * `contentBody` The set of attributes as {Node}.
+	#
+	# Returns the document element as Node.
+	generateContainer: (contentBody) ->
+		content = document.createElement 'div'
+		content.setAttribute 'class', 'content'
+		content.appendChild document.createElement 'div'
+		content.appendChild contentBody
 
 		container = document.createElement 'div'
 		container.setAttribute 'class', 'container'
+		container.appendChild content
+		container
 
-		content = document.createElement 'div'
-		content.setAttribute 'class', 'content'
-		content.appendChild(
-			document.createElement 'div'
-		)
+	# Public: generates template for a model
+	#
+	# id - unique identifier in model view scope {String}.
+	appendTemplate: (id) ->
+		model = @models[id]
+		model.counter++
+		sectionId = 'section_' + id + model.counter
+
+		collapsible = @generateCollapsible id, model.label, model.counter
+
 		contentBody = document.createElement 'p'
 
-		for index, attribute of model.attributes
-			formGroup = document.createElement 'div'
-			formGroup.setAttribute 'class', 'form-group'
-
-			label = document.createElement 'label'
-			label.setAttribute 'class', 'col-lg-3 control-label'
-			label.setAttribute 'for', attribute + model.counter
-			label.appendChild document.createTextNode model.attributeLabels[attribute]
-
-			div = document.createElement 'div'
-			div.setAttribute 'class', 'col-lg-5'
-
-			if model.dropdown is yes
-				input = document.createElement 'select'
-				input.setAttribute 'name', "#{model.name}[#{model.counter}][id]"
-				for dropdownValue in model.dropdownValues
-					option = document.createElement 'option'
-					option.setAttribute 'value', dropdownValue.id
-					option.appendChild document.createTextNode dropdownValue[model.dropdownAttribute]
-					input.appendChild option
-			else
-				input = document.createElement 'input'
-				input.setAttribute 'type', 'text'
-				input.setAttribute 'name', "#{model.name}[#{model.counter}][#{attribute}]"
-			inputId = attribute + id + model.counter;
-			input.setAttribute 'id', inputId
-			input.setAttribute 'class', 'form-control'
-
-			div.appendChild input
-			formGroup.appendChild label
-			formGroup.appendChild div
-			contentBody.appendChild formGroup
-
-			if model.dropdown is 'yes' then break
-			else
-				@addToAutocomplete inputId, model.name, attribute
-
-		content.appendChild contentBody
-		container.appendChild content
+		unless model.dropdown
+			for index, attribute of model.attributes
+				contentBody.appendChild @generateInput id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]
+		else
+			contentBody.appendChild @generateDropdown id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues
 
 		collapseFragment = document.createDocumentFragment()
 		collapseFragment.appendChild collapsible
-		collapseFragment.appendChild container
+		collapseFragment.appendChild @generateContainer contentBody
 
 		document.getElementById('content_' + id).appendChild collapseFragment
 		jQuery('#' + sectionId).collapsible
@@ -167,5 +229,6 @@ class Polyfield
 				params:
 					modelName: object.modelName
 					attributeName: object.attribute
+		@completes = []
 
 window.polyfield = new Polyfield()

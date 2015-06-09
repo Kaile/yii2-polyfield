@@ -87,6 +87,14 @@ class Polyfield extends Widget
 	 * @var string
 	 */
 	public $dropdownAttribute = 'name';
+	
+	/**
+	 * Contains existing models. It could need when perform editing of model
+	 * and its attributes
+	 * 
+	 * @var array
+	 */
+	public $exists = [];
 
 	/**
 	 * @inheritdoc
@@ -129,6 +137,7 @@ class Polyfield extends Widget
 			'attributes' => $this->attributes,
 			'attributeLabels' => $labels,
 			'dropdown' => $this->dropdown,
+			'exists' => (empty($this->exists)) ? false : $this->exists,
 		];
 
 		echo Html::endTag('fieldset');
