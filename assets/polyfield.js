@@ -18,6 +18,7 @@ Polyfield = (function() {
     model.counter = 0;
     model.existsShowen = model.exists ? false : true;
     this.models[model.id] = model;
+    this.appendExists(model.id);
     return this.bindEvent(model.id);
   };
 
@@ -83,8 +84,11 @@ Polyfield = (function() {
     return formGroup;
   };
 
-  Polyfield.prototype.generateDropdown = function(id, modelName, attribute, counter, label, values) {
+  Polyfield.prototype.generateDropdown = function(id, modelName, attribute, counter, label, values, selected) {
     var div, formGroup, i, len, option, select, selectId, value;
+    if (typeof selected === 'undefined') {
+      selected = false;
+    }
     formGroup = document.createElement('div');
     formGroup.setAttribute('class', 'form-group');
     formGroup.appendChild(this.generateLabel(attribute + counter, label));
@@ -97,6 +101,9 @@ Polyfield = (function() {
       option = document.createElement('option');
       option.setAttribute('value', value.id);
       option.appendChild(document.createTextNode(value[attribute]));
+      if (Number(value.id) === Number(selected)) {
+        option.setAttribute('selected', true);
+      }
       select.appendChild(option);
     }
     selectId = attribute + id + counter;
@@ -162,6 +169,40 @@ Polyfield = (function() {
       defaultOpen: "" + sectionId
     });
     return this.bindAutocomplete();
+  };
+
+  Polyfield.prototype.appendExists = function(id) {
+    var attribute, collapsible, collapsibleFragment, contentBody, i, index, len, model, object, ref, ref1, sectionId;
+    model = this.models[id];
+    if (model.existsShowen) {
+      return;
+    }
+    ref = model.exists;
+    for (i = 0, len = ref.length; i < len; i++) {
+      object = ref[i];
+      model.counter++;
+      sectionId = 'section_' + id + model.counter;
+      collapsible = this.generateCollapsible(id, model.label, model.counter);
+      contentBody = document.createElement('p');
+      if (!model.dropdown) {
+        ref1 = model.attributes;
+        for (index in ref1) {
+          attribute = ref1[index];
+          contentBody.appendChild(this.generateInput(id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]));
+        }
+      } else {
+        contentBody.appendChild(this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, object['id']));
+      }
+      collapsibleFragment = document.createDocumentFragment();
+      collapsibleFragment.appendChild(collapsible);
+      collapsibleFragment.appendChild(this.generateContainer(contentBody));
+      document.getElementById('content_' + id).appendChild(collapsibleFragment);
+      jQuery('#' + sectionId).collapsible({
+        defaultOpen: "" + sectionId
+      });
+      this.bindAutocomplete();
+    }
+    return model.existsShowen = true;
   };
 
   Polyfield.prototype.bindClose = function(id) {

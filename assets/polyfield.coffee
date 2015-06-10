@@ -26,6 +26,7 @@ class Polyfield
 		model.existsShowen = if model.exists then off else on
 
 		@models[model.id] = model
+		@appendExists(model.id)
 		@bindEvent(model.id)
 
 	# Public: binds event for a HEML element
@@ -99,7 +100,20 @@ class Polyfield
 		formGroup.appendChild div
 		formGroup
 
-	generateDropdown: (id, modelName, attribute, counter, label, values) ->
+
+	# Private: Generates select HTML element
+	#
+	# * `id`        The model unique identifier as {String}.
+	# * `modelName` The model name as {string}.
+	# * `attribute` The attribute name in model as {String}.
+	# * `counter`   The sequence model number as {Number}.
+	# * `label`     The label for attribute as {String}.
+	# * `values`    The select option values as {Array}.
+	# * `selected`  The option value that is selected as {String}.
+	#
+	# Returns the document element as Node.
+	generateDropdown: (id, modelName, attribute, counter, label, values, selected) ->
+		selected = false if typeof selected is 'undefined'
 		formGroup = document.createElement 'div'
 		formGroup.setAttribute 'class', 'form-group'
 
@@ -115,6 +129,8 @@ class Polyfield
 			option = document.createElement 'option'
 			option.setAttribute 'value', value.id
 			option.appendChild document.createTextNode value[attribute]
+			if Number(value.id) is Number(selected)
+				option.setAttribute 'selected', true
 			select.appendChild option
 
 		selectId = attribute + id + counter;
@@ -192,8 +208,37 @@ class Polyfield
 		document.getElementById('content_' + id).appendChild collapseFragment
 		jQuery('#' + sectionId).collapsible
 			defaultOpen: "#{sectionId}"
-
 		@bindAutocomplete()
+
+	# Public: generates existing models structure in view
+	#
+	# * `id` The model unique identifier as {String}.
+	appendExists: (id) ->
+		model = @models[id]
+		if model.existsShowen
+			return
+		for object in model.exists
+			model.counter++
+			sectionId = 'section_' + id + model.counter
+
+			collapsible = @generateCollapsible id, model.label, model.counter
+			contentBody = document.createElement 'p'
+
+			unless model.dropdown
+				for index, attribute of model.attributes
+					contentBody.appendChild @generateInput id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]
+			else
+				contentBody.appendChild @generateDropdown id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, object['id']
+
+			collapsibleFragment = document.createDocumentFragment()
+			collapsibleFragment.appendChild collapsible
+			collapsibleFragment.appendChild @generateContainer contentBody
+
+			document.getElementById('content_' + id).appendChild collapsibleFragment
+			jQuery('#' + sectionId).collapsible
+				defaultOpen: "#{sectionId}"
+			@bindAutocomplete()
+		model.existsShowen = on
 
 	# Public: bind close event to element by identifier
 	#
