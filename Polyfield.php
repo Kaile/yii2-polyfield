@@ -95,6 +95,15 @@ class Polyfield extends Widget
 	 * @var array
 	 */
 	public $exists = [];
+	
+	/**
+	 * Filter attribute that sets parent element of attribute. It's may be need
+	 * when dropdown list contain many elements. It works only with dropdown 
+	 * lists.
+	 * 
+	 * @var string attribute of model
+	 */
+	public $filterAttribute = '';
 
 	/**
 	 * @inheritdoc
@@ -151,6 +160,7 @@ class Polyfield extends Widget
 				return;
 			}
 			$model['dropdownAttribute'] = $this->dropdownAttribute;
+			$model['filterAttribute'] = $this->filterAttribute;
 		}
 
 		echo Html::beginTag('div', [
@@ -165,5 +175,14 @@ class Polyfield extends Widget
 		echo Html::endTag('div');
 
 		$this->getView()->registerJs('polyfield.push(' . Json::encode($model) . ')');
+		
+		$i18n = [
+			'deleteElement' => Yii::t('app', 'Удалить элемент'),
+			'deleteConfirmation' => Yii::t('app', 'Вы уверены, что хотите выполнить удаление?'),
+			'noResults' => Yii::t('app', 'Результатов нет'),
+			'filter' => Yii::t('app', 'Фильтр'),
+			'noFilter' => Yii::t('app', '--- Нет ---'),
+		];
+		$this->getView()->registerJs('polyfield.setTranslation(' . Json::encode($i18n) . ')');
 	}
 }

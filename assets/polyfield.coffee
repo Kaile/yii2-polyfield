@@ -13,7 +13,7 @@ class Polyfield
 
 	# Public: add new model to monitoring by Polyfield
 	#
-	# model - The JSON {Object}.
+	# * `model` - The JSON {Object}.
 	#
 	# Returns the void.
 	push: (model) ->
@@ -31,7 +31,7 @@ class Polyfield
 
 	# Public: binds event for a HEML element
 	#
-	# id - The HTML identifier of element as {String}.
+	# * `id` - The HTML identifier of element as {String}.
 	#
 	# Returns the void as.
 	bindEvent: (id) ->
@@ -44,7 +44,7 @@ class Polyfield
 
 	# Public: hides excess models
 	#
-	# id - The HTML identifier of element as {String}.
+	# * `id` - The HTML identifier of element as {String}.
 	hideExcess: (id) ->
 		if jQuery('.' + id).length
 			jQuery('.' + id).collapsible('closeAll')
@@ -60,7 +60,7 @@ class Polyfield
 		label.setAttribute 'class', 'col-lg-3 control-label'
 		label.setAttribute 'for', forId
 		label.appendChild document.createTextNode name
-		label
+		return label
 
 	# Private: Generates input HTML elmenet
 	#
@@ -100,6 +100,25 @@ class Polyfield
 		formGroup.appendChild div
 		formGroup
 
+	# Private: Generates option tags for select list
+	#
+	# `values`		The options values
+	# `attribute`	The attribute value of what takes
+	# `selected`	The selected element identifier
+	#
+	# Returns the document element as Node
+	generateOptions: (values, attribute, selected) ->
+		filter = off if typeof filter is 'undefined'
+		options = document.createDocumentFragment()
+
+		for value in values
+			option = document.createElement 'option'
+			option.setAttribute 'value', value.id
+			option.appendChild document.createTextNode value[attribute]
+			if Number(value.id) is Number(selected)
+				option.setAttribute 'selected', true
+			options.appendChild option
+		return options
 
 	# Private: Generates select HTML element
 	#
@@ -112,11 +131,13 @@ class Polyfield
 	# * `selected`  The option value that is selected as {String}.
 	#
 	# Returns the document element as Node.
-	generateDropdown: (id, modelName, attribute, counter, label, values, selected) ->
-		selected = false if typeof selected is 'undefined'
+	generateDropdown: (id, modelName, attribute, counter, label, values, selected, filterAttr) ->
+		selected = no if typeof selected is 'undefined'
+		filterAttr = off if typeof filterAttr is 'undefined'
 		formGroup = document.createElement 'div'
-		formGroup.setAttribute 'class', 'form-group'
+		ddFragment = document.createDocumentFragment()
 
+		formGroup.setAttribute 'class', 'form-group'
 		formGroup.appendChild @generateLabel(attribute + counter, label)
 
 		div = document.createElement 'div'
@@ -125,21 +146,49 @@ class Polyfield
 		select = document.createElement 'select'
 		select.setAttribute 'name', "#{modelName}[#{counter}][id]"
 
-		for value in values
-			option = document.createElement 'option'
-			option.setAttribute 'value', value.id
-			option.appendChild document.createTextNode value[attribute]
-			if Number(value.id) is Number(selected)
-				option.setAttribute 'selected', true
-			select.appendChild option
+		select.appendChild @generateOptions(values, attribute, selected)
 
 		selectId = attribute + id + counter;
 		select.setAttribute 'id', selectId
 		select.setAttribute 'class', 'form-control'
 
+		if filterAttr
+			filterFormGroup = document.createElement 'div'
+			filterFormGroup.setAttribute 'class', 'form-group'
+			filterFormGroup.appendChild @generateLabel("filter#{counter}", @translate('filter'))
+			filterSelect = document.createElement 'select'
+			filterSelect.setAttribute 'id', "filter#{counter}"
+			filterValues = values.filter (value, index, array) -> not value[filterAttr]
+			emptyOption = document.createElement 'option'
+			emptyOption.setAttribute 'value', 0
+			emptyOption.appendChild document.createTextNode @translate 'noFilter'
+			filterSelect.appendChild emptyOption
+			filterSelect.appendChild @generateOptions(filterValues, attribute, selected)
+			filterSelect.setAttribute 'class', 'form-control'
+			filterDiv = div.cloneNode()
+			filterDiv.appendChild filterSelect
+			filterFormGroup.appendChild filterDiv
+
+			ddFragment.appendChild filterFormGroup
+
+			jQuery(filterSelect).on 'change', =>
+				$filter = jQuery filterSelect
+				$select = jQuery select
+				$select.empty()
+				filteredValues = values.filter (value, index, array) ->
+					return yes if $filter.val() is '0'
+					if Number($filter.val()) is Number(value[filterAttr])
+						yes
+					else
+						no
+				select.appendChild @generateOptions(filteredValues, attribute, selected)
+
 		div.appendChild select
 		formGroup.appendChild div
-		formGroup
+
+		ddFragment.appendChild formGroup
+		return ddFragment
+
 
 	# Private: Generates the header of collapse HTML data
 	#
@@ -162,10 +211,10 @@ class Polyfield
 		closer.appendChild document.createTextNode 'x'
 		closer.setAttribute 'id', 'exit_' + relativeId
 		closer.setAttribute 'class', 'polyfield-exit'
-		closer.setAttribute 'title', 'Удалить элемент'
+		closer.setAttribute 'title', @translate('deleteElement')
 		collapsible.appendChild closer
 		@bindClose relativeId
-		collapsible
+		return collapsible
 
 	# Private: Generates container for collapsible structure
 	#
@@ -181,11 +230,11 @@ class Polyfield
 		container = document.createElement 'div'
 		container.setAttribute 'class', 'container'
 		container.appendChild content
-		container
+		return container
 
 	# Public: generates template for a model
 	#
-	# id - unique identifier in model view scope {String}.
+	# * `id` - unique identifier in model view scope {String}.
 	appendTemplate: (id) ->
 		model = @models[id]
 		model.counter++
@@ -199,7 +248,7 @@ class Polyfield
 			for index, attribute of model.attributes
 				contentBody.appendChild @generateInput id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]
 		else
-			contentBody.appendChild @generateDropdown id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues
+			contentBody.appendChild @generateDropdown id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute
 
 		collapseFragment = document.createDocumentFragment()
 		collapseFragment.appendChild collapsible
@@ -242,18 +291,18 @@ class Polyfield
 
 	# Public: bind close event to element by identifier
 	#
-	# id - The identifier of element as {String}.
+	# * `id` - The identifier of element as {String}.
 	bindClose: (id) ->
 		jQuery('body').on 'click', '#exit_' + id, =>
-			if confirm('Вы уверены, что хотите выполнить удаление?')
+			if confirm(@translate('deleteConfirmation'))
 				jQuery('#section_' + id).next().remove()
 				jQuery('#section_' + id).remove()
 
 	# Public: adds to autocompleting input elements
 	#
-	# inputId   - The html identifier of input as {Number}.
-	# modelName - The model's name as {String}.
-	# attribute - The attribute's name as {String}.
+	# * `inputId`   - The html identifier of input as {Number}.
+	# * `modelName` - The model's name as {String}.
+	# * `attribute` - The attribute's name as {String}.
 	addToAutocomplete: (inputId, modelName, attribute) ->
 		@completes.push
 			id: inputId
@@ -269,11 +318,28 @@ class Polyfield
 			url = location.protocol + '//' + location.host + '/content/autocomplete'
 			selector.autocomplete
 				serviceUrl: url
-				noSuggestionNotice: 'Результатов нет'
+				noSuggestionNotice: @translate('noResults')
 				deferRequestBy: 200
 				params:
 					modelName: object.modelName
 					attributeName: object.attribute
 		@completes = []
+
+	# Public: sets translation parameters for polyfield widget
+	#
+	# * `translation` - The plain object with param keys as variables and values
+	# 				as translations as {Object}
+	setTranslation: (translation) ->
+		@i18n = translation
+
+	# Private: translates given parameter in language text
+	#
+	# * `textParam` - key by what searchs the transled text
+	# Returns translation if it exists and `textParam` value else as String
+	translate: (textParam) ->
+		unless typeof @i18n[textParam] is 'undefined'
+			@i18n[textParam]
+		else
+			textParam
 
 window.polyfield = new Polyfield()
