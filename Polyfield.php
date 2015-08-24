@@ -183,6 +183,6 @@ class Polyfield extends Widget
 			'filter' => Yii::t('app', 'Фильтр'),
 			'noFilter' => Yii::t('app', '--- Нет ---'),
 		];
-		$this->getView()->registerJs('polyfield.setTranslation(' . Json::encode($i18n) . ')', View::POS_HEAD);
+		$this->getView()->registerJs('polyfield.setTranslation(' . Json::encode($i18n) . ')');
 	}
 }
