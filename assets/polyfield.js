@@ -5,6 +5,7 @@ Polyfield = (function() {
     jQuery('body').on('blur', 'input[type="text"]', function() {
       return jQuery(this).val(jQuery(this).val().trim());
     });
+    this.i18n = {};
   }
 
   Polyfield.prototype.models = {};
@@ -136,7 +137,7 @@ Polyfield = (function() {
       emptyOption.setAttribute('value', 0);
       emptyOption.appendChild(document.createTextNode(this.translate('noFilter')));
       filterSelect.appendChild(emptyOption);
-      filterSelect.appendChild(this.generateOptions(filterValues, attribute, selected));
+      filterSelect.appendChild(this.generateOptions(filterValues, attribute));
       filterSelect.setAttribute('class', 'form-control');
       filterDiv = div.cloneNode();
       filterDiv.appendChild(filterSelect);
@@ -245,7 +246,7 @@ Polyfield = (function() {
           contentBody.appendChild(this.generateInput(id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]));
         }
       } else {
-        contentBody.appendChild(this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, object['id']));
+        contentBody.appendChild(this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, object['id'], model.filterAttribute));
       }
       collapsibleFragment = document.createDocumentFragment();
       collapsibleFragment.appendChild(collapsible);

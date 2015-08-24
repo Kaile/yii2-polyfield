@@ -5,6 +5,8 @@ class Polyfield
 		jQuery('body').on 'blur', 'input[type="text"]', ->
 			jQuery(this).val jQuery(this).val().trim()
 
+		@i18n = {}
+
 	# Private: list of active models.
 	models: {}
 
@@ -163,7 +165,7 @@ class Polyfield
 			emptyOption.setAttribute 'value', 0
 			emptyOption.appendChild document.createTextNode @translate 'noFilter'
 			filterSelect.appendChild emptyOption
-			filterSelect.appendChild @generateOptions(filterValues, attribute, selected)
+			filterSelect.appendChild @generateOptions(filterValues, attribute)
 			filterSelect.setAttribute 'class', 'form-control'
 			filterDiv = div.cloneNode()
 			filterDiv.appendChild filterSelect
@@ -277,7 +279,7 @@ class Polyfield
 				for index, attribute of model.attributes
 					contentBody.appendChild @generateInput id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]
 			else
-				contentBody.appendChild @generateDropdown id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, object['id']
+				contentBody.appendChild @generateDropdown id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, object['id'], model.filterAttribute
 
 			collapsibleFragment = document.createDocumentFragment()
 			collapsibleFragment.appendChild collapsible
