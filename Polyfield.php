@@ -152,7 +152,11 @@ class Polyfield extends Widget
 		echo Html::endTag('fieldset');
 		
 		if ($this->dropdown) {
-			$model['dropdownValues'] = $this->model->find()->all();
+			$tmp = $this->model->find();
+			if ($this->filterAttribute) {
+				$tmp->orderBy($this->filterAttribute);
+			}
+			$model['dropdownValues'] = $tmp->all();
 			if (empty($model['dropdownValues'])) {
 				echo Html::tag('div', Yii::t('app', 'Данные для выбора отсутствуют'), [
 					'class' => 'alert alert-info',
