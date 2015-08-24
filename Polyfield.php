@@ -2,11 +2,14 @@
 
 namespace kaile\polyfield;
 
+use kaile\polyfield\assets\PolyfieldAsset;
 use Yii;
 use yii\base\Widget;
+use yii\db\ActiveRecord;
 use yii\helpers\Html;
-use kaile\polyfield\assets\PolyfieldAsset;
 use yii\helpers\Json;
+use yii\web\View;
+use yii\widgets\ActiveForm;
 
 /**
  * Widget that generates form with dynamic fields and dictionary filters for
@@ -21,13 +24,13 @@ class Polyfield extends Widget
 {
 	/**
 	 *
-	 * @var \yii\widgets\ActiveForm need for ActiveField
+	 * @var ActiveForm need for ActiveField
 	 */
 	public $form = null;
 	/**
 	 * Model for what attributes to be rendered
 	 *
-	 * @var \yii\db\ActiveRecord
+	 * @var ActiveRecord
 	 */
 	public $model = null;
 
@@ -113,9 +116,6 @@ class Polyfield extends Widget
 		if (empty($this->attributes)) {
 			$this->attributes = array_keys($this->model->getAttributes());
 		}
-		if (YII_DEBUG) {
-			\Yii::$app->assetManager->forceCopy = true;
-		}
 		PolyfieldAsset::register($this->getView());
 	}
 
@@ -183,6 +183,6 @@ class Polyfield extends Widget
 			'filter' => Yii::t('app', 'Фильтр'),
 			'noFilter' => Yii::t('app', '--- Нет ---'),
 		];
-		$this->getView()->registerJs('polyfield.setTranslation(' . Json::encode($i18n) . ')');
+		$this->getView()->registerJs('polyfield.setTranslation(' . Json::encode($i18n) . ')', View::POS_HEAD);
 	}
 }
