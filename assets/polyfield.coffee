@@ -104,14 +104,20 @@ class Polyfield
 
 	# Private: Generates option tags for select list
 	#
-	# `values`		The options values
-	# `attribute`	The attribute value of what takes
-	# `selected`	The selected element identifier
+	# `values`		The options values as {Array}
+	# `attribute`	The attribute value of what takes as {String}
+	# `selected`	The selected element identifier as {Number}
 	#
 	# Returns the document element as Node
 	generateOptions: (values, attribute, selected) ->
 		filter = off if typeof filter is 'undefined'
 		options = document.createDocumentFragment()
+		values = values.sort (a, b) ->
+			first = a[attribute].toUpperCase()
+			second = b[attribute].toUpperCase()
+			if first > second then return 1
+			if first < second then return -1
+			0
 
 		for value in values
 			option = document.createElement 'option'
