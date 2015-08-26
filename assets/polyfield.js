@@ -91,6 +91,18 @@ Polyfield = (function() {
       filter = false;
     }
     options = document.createDocumentFragment();
+    values = values.sort(function(a, b) {
+      var first, second;
+      first = a[attribute].toUpperCase();
+      second = b[attribute].toUpperCase();
+      if (first > second) {
+        return 1;
+      }
+      if (first < second) {
+        return -1;
+      }
+      return 0;
+    });
     for (i = 0, len = values.length; i < len; i++) {
       value = values[i];
       option = document.createElement('option');
