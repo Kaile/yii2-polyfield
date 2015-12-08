@@ -8,8 +8,9 @@ use yii\base\Widget;
 use yii\db\ActiveRecord;
 use yii\helpers\Html;
 use yii\helpers\Json;
-use yii\web\View;
 use yii\widgets\ActiveForm;
+
+//TODO: Сделать для каждого атрибута отображение в соответствии с его типом
 
 /**
  * Widget that generates form with dynamic fields and dictionary filters for
@@ -18,10 +19,17 @@ use yii\widgets\ActiveForm;
  * @created 19.05.2015 13:10:47
  * @author Mihail Kornilov <fix-06 at yandex.ru>
  *
- * @since 1.0
+ * @since 1.1
  */
 class Polyfield extends Widget
 {
+    /**
+     * Types constants for [[type]] property
+     */
+    const TYPE_STRING = 'string';
+    const TYPE_DROPDOWN = 'dropdown';
+    const TYPE_DATE = 'date';
+    
 	/**
 	 *
 	 * @var ActiveForm need for ActiveField
@@ -78,13 +86,6 @@ class Polyfield extends Widget
 	public $buttonCaption;
 
 	/**
-	 * Renders as dropdown list element
-	 *
-	 * @var boolean
-	 */
-	public $dropdown = false;
-
-	/**
 	 * Attribute what data will be selected by user
 	 *
 	 * @var string
@@ -107,6 +108,20 @@ class Polyfield extends Widget
 	 * @var string attribute of model
 	 */
 	public $filterAttribute = '';
+    
+    /**
+     * Type of field. In depends of [[type]] view of field will be built
+     * 
+     * @var string
+     */
+    public $type = 'string';
+    
+    /**
+     * Attributes that contains date attributes
+     * 
+     * @var array
+     */
+    public $dateAttributes = ['date'];
 
 	/**
 	 * @inheritdoc
@@ -145,13 +160,13 @@ class Polyfield extends Widget
 			'label' => ($this->displayName) ? $this->displayName : $this->model->formName(),
 			'attributes' => $this->attributes,
 			'attributeLabels' => $labels,
-			'dropdown' => $this->dropdown,
+			'type' => $this->type,
 			'exists' => (empty($this->exists)) ? false : $this->exists,
 		];
 
 		echo Html::endTag('fieldset');
 		
-		if ($this->dropdown) {
+		if ($this->type === self::TYPE_DROPDOWN) {
 			$tmp = $this->model->find();
 			if ($this->filterAttribute) {
 				$tmp->orderBy($this->filterAttribute);
@@ -166,6 +181,10 @@ class Polyfield extends Widget
 			$model['dropdownAttribute'] = $this->dropdownAttribute;
 			$model['filterAttribute'] = $this->filterAttribute;
 		}
+        
+        if ($this->type === self::TYPE_DATE) {
+            $model['dateAttributes'] = $this->dateAttributes;
+        }
 
 		echo Html::beginTag('div', [
 			'class' => 'row',

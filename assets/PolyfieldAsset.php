@@ -2,6 +2,8 @@
 
 namespace kaile\polyfield\assets;
 
+use yii\web\AssetBundle;
+
 /**
  * Asset bundle for polyfield.js file
  *
@@ -10,16 +12,19 @@ namespace kaile\polyfield\assets;
  *
  * @since 1.0
  */
-class PolyfieldAsset extends \yii\web\AssetBundle
+class PolyfieldAsset extends AssetBundle
 {
 	public $sourcePath = '@vendor/kaile/yii2-polyfield/assets';
 	public $js = [
-		'polyfield.js',
+		'polyfield.min.js',
+        'moment-with-locales.min.js',
+        'bootstrap-datetimepicker.min.js',
 		'jquery.autocomplete.min.js',
 	];
 	public $css = [
-		'polyfield.css',
-		'autocomplete-styles.css',
+		'polyfield.min.css',
+        'bootstrap-datetimepicker.min.css',
+		'autocomplete-styles.min.css',
 	];
 
 	public $depends = [
