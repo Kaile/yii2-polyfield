@@ -162,6 +162,7 @@ class Polyfield extends Widget
 			'attributeLabels' => $labels,
 			'type' => $this->type,
 			'exists' => (empty($this->exists)) ? false : $this->exists,
+            'dateAttributes' => $this->dateAttributes,
 		];
 
 		echo Html::endTag('fieldset');
@@ -181,10 +182,6 @@ class Polyfield extends Widget
 			$model['dropdownAttribute'] = $this->dropdownAttribute;
 			$model['filterAttribute'] = $this->filterAttribute;
 		}
-        
-        if ($this->type === self::TYPE_DATE) {
-            $model['dateAttributes'] = $this->dateAttributes;
-        }
 
 		echo Html::beginTag('div', [
 			'class' => 'row',
