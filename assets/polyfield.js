@@ -5,7 +5,9 @@ Polyfield = (function() {
   Polyfield.prototype.types = {
     STRING: 'string',
     DROPDOWN: 'dropdown',
-    DATE: 'date'
+    DATE: 'date',
+    GALERY: 'galery',
+    TEXT_BLOCK: 'editor'
   };
 
   function Polyfield() {
@@ -38,8 +40,9 @@ Polyfield = (function() {
     }
     button = jQuery('#button_' + id);
     return button.on('click', function() {
+      button.button('loading');
       _this.hideExcess(id);
-      return _this.appendTemplate(id);
+      return _this.appendTemplate(id, button);
     });
   };
 
@@ -256,11 +259,25 @@ Polyfield = (function() {
     return container;
   };
 
-  Polyfield.prototype.appendTemplate = function(id) {
-    var attribute, collapseFragment, collapsible, contentBody, index, model, sectionId, _ref;
+  Polyfield.prototype.appendTemplate = function(id, button) {
+    var attribute, collapseFragment, collapsible, contentBody, contentBodyId, index, model, sectionId, _ref;
     model = this.models[id];
     model.counter++;
     sectionId = 'section_' + id + model.counter;
+    if (model.type === this.types.TEXT_BLOCK || model.type === this.types.GALERY) {
+      this.getFromRequest(model.link, {
+        counter: model.counter
+      }).done(function(data) {
+        $('#content_' + id).append(data);
+        $('#' + sectionId).collapsible({
+          defaultOpen: "" + sectionId
+        });
+        return button.button('reset');
+      });
+      return;
+    } else {
+      button.button('reset');
+    }
     collapsible = this.generateCollapsible(id, model.label, model.counter);
     contentBody = document.createElement('p');
     if (model.type === this.types.STRING || model.type === this.types.DATE) {
@@ -275,6 +292,12 @@ Polyfield = (function() {
       }
     } else if (model.type === this.types.DROPDOWN) {
       contentBody.appendChild(this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute));
+    } else if (model.type === this.types.TEXT_BLOCK || model.type === this.types.GALERY) {
+      contentBodyId = 'body_' + id + model.counter;
+      contentBody.setAttribute('id', contentBodyId);
+      this.getFromRequest(model.link).done(function(data) {
+        return $('#' + contentBodyId).append(data);
+      });
     }
     collapseFragment = document.createDocumentFragment();
     collapseFragment.appendChild(collapsible);
@@ -290,6 +313,27 @@ Polyfield = (function() {
     var attribute, collapsible, collapsibleFragment, contentBody, index, model, object, sectionId, _i, _len, _ref, _ref1;
     model = this.models[id];
     if (model.existsShowen) {
+      return;
+    }
+    if (model.type === this.types.TEXT_BLOCK || model.type === this.types.GALERY) {
+      this.getFromRequest(model.link, {
+        counter: model.counter + 1,
+        existingModels: model.exists
+      }).done(function(data) {
+        var modelExistId, sectionId, _i, _len, _ref, _results;
+        $('#content_' + id).append(data);
+        _ref = model.exists;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          modelExistId = _ref[_i];
+          model.counter++;
+          sectionId = 'section_' + id + model.counter;
+          _results.push(jQuery('#' + sectionId).collapsible({
+            defaultOpen: sectionId
+          }));
+        }
+        return _results;
+      });
       return;
     }
     _ref = model.exists;
@@ -317,7 +361,7 @@ Polyfield = (function() {
       collapsibleFragment.appendChild(this.generateContainer(contentBody));
       document.getElementById('content_' + id).appendChild(collapsibleFragment);
       jQuery('#' + sectionId).collapsible({
-        defaultOpen: "" + sectionId
+        defaultOpen: sectionId
       });
       this.bindAutocomplete();
     }
@@ -375,6 +419,12 @@ Polyfield = (function() {
     } else {
       return textParam;
     }
+  };
+
+  Polyfield.prototype.getFromRequest = function(url, param) {
+    return $.get(url, param).fail(function(errorObject) {
+      return alert('Model form can not be loaded');
+    });
   };
 
   return Polyfield;

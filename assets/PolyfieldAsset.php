@@ -16,13 +16,13 @@ class PolyfieldAsset extends AssetBundle
 {
 	public $sourcePath = '@vendor/kaile/yii2-polyfield/assets';
 	public $js = [
-		'polyfield.min.js',
+		'polyfield.js',
         'moment-with-locales.min.js',
         'bootstrap-datetimepicker.min.js',
 		'jquery.autocomplete.min.js',
 	];
 	public $css = [
-		'polyfield.min.css',
+		'polyfield.css',
         'bootstrap-datetimepicker.min.css',
 		'autocomplete-styles.min.css',
 	];

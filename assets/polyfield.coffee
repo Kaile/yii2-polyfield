@@ -4,7 +4,9 @@ class Polyfield
         STRING: 'string'
         DROPDOWN: 'dropdown'
         DATE: 'date'
-
+        GALERY: 'galery'
+        TEXT_BLOCK: 'editor'
+        
     constructor: ->
         jQuery('body').on 'blur', 'input[type="text"]', ->
             jQuery(this).val jQuery(this).val().trim()
@@ -45,8 +47,9 @@ class Polyfield
             return console.log 'Can not find object for what need to bind event'
         button = jQuery('#button_' + id)
         button.on 'click', =>
+            button.button 'loading'
             @hideExcess(id)
-            @appendTemplate(id)
+            @appendTemplate(id, button)
 
     # Public: hides excess models
     #
@@ -249,7 +252,7 @@ class Polyfield
         )
 
         formGroup
-
+        
     # Private: Generates the header of collapse HTML data
     #
     # * `id`          The identifier of model as {String}.
@@ -295,10 +298,22 @@ class Polyfield
     # Public: generates template for a model
     #
     # * `id` - unique identifier in model view scope {String}.
-    appendTemplate: (id) ->
+    appendTemplate: (id, button) ->
         model = @models[id]
         model.counter++
         sectionId = 'section_' + id + model.counter
+        
+        if model.type is @types.TEXT_BLOCK or model.type is @types.GALERY
+            @getFromRequest(model.link, {counter: model.counter}).done((data) ->
+                $('#content_' + id).append data
+                $('#' + sectionId).collapsible
+                    defaultOpen: "#{sectionId}"
+                button.button 'reset'
+            )
+            return
+        else
+            button.button 'reset'
+        
 
         collapsible = @generateCollapsible id, model.label, model.counter
 
@@ -312,7 +327,11 @@ class Polyfield
                 contentBody.appendChild @generateInput id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]
         else if model.type is @types.DROPDOWN
             contentBody.appendChild @generateDropdown id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute
-                    
+        else if model.type is @types.TEXT_BLOCK or model.type is @types.GALERY
+            contentBodyId = 'body_' + id + model.counter
+            contentBody.setAttribute 'id', contentBodyId
+            @getFromRequest(model.link).done((data) ->
+                $('#' + contentBodyId).append data)
 
         collapseFragment = document.createDocumentFragment()
         collapseFragment.appendChild collapsible
@@ -329,6 +348,17 @@ class Polyfield
     appendExists: (id) ->
         model = @models[id]
         if model.existsShowen
+            return
+        if model.type is @types.TEXT_BLOCK or model.type is @types.GALERY
+            @getFromRequest(model.link, {counter: model.counter + 1, existingModels: model.exists}).done((data) ->
+                $('#content_' + id).append data
+                
+                for modelExistId in model.exists
+                    model.counter++
+                    sectionId = 'section_' + id + model.counter
+                    jQuery('#' + sectionId).collapsible
+                        defaultOpen: sectionId
+            )
             return
         for object in model.exists
             model.counter++
@@ -352,7 +382,7 @@ class Polyfield
 
             document.getElementById('content_' + id).appendChild collapsibleFragment
             jQuery('#' + sectionId).collapsible
-                defaultOpen: "#{sectionId}"
+                defaultOpen: sectionId
             @bindAutocomplete()
         model.existsShowen = on
 
@@ -408,5 +438,10 @@ class Polyfield
             @i18n[textParam]
         else
             textParam
+            
+    getFromRequest: (url, param) ->
+        $.get(url, param).fail((errorObject) ->
+            alert 'Model form can not be loaded'
+        )
 
 window.polyfield = new Polyfield()
