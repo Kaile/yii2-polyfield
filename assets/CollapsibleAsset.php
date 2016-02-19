@@ -16,7 +16,7 @@ class CollapsibleAsset extends AssetBundle
 {
 	public $sourcePath = '@vendor/kaile/yii2-polyfield/assets';
 	public $js = [
-		'jquery.collapsible.js',
+		'jquery.collapsible.min.js',
 	];
 	
 	public $depends = [
