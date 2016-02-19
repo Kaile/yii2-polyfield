@@ -8,6 +8,8 @@ use yii\base\Widget;
 use yii\db\ActiveRecord;
 use yii\helpers\Html;
 use yii\helpers\Json;
+use yii\helpers\Url;
+use yii\web\BadRequestHttpException;
 use yii\widgets\ActiveForm;
 
 //TODO: Сделать для каждого атрибута отображение в соответствии с его типом
@@ -26,15 +28,25 @@ class Polyfield extends Widget
     /**
      * Types constants for [[type]] property
      */
-    const TYPE_STRING = 'string';
-    const TYPE_DROPDOWN = 'dropdown';
-    const TYPE_DATE = 'date';
+    const TYPE_STRING       = 'string';
+    const TYPE_DROPDOWN     = 'dropdown';
+    const TYPE_DATE         = 'date';
+    const TYPE_GALERY       = 'galery';
+    const TYPE_TEXT_BLOCK   = 'editor';
     
 	/**
 	 *
 	 * @var ActiveForm need for ActiveField
 	 */
 	public $form = null;
+    
+    /**
+     * Class of model
+     * 
+     * @var string
+     */
+    public $modelClass = null;
+    
 	/**
 	 * Model for what attributes to be rendered
 	 *
@@ -122,12 +134,29 @@ class Polyfield extends Widget
      * @var array
      */
     public $dateAttributes = ['date'];
+    
+    /**
+     * Key value pairs where key it is type name and value is attribute name.
+     * Value also can be an array with list of attributes that is a same type.
+     * 
+     * @var array
+     */
+    public $attributeTypes = ['richtext' => 'text']; // Потом переделать и другие типы на использование данного свойства
+    
+    public $template = "{label}\n{input}\n{hint}\n{error}";
+    
+    public $requestUrl = 'polyfield/generate/form';
 
 	/**
 	 * @inheritdoc
 	 */
 	public function init()
 	{
+        if ( ! $this->model && $this->modelClass ) {
+            $this->model = new $this->modelClass;
+        } elseif ( ! $this->model && ! $this->modelClass ) {
+            throw new BadRequestHttpException(Yii::t('app', 'Не указан необходимый параметр model (modelClass) для работы виджета Polyfield'));
+        }
 		if (empty($this->attributes)) {
 			$this->attributes = array_keys($this->model->getAttributes());
 		}
@@ -143,7 +172,7 @@ class Polyfield extends Widget
 			$this->attributes = array_diff($this->attributes, $this->excludeAttributes);
 		}
 
-		$modelId = $this->model->formName() . $this->getId();
+		$modelId = $this->model->formName();
 		$labels = $this->model->attributeLabels();
 
 		echo Html::beginTag('fieldset', [
@@ -157,16 +186,27 @@ class Polyfield extends Widget
 		$model = [
 			'id' => $modelId,
 			'name' => $this->model->formName(),
-			'label' => ($this->displayName) ? $this->displayName : $this->model->formName(),
+			'label' => $this->displayName ? $this->displayName : $this->model->formName(),
 			'attributes' => $this->attributes,
 			'attributeLabels' => $labels,
 			'type' => $this->type,
-			'exists' => (empty($this->exists)) ? false : $this->exists,
+			'exists' => empty($this->exists) ? false : $this->exists,
             'dateAttributes' => $this->dateAttributes,
 		];
 
 		echo Html::endTag('fieldset');
 		
+        if ($this->type === self::TYPE_TEXT_BLOCK || $this->type === self::TYPE_GALERY) {
+            $url = [
+                "{$this->requestUrl}",
+                'modelClass' => $this->model->className(),
+                'attributeTypes' => $this->attributeTypes,
+                'template' => $this->template,
+                'label' => $this->displayName ? $this->displayName : $this->model->formName(),
+            ];
+            $model['link'] = Url::to($url);
+        }
+        
 		if ($this->type === self::TYPE_DROPDOWN) {
 			$tmp = $this->model->find();
 			if ($this->filterAttribute) {
@@ -186,16 +226,23 @@ class Polyfield extends Widget
 		echo Html::beginTag('div', [
 			'class' => 'row',
 		]);
-
+        
+        
 		echo Html::button(($this->buttonCaption) ? $this->buttonCaption : Yii::t('app', 'Добавить поле'), [
 			'id' => 'button_' . $modelId,
-			'class' => 'btn btn-success center-block'
+			'class' => 'btn btn-success center-block',
+            'data-loading-text' => Yii::t('app', 'Идет загрузка...'),
 		]);
 
 		echo Html::endTag('div');
 
-		$this->getView()->registerJs('polyfield.push(' . Json::encode($model) . ')');
+        $this->getView()->registerJs('polyfield.push(' . Json::encode($model) . ')');
 		
+        /**
+         * Сделано конечно костыльно, но все же интернационализация достигается 
+         * стандартными средствами Yii2 и не приходится запиливать ничего 
+         * сложного на клиентской стороне.
+         */
 		$i18n = [
 			'deleteElement' => Yii::t('app', 'Удалить элемент'),
 			'deleteConfirmation' => Yii::t('app', 'Вы уверены, что хотите выполнить удаление?'),
