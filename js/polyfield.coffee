@@ -108,10 +108,13 @@ class Polyfield
             input.setAttribute 'id', inputId
             @addToAutocomplete inputId, modelName, attribute
         
-        if type is 'checkbox' and value then input.setAttribute 'checked', 'true'
+        if type is 'checkbox' and value then input.setAttribute 'checked', 'checked'
         
         input.setAttribute 'class', 'form-control'
-        input.setAttribute 'value', value
+        unless type is 'checkbox'
+            input.setAttribute 'value', value
+        else
+            input.setAttribute 'value', '1'
 
         div.appendChild input
         formGroup.appendChild div
@@ -141,7 +144,7 @@ class Polyfield
         div.appendChild input
         
         script = document.createElement 'script'
-        script.appendChild document.createTextNode "tinymce.init({selector: '##{inputId}'});"
+        script.appendChild document.createTextNode "tinymce.init({selector: '##{inputId}', theme: 'modern', plugins: ['link image print preview hr anchor pagebreak']});"
         div.appendChild script
         
         formGroup.appendChild div

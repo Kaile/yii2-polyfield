@@ -95,10 +95,14 @@
         this.addToAutocomplete(inputId, modelName, attribute);
       }
       if (type === 'checkbox' && value) {
-        input.setAttribute('checked', 'true');
+        input.setAttribute('checked', 'checked');
       }
       input.setAttribute('class', 'form-control');
-      input.setAttribute('value', value);
+      if (type !== 'checkbox') {
+        input.setAttribute('value', value);
+      } else {
+        input.setAttribute('value', '1');
+      }
       div.appendChild(input);
       formGroup.appendChild(div);
       return formGroup;
@@ -130,7 +134,7 @@
       input.appendChild(document.createTextNode(value));
       div.appendChild(input);
       script = document.createElement('script');
-      script.appendChild(document.createTextNode("tinymce.init({selector: '#" + inputId + "'});"));
+      script.appendChild(document.createTextNode("tinymce.init({selector: '#" + inputId + "', theme: 'modern', plugins: ['link image print preview hr anchor pagebreak']});"));
       div.appendChild(script);
       formGroup.appendChild(div);
       return formGroup;
