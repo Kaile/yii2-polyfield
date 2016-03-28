@@ -14,9 +14,9 @@ use yii\web\AssetBundle;
  */
 class CollapsibleAsset extends AssetBundle
 {
-	public $sourcePath = '@vendor/kaile/yii2-polyfield/assets';
+	public $sourcePath = '@vendor/kaile/yii2-polyfield';
 	public $js = [
-		'jquery.collapsible.js',
+		'js/jquery.collapsible.min.js',
 	];
 	
 	public $depends = [

@@ -4,8 +4,14 @@ class Polyfield
         STRING: 'string'
         DROPDOWN: 'dropdown'
         DATE: 'date'
-        GALERY: 'galery'
         TEXT_BLOCK: 'editor'
+        
+    inputTypes:
+        TEXT: 'text'
+        DATE: 'date'
+        STRING: 'string'
+        BOOLEAN: 'boolean'
+        DROPDOWN: 'dropdown'
         
     constructor: ->
         jQuery('body').on 'blur', 'input[type="text"]', ->
@@ -47,9 +53,8 @@ class Polyfield
             return console.log 'Can not find object for what need to bind event'
         button = jQuery('#button_' + id)
         button.on 'click', =>
-            button.button 'loading'
             @hideExcess(id)
-            @appendTemplate(id, button)
+            @appendTemplate(id)
 
     # Public: hides excess models
     #
@@ -102,10 +107,43 @@ class Polyfield
             inputId = attribute + id + counter;
             input.setAttribute 'id', inputId
             @addToAutocomplete inputId, modelName, attribute
+        
+        if type is 'checkbox' and value then input.setAttribute 'checked', 'true'
+        
         input.setAttribute 'class', 'form-control'
         input.setAttribute 'value', value
 
         div.appendChild input
+        formGroup.appendChild div
+        formGroup
+        
+    generateEditor: (id, modelName, attribute, counter, value, type, label) ->
+        value = '' if typeof value is 'undefined'
+        type  = 'hidden' if typeof type is 'undefined'
+        label = off if typeof label is 'undefined'
+
+        formGroup = document.createElement 'div'
+        formGroup.setAttribute 'class', 'form-group'
+
+        formGroup.appendChild @generateLabel(attribute + counter, label) if label
+
+        div = document.createElement 'div'
+        div.setAttribute 'class', 'col-lg-5'
+
+        input = document.createElement 'textarea'
+        input.setAttribute 'name', "#{modelName}[#{counter}][#{attribute}]"
+        
+        inputId = attribute + id + counter;
+        input.setAttribute 'id', inputId
+        input.setAttribute 'class', 'form-control'
+        input.appendChild document.createTextNode value
+
+        div.appendChild input
+        
+        script = document.createElement 'script'
+        script.appendChild document.createTextNode "tinymce.init({selector: '##{inputId}'});"
+        div.appendChild script
+        
         formGroup.appendChild div
         formGroup
 
@@ -298,41 +336,36 @@ class Polyfield
     # Public: generates template for a model
     #
     # * `id` - unique identifier in model view scope {String}.
-    appendTemplate: (id, button) ->
+    appendTemplate: (id) ->
         model = @models[id]
         model.counter++
         sectionId = 'section_' + id + model.counter
         
-        if model.type is @types.TEXT_BLOCK or model.type is @types.GALERY
-            @getFromRequest(model.link, {counter: model.counter}).done((data) ->
-                $('#content_' + id).append data
-                $('#' + sectionId).collapsible
-                    defaultOpen: "#{sectionId}"
-                button.button 'reset'
-            )
-            return
-        else
-            button.button 'reset'
-        
-
         collapsible = @generateCollapsible id, model.label, model.counter
 
         contentBody = document.createElement 'p'
 
-        if model.type is @types.STRING or model.type is @types.DATE
-            for index, attribute of model.attributes
-                if attribute in model.dateAttributes
-                    contentBody.appendChild @generateDateInput id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]
-                    continue
-                contentBody.appendChild @generateInput id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]
-        else if model.type is @types.DROPDOWN
-            contentBody.appendChild @generateDropdown id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute
-        else if model.type is @types.TEXT_BLOCK or model.type is @types.GALERY
-            contentBodyId = 'body_' + id + model.counter
-            contentBody.setAttribute 'id', contentBodyId
-            @getFromRequest(model.link).done((data) ->
-                $('#' + contentBodyId).append data)
-
+        if model.attributeTypes
+            for attrType, attribute of model.attributeTypes
+                inputElement = switch 
+                    when attrType is @inputTypes.STRING then @generateInput id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]
+                    when attrType is @inputTypes.DATE then @generateDateInput id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]
+                    when attrType is @inputTypes.TEXT then @generateEditor id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]
+                    when attrType is @inputTypes.BOOLEAN then @generateInput id, model.name, attribute, model.counter, '', 'checkbox', model.attributeLabels[attribute]
+                    when attrType is @inputTypes.DROPDOWN then @generateDropdown id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute
+                    else document.createElement 'div'
+                contentBody.appendChild inputElement
+        else
+            if model.type is @types.STRING or model.type is @types.DATE
+                for index, attribute of model.attributes
+                    if attribute in model.dateAttributes
+                        contentBody.appendChild @generateDateInput id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]
+                        continue
+                    else
+                        contentBody.appendChild @generateInput id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]
+            else if model.type is @types.DROPDOWN
+                contentBody.appendChild @generateDropdown id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute
+        
         collapseFragment = document.createDocumentFragment()
         collapseFragment.appendChild collapsible
         collapseFragment.appendChild @generateContainer contentBody
@@ -349,17 +382,7 @@ class Polyfield
         model = @models[id]
         if model.existsShowen
             return
-        if model.type is @types.TEXT_BLOCK or model.type is @types.GALERY
-            @getFromRequest(model.link, {counter: model.counter + 1, existingModels: model.exists}).done((data) ->
-                $('#content_' + id).append data
-                
-                for modelExistId in model.exists
-                    model.counter++
-                    sectionId = 'section_' + id + model.counter
-                    jQuery('#' + sectionId).collapsible
-                        defaultOpen: sectionId
-            )
-            return
+        
         for object in model.exists
             model.counter++
             sectionId = 'section_' + id + model.counter
@@ -367,14 +390,28 @@ class Polyfield
             collapsible = @generateCollapsible id, model.label, model.counter
             contentBody = document.createElement 'p'
 
-            if model.type is @types.STRING or model.type is @types.DATE
-                for index, attribute of model.attributes
-                    if attribute in model.dateAttributes
-                        contentBody.appendChild @generateDateInput id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]
-                        continue
-                    contentBody.appendChild @generateInput id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]
-            else if model.type is @types.DROPDOWN
-                contentBody.appendChild @generateDropdown id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, object['id'], model.filterAttribute
+            if model.attributeTypes
+                for attrType, attribute of model.attributeTypes
+                    inputElement = switch 
+                        when attrType is @inputTypes.STRING then @generateInput id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]
+                        when attrType is @inputTypes.DATE then @generateDateInput id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]
+                        when attrType is @inputTypes.TEXT then @generateEditor id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]
+                        when attrType is @inputTypes.BOOLEAN then @generateInput id, model.name, attribute, model.counter, object[attribute], 'checkbox', model.attributeLabels[attribute]
+                        when attrType is @inputTypes.DROPDOWN then @generateDropdown id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, object['id'], model.filterAttribute
+                        else document.createElement 'div'
+                    contentBody.appendChild inputElement
+            else
+                if model.type is @types.STRING or model.type is @types.DATE or model.type is @types.TEXT_BLOCK
+                    for index, attribute of model.attributes
+                        if attribute in model.dateAttributes
+                            contentBody.appendChild @generateDateInput id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]
+                            continue
+                        else if model.type is @types.TEXT_BLOCK
+                            contentBody.appendChild @generateEditor id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]
+                        else
+                            contentBody.appendChild @generateInput id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]
+                else if model.type is @types.DROPDOWN
+                    contentBody.appendChild @generateDropdown id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, object['id'], model.filterAttribute
             
             collapsibleFragment = document.createDocumentFragment()
             collapsibleFragment.appendChild collapsible

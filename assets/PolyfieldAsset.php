@@ -14,17 +14,18 @@ use yii\web\AssetBundle;
  */
 class PolyfieldAsset extends AssetBundle
 {
-	public $sourcePath = '@vendor/kaile/yii2-polyfield/assets';
+	public $sourcePath = '@vendor/kaile/yii2-polyfield';
 	public $js = [
-		'polyfield.js',
-        'moment-with-locales.min.js',
-        'bootstrap-datetimepicker.min.js',
-		'jquery.autocomplete.min.js',
+        'js/tinymce/tinymce.min.js',
+		'js/polyfield.js',
+        'js/moment-with-locales.min.js',
+        'js/bootstrap-datetimepicker.min.js',
+		'js/jquery.autocomplete.min.js',
 	];
 	public $css = [
-		'polyfield.css',
-        'bootstrap-datetimepicker.min.css',
-		'autocomplete-styles.min.css',
+		'css/polyfield.min.css',
+        'css/bootstrap-datetimepicker.min.css',
+		'css/autocomplete-styles.min.css',
 	];
 
 	public $depends = [

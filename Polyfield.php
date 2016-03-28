@@ -28,11 +28,12 @@ class Polyfield extends Widget
     /**
      * Types constants for [[type]] property
      */
-    const TYPE_STRING       = 'string';
-    const TYPE_DROPDOWN     = 'dropdown';
-    const TYPE_DATE         = 'date';
-    const TYPE_GALERY       = 'galery';
-    const TYPE_TEXT_BLOCK   = 'editor';
+    const TYPE_STRING = 'string';
+    const TYPE_DROPDOWN = 'dropdown';
+    const TYPE_DATE = 'date';
+    const TYPE_TEXT = 'text';
+    const TYPE_BOOL = 'boolean';
+    const TYPE_TEXT_BLOCK = 'editor'; //Оставлено пока для совместимости
     
 	/**
 	 *
@@ -141,7 +142,7 @@ class Polyfield extends Widget
      * 
      * @var array
      */
-    public $attributeTypes = ['richtext' => 'text']; // Потом переделать и другие типы на использование данного свойства
+    public $attributeTypes = null; // Потом переделать и другие типы на использование данного свойства
     
     public $template = "{label}\n{input}\n{hint}\n{error}";
     
@@ -192,20 +193,10 @@ class Polyfield extends Widget
 			'type' => $this->type,
 			'exists' => empty($this->exists) ? false : $this->exists,
             'dateAttributes' => $this->dateAttributes,
+            'attributeTypes' => $this->attributeTypes,
 		];
 
 		echo Html::endTag('fieldset');
-		
-        if ($this->type === self::TYPE_TEXT_BLOCK || $this->type === self::TYPE_GALERY) {
-            $url = [
-                "{$this->requestUrl}",
-                'modelClass' => $this->model->className(),
-                'attributeTypes' => $this->attributeTypes,
-                'template' => $this->template,
-                'label' => $this->displayName ? $this->displayName : $this->model->formName(),
-            ];
-            $model['link'] = Url::to($url);
-        }
         
 		if ($this->type === self::TYPE_DROPDOWN) {
 			$tmp = $this->model->find();
