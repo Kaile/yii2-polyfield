@@ -5,14 +5,14 @@ class Polyfield
         DROPDOWN: 'dropdown'
         DATE: 'date'
         TEXT_BLOCK: 'editor'
-        
+
     inputTypes:
         TEXT: 'text'
         DATE: 'date'
         STRING: 'string'
         BOOLEAN: 'boolean'
         DROPDOWN: 'dropdown'
-        
+
     constructor: ->
         jQuery('body').on 'blur', 'input[type="text"]', ->
             jQuery(this).val jQuery(this).val().trim()
@@ -24,6 +24,9 @@ class Polyfield
 
     # Public: array of autocomleting objects.
     completes: []
+
+    # Public: contains statuses of orders listeners
+    ordersListener: {}
 
     # Public: add new model to monitoring by Polyfield
     #
@@ -107,9 +110,9 @@ class Polyfield
             inputId = attribute + id + counter;
             input.setAttribute 'id', inputId
             @addToAutocomplete inputId, modelName, attribute
-        
+
         if type is 'checkbox' and value then input.setAttribute 'checked', 'checked'
-        
+
         input.setAttribute 'class', 'form-control'
         unless type is 'checkbox'
             input.setAttribute 'value', value
@@ -119,7 +122,18 @@ class Polyfield
         div.appendChild input
         formGroup.appendChild div
         formGroup
-        
+
+    # Private: Generates textarea editor elmenet
+    #
+    # * `id`        The model unique identifier as {String}.
+    # * `modelName` The model name as {String}.
+    # * `attribute` The attribute name in model as {String}.
+    # * `counter`   The sequence model number as {Number}.
+    # * `value`     The value of attribute as {String}.
+    # * `type`        The type of input ['text', 'hidden'] avalable as {String}
+    # * `label`     The label for attribute as {String}.
+    #
+    # Returns the document element as Node.
     generateEditor: (id, modelName, attribute, counter, value, type, label) ->
         value = '' if typeof value is 'undefined'
         type  = 'hidden' if typeof type is 'undefined'
@@ -135,18 +149,18 @@ class Polyfield
 
         input = document.createElement 'textarea'
         input.setAttribute 'name', "#{modelName}[#{counter}][#{attribute}]"
-        
+
         inputId = attribute + id + counter;
         input.setAttribute 'id', inputId
         input.setAttribute 'class', 'form-control'
         input.appendChild document.createTextNode value
 
         div.appendChild input
-        
+
         script = document.createElement 'script'
         script.appendChild document.createTextNode "tinymce.init({selector: '##{inputId}', theme: 'modern', plugins: ['link image print preview hr anchor pagebreak']});"
         div.appendChild script
-        
+
         formGroup.appendChild div
         formGroup
 
@@ -293,7 +307,81 @@ class Polyfield
         )
 
         formGroup
-        
+
+    # Private: Generates order dropdwn list
+    #
+    # * `modelId`   The model unique identifier as {String}.
+    # * `modelName` The model name as {String}.
+    # * `counter`   The sequence model number as {Number}.
+    #
+    # Returns the document element as Node.
+    generateOrder: (modelId, modelName, counter) ->
+        formGroup = document.createElement 'div'
+        ddFragment = document.createDocumentFragment()
+        classSelector = "order-#{modelName}"
+
+        formGroup.setAttribute 'class', 'form-group'
+        formGroup.appendChild @generateLabel(modelName + modelId + counter, @translate('order'))
+
+        div = document.createElement 'div'
+        div.setAttribute 'class', 'col-lg-offset-1 col-lg-3 text-center'
+
+        select = document.createElement 'select'
+        select.setAttribute 'name', "Order[#{modelName}][id]"
+
+        select.appendChild @orderOptions counter
+        @updateOrder classSelector, counter
+
+        selectId = modelName + modelId + counter;
+        select.setAttribute 'id', selectId
+        select.setAttribute 'class', "form-control #{classSelector}"
+
+        div.appendChild select
+        formGroup.appendChild div
+
+        ddFragment.appendChild formGroup
+
+        @bindOrderListener classSelector
+
+        ddFragment
+
+    orderOptions: (counter) ->
+        fragment = document.createDocumentFragment()
+        for i in [1..counter]
+            option = document.createElement 'option'
+            if i is counter
+                option.setAttribute 'selected', 'selected'
+            option.setAttribute 'value', i
+            option.appendChild document.createTextNode i
+            fragment.appendChild option
+        fragment
+
+    updateOrder: (classSelector, counter) ->
+        $selects = $(".#{classSelector}");
+
+        $selects.each ->
+            $this = $(this)
+            optLen = $this.children('option').length
+            if optLen < counter
+                for i in [(optLen + 1)..counter]
+                    $this.append "<option>#{i}</option>"
+        return
+
+    bindOrderListener: (classSelector) ->
+        if typeof @ordersListener[classSelector] is 'undefined'
+            $('body').on 'focus click', ".#{classSelector}", (e) =>
+                @ordersListener[classSelector] = e.target.value
+
+            $('body').on 'change', ".#{classSelector}", (e) =>
+                self = $(e.target)
+                freeValue = @ordersListener[classSelector]
+                unless freeValue is self.val()
+                    $(".#{classSelector}").each ->
+                        $this = $(this)
+                        if $this.val() is e.target.value and not $this.is(self)
+                            $this.val(freeValue)
+        true
+
     # Private: Generates the header of collapse HTML data
     #
     # * `id`          The identifier of model as {String}.
@@ -343,14 +431,17 @@ class Polyfield
         model = @models[id]
         model.counter++
         sectionId = 'section_' + id + model.counter
-        
+
         collapsible = @generateCollapsible id, model.label, model.counter
 
         contentBody = document.createElement 'p'
 
+        if model.order
+            contentBody.appendChild @generateOrder id, model.name, model.counter
+
         if model.attributeTypes
             for attrType, attribute of model.attributeTypes
-                inputElement = switch 
+                inputElement = switch
                     when attrType is @inputTypes.STRING then @generateInput id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]
                     when attrType is @inputTypes.DATE then @generateDateInput id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]
                     when attrType is @inputTypes.TEXT then @generateEditor id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]
@@ -368,7 +459,7 @@ class Polyfield
                         contentBody.appendChild @generateInput id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]
             else if model.type is @types.DROPDOWN
                 contentBody.appendChild @generateDropdown id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute
-        
+
         collapseFragment = document.createDocumentFragment()
         collapseFragment.appendChild collapsible
         collapseFragment.appendChild @generateContainer contentBody
@@ -385,7 +476,7 @@ class Polyfield
         model = @models[id]
         if model.existsShowen
             return
-        
+
         for object in model.exists
             model.counter++
             sectionId = 'section_' + id + model.counter
@@ -393,9 +484,12 @@ class Polyfield
             collapsible = @generateCollapsible id, model.label, model.counter
             contentBody = document.createElement 'p'
 
+            if model.order
+                contentBody.appendChild @generateOrder id, model.name, model.counter
+
             if model.attributeTypes
                 for attrType, attribute of model.attributeTypes
-                    inputElement = switch 
+                    inputElement = switch
                         when attrType is @inputTypes.STRING then @generateInput id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]
                         when attrType is @inputTypes.DATE then @generateDateInput id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]
                         when attrType is @inputTypes.TEXT then @generateEditor id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]
@@ -415,7 +509,7 @@ class Polyfield
                             contentBody.appendChild @generateInput id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]
                 else if model.type is @types.DROPDOWN
                     contentBody.appendChild @generateDropdown id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, object['id'], model.filterAttribute
-            
+
             collapsibleFragment = document.createDocumentFragment()
             collapsibleFragment.appendChild collapsible
             collapsibleFragment.appendChild @generateContainer contentBody
@@ -478,7 +572,7 @@ class Polyfield
             @i18n[textParam]
         else
             textParam
-            
+
     getFromRequest: (url, param) ->
         $.get(url, param).fail((errorObject) ->
             alert 'Model form can not be loaded'
