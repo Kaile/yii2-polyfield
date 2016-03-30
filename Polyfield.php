@@ -34,213 +34,219 @@ class Polyfield extends Widget
     const TYPE_TEXT = 'text';
     const TYPE_BOOL = 'boolean';
     const TYPE_TEXT_BLOCK = 'editor'; //Оставлено пока для совместимости
-    
-	/**
-	 *
-	 * @var ActiveForm need for ActiveField
-	 */
-	public $form = null;
-    
+
+    /**
+     *
+     * @var ActiveForm need for ActiveField
+     */
+    public $form = null;
+
     /**
      * Class of model
-     * 
+     *
      * @var string
      */
     public $modelClass = null;
-    
-	/**
-	 * Model for what attributes to be rendered
-	 *
-	 * @var ActiveRecord
-	 */
-	public $model = null;
 
-	/**
-	 * Model attributes that be rendered. By default all attributes of model
-	 * will be rendered
-	 *
-	 * @var array
-	 */
-	public $attributes = [];
+    /**
+     * Model for what attributes to be rendered
+     *
+     * @var ActiveRecord
+     */
+    public $model = null;
 
-	/**
-	 * Model attributes that be excluded from rendering
-	 *
-	 * @var array
-	 */
-	public $excludeAttributes = [];
+    /**
+     * Model attributes that be rendered. By default all attributes of model
+     * will be rendered
+     *
+     * @var array
+     */
+    public $attributes = [];
 
-	/**
-	 * Class of fields that will be rendered
-	 *
-	 * @var string
-	 */
-	public $fieldClass = 'yii\bootstrap\ActiveField';
+    /**
+     * Model attributes that be excluded from rendering
+     *
+     * @var array
+     */
+    public $excludeAttributes = [];
 
-	/**
-	 * Fields configuration
-	 *
-	 * @var array
-	 */
-	public $fieldConfig = [];
+    /**
+     * Class of fields that will be rendered
+     *
+     * @var string
+     */
+    public $fieldClass = 'yii\bootstrap\ActiveField';
 
-	/**
-	 * Name that be shown in fieldset's header
-	 *
-	 * @var string
-	 */
-	public $displayName;
+    /**
+     * Fields configuration
+     *
+     * @var array
+     */
+    public $fieldConfig = [];
 
-	/**
-	 * Displayed name of button
-	 *
-	 * @var string
-	 */
-	public $buttonCaption;
+    /**
+     * Name that be shown in fieldset's header
+     *
+     * @var string
+     */
+    public $displayName;
 
-	/**
-	 * Attribute what data will be selected by user
-	 *
-	 * @var string
-	 */
-	public $dropdownAttribute = 'name';
-	
-	/**
-	 * Contains existing models. It could need when perform editing of model
-	 * and its attributes
-	 * 
-	 * @var array
-	 */
-	public $exists = [];
-	
-	/**
-	 * Filter attribute that sets parent element of attribute. It's may be need
-	 * when dropdown list contain many elements. It works only with dropdown 
-	 * lists.
-	 * 
-	 * @var string attribute of model
-	 */
-	public $filterAttribute = '';
-    
+    /**
+     * Displayed name of button
+     *
+     * @var string
+     */
+    public $buttonCaption;
+
+    /**
+     * Attribute what data will be selected by user
+     *
+     * @var string
+     */
+    public $dropdownAttribute = 'name';
+
+    /**
+     * Contains existing models. It could need when perform editing of model
+     * and its attributes
+     *
+     * @var array
+     */
+    public $exists = [];
+
+    /**
+     * Filter attribute that sets parent element of attribute. It's may be need
+     * when dropdown list contain many elements. It works only with dropdown
+     * lists.
+     *
+     * @var string attribute of model
+     */
+    public $filterAttribute = '';
+
     /**
      * Type of field. In depends of [[type]] view of field will be built
-     * 
+     *
      * @var string
      */
     public $type = 'string';
-    
+
     /**
      * Attributes that contains date attributes
-     * 
+     *
      * @var array
      */
     public $dateAttributes = ['date'];
-    
+
     /**
      * Key value pairs where key it is type name and value is attribute name.
      * Value also can be an array with list of attributes that is a same type.
-     * 
+     *
      * @var array
      */
     public $attributeTypes = null; // Потом переделать и другие типы на использование данного свойства
-    
-    public $template = "{label}\n{input}\n{hint}\n{error}";
-    
-    public $requestUrl = 'polyfield/generate/form';
 
-	/**
-	 * @inheritdoc
-	 */
-	public function init()
-	{
+    /**
+     * Order is the property that contains data for sequence of model list.
+     * It include in models view in format same as Order[<model->formName>][<model->id>].
+     *
+     * @var string
+     */
+    public $order = false;
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
         if ( ! $this->model && $this->modelClass ) {
             $this->model = new $this->modelClass;
         } elseif ( ! $this->model && ! $this->modelClass ) {
             throw new BadRequestHttpException(Yii::t('app', 'Не указан необходимый параметр model (modelClass) для работы виджета Polyfield'));
         }
-		if (empty($this->attributes)) {
-			$this->attributes = array_keys($this->model->getAttributes());
-		}
-		PolyfieldAsset::register($this->getView());
-	}
+        if (empty($this->attributes)) {
+            $this->attributes = array_keys($this->model->getAttributes());
+        }
+        PolyfieldAsset::register($this->getView());
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function run()
-	{
-		if ( ! empty($this->excludeAttributes) ) {
-			$this->attributes = array_diff($this->attributes, $this->excludeAttributes);
-		}
+    /**
+     * @inheritdoc
+     */
+    public function run()
+    {
+        if ( ! empty($this->excludeAttributes) ) {
+            $this->attributes = array_diff($this->attributes, $this->excludeAttributes);
+        }
 
-		$modelId = $this->model->formName();
-		$labels = $this->model->attributeLabels();
+        $modelId = $this->model->formName();
+        $labels = $this->model->attributeLabels();
 
-		echo Html::beginTag('fieldset', [
-			'id' => 'content_' . $modelId,
-		]);
+        echo Html::beginTag('fieldset', [
+            'id' => 'content_' . $modelId,
+        ]);
 
-		if ($this->displayName) {
-			echo Html::tag('legend', $this->displayName);
-		}
+        if ($this->displayName) {
+            echo Html::tag('legend', $this->displayName);
+        }
 
-		$model = [
-			'id' => $modelId,
-			'name' => $this->model->formName(),
-			'label' => $this->displayName ? $this->displayName : $this->model->formName(),
-			'attributes' => $this->attributes,
-			'attributeLabels' => $labels,
-			'type' => $this->type,
-			'exists' => empty($this->exists) ? false : $this->exists,
+        $model = [
+            'id' => $modelId,
+            'name' => $this->model->formName(),
+            'label' => $this->displayName ? $this->displayName : $this->model->formName(),
+            'attributes' => $this->attributes,
+            'attributeLabels' => $labels,
+            'type' => $this->type,
+            'exists' => empty($this->exists) ? false : $this->exists,
             'dateAttributes' => $this->dateAttributes,
             'attributeTypes' => $this->attributeTypes,
-		];
+            'order' => $this->order,
+        ];
 
-		echo Html::endTag('fieldset');
-        
-		if ($this->type === self::TYPE_DROPDOWN) {
-			$tmp = $this->model->find();
-			if ($this->filterAttribute) {
-				$tmp->orderBy($this->filterAttribute);
-			}
-			$model['dropdownValues'] = $tmp->all();
-			if (empty($model['dropdownValues'])) {
-				echo Html::tag('div', Yii::t('app', 'Данные для выбора отсутствуют'), [
-					'class' => 'alert alert-info',
-				]);
-				return;
-			}
-			$model['dropdownAttribute'] = $this->dropdownAttribute;
-			$model['filterAttribute'] = $this->filterAttribute;
-		}
+        echo Html::endTag('fieldset');
 
-		echo Html::beginTag('div', [
-			'class' => 'row',
-		]);
-        
-        
-		echo Html::button(($this->buttonCaption) ? $this->buttonCaption : Yii::t('app', 'Добавить поле'), [
-			'id' => 'button_' . $modelId,
-			'class' => 'btn btn-success center-block',
+        if ($this->type === self::TYPE_DROPDOWN) {
+            $tmp = $this->model->find();
+            if ($this->filterAttribute) {
+                $tmp->orderBy($this->filterAttribute);
+            }
+            $model['dropdownValues'] = $tmp->all();
+            if (empty($model['dropdownValues'])) {
+                echo Html::tag('div', Yii::t('app', 'Данные для выбора отсутствуют'), [
+                    'class' => 'alert alert-info',
+                ]);
+                return;
+            }
+            $model['dropdownAttribute'] = $this->dropdownAttribute;
+            $model['filterAttribute'] = $this->filterAttribute;
+        }
+
+        echo Html::beginTag('div', [
+            'class' => 'row',
+        ]);
+
+
+        echo Html::button(($this->buttonCaption) ? $this->buttonCaption : Yii::t('app', 'Добавить поле'), [
+            'id' => 'button_' . $modelId,
+            'class' => 'btn btn-success center-block',
             'data-loading-text' => Yii::t('app', 'Идет загрузка...'),
-		]);
+        ]);
 
-		echo Html::endTag('div');
+        echo Html::endTag('div');
 
         $this->getView()->registerJs('polyfield.push(' . Json::encode($model) . ')');
-		
+
         /**
-         * Сделано конечно костыльно, но все же интернационализация достигается 
-         * стандартными средствами Yii2 и не приходится запиливать ничего 
+         * Сделано конечно костыльно, но все же интернационализация достигается
+         * стандартными средствами Yii2 и не приходится запиливать ничего
          * сложного на клиентской стороне.
          */
-		$i18n = [
-			'deleteElement' => Yii::t('app', 'Удалить элемент'),
-			'deleteConfirmation' => Yii::t('app', 'Вы уверены, что хотите выполнить удаление?'),
-			'noResults' => Yii::t('app', 'Результатов нет'),
-			'filter' => Yii::t('app', 'Фильтр'),
-			'noFilter' => Yii::t('app', '--- Нет ---'),
-		];
-		$this->getView()->registerJs('polyfield.setTranslation(' . Json::encode($i18n) . ')');
-	}
+        $i18n = [
+            'deleteElement' => Yii::t('app', 'Удалить элемент'),
+            'deleteConfirmation' => Yii::t('app', 'Вы уверены, что хотите выполнить удаление?'),
+            'noResults' => Yii::t('app', 'Результатов нет'),
+            'filter' => Yii::t('app', 'Фильтр'),
+            'noFilter' => Yii::t('app', '--- Нет ---'),
+            'order' => Yii::t('app', 'Порядок'),
+        ];
+        $this->getView()->registerJs('polyfield.setTranslation(' . Json::encode($i18n) . ')');
+    }
 }
