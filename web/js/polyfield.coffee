@@ -157,8 +157,16 @@ class Polyfield
 
         div.appendChild input
 
+        if typeof tinymce is 'undefined'
+            tinymceScript = document.createElement 'script'
+            tinymceScript.setAttribute 'src', 'tinymce/timymce.min.js'
+            body.appendChild tinymceScript
+            tinymceLang = document.createElement 'script'
+            tinymceLang.setAttribute 'src', 'tinymce/langs/ru.js'
+            body.appendChild tinymceLang
+
         script = document.createElement 'script'
-        script.appendChild document.createTextNode "tinymce.init({selector: '##{inputId}', theme: 'modern', plugins: ['link image print preview hr anchor pagebreak']});"
+        script.appendChild document.createTextNode "tinymce.init({selector: '##{inputId}', language: 'ru', plugins: ['link image print preview hr anchor pagebreak']});"
         div.appendChild script
 
         formGroup.appendChild div
@@ -166,8 +174,8 @@ class Polyfield
 
     # Private: Generates option tags for select list
     #
-    # `values`        The options values as {Array}
-    # `attribute`    The attribute value of what takes as {String}
+    # `values`      The options values as {Array}
+    # `attribute`   The attribute value of what takes as {String}
     # `selected`    The selected element identifier as {Number}
     #
     # Returns the document element as Node
@@ -572,10 +580,5 @@ class Polyfield
             @i18n[textParam]
         else
             textParam
-
-    getFromRequest: (url, param) ->
-        $.get(url, param).fail((errorObject) ->
-            alert 'Model form can not be loaded'
-        )
 
 window.polyfield = new Polyfield()

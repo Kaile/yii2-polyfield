@@ -111,7 +111,7 @@ Polyfield = (function() {
   };
 
   Polyfield.prototype.generateEditor = function(id, modelName, attribute, counter, value, type, label) {
-    var div, formGroup, input, inputId, script;
+    var div, formGroup, input, inputId, script, tinymceLang, tinymceScript;
     if (typeof value === 'undefined') {
       value = '';
     }
@@ -135,8 +135,16 @@ Polyfield = (function() {
     input.setAttribute('class', 'form-control');
     input.appendChild(document.createTextNode(value));
     div.appendChild(input);
+    if (typeof tinymce === 'undefined') {
+      tinymceScript = document.createElement('script');
+      tinymceScript.setAttribute('src', 'tinymce/timymce.min.js');
+      body.appendChild(tinymceScript);
+      tinymceLang = document.createElement('script');
+      tinymceLang.setAttribute('src', 'tinymce/langs/ru.js');
+      body.appendChild(tinymceLang);
+    }
     script = document.createElement('script');
-    script.appendChild(document.createTextNode("tinymce.init({selector: '#" + inputId + "', theme: 'modern', plugins: ['link image print preview hr anchor pagebreak']});"));
+    script.appendChild(document.createTextNode("tinymce.init({selector: '#" + inputId + "', language: 'ru', plugins: ['link image print preview hr anchor pagebreak']});"));
     div.appendChild(script);
     formGroup.appendChild(div);
     return formGroup;
@@ -568,12 +576,6 @@ Polyfield = (function() {
     } else {
       return textParam;
     }
-  };
-
-  Polyfield.prototype.getFromRequest = function(url, param) {
-    return $.get(url, param).fail(function(errorObject) {
-      return alert('Model form can not be loaded');
-    });
   };
 
   return Polyfield;
