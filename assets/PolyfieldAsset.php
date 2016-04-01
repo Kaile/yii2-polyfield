@@ -19,7 +19,7 @@ class PolyfieldAsset extends AssetBundle
         'js/moment-with-locales.min.js',
         'js/bootstrap-datetimepicker.min.js',
         'js/jquery.autocomplete.min.js',
-        'js/polyfield.js',
+        'js/polyfield.min.js',
     ];
     public $css = [
         'css/polyfield.min.css',
