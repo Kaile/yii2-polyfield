@@ -14,7 +14,7 @@ use yii\web\AssetBundle;
  */
 class PolyfieldAsset extends AssetBundle
 {
-    public $sourcePath = '@vendor/kaile/yii2-polyfield';
+    public $sourcePath = '@vendor/kaile/yii2-polyfield/web';
     public $js = [
         'js/tinymce/tinymce.min.js',
         'js/polyfield.js',

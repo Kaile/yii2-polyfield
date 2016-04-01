@@ -570,12 +570,6 @@ Polyfield = (function() {
     }
   };
 
-  Polyfield.prototype.getFromRequest = function(url, param) {
-    return $.get(url, param).fail(function(errorObject) {
-      return alert('Model form can not be loaded');
-    });
-  };
-
   return Polyfield;
 
 })();

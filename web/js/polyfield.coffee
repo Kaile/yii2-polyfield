@@ -573,9 +573,4 @@ class Polyfield
         else
             textParam
 
-    getFromRequest: (url, param) ->
-        $.get(url, param).fail((errorObject) ->
-            alert 'Model form can not be loaded'
-        )
-
 window.polyfield = new Polyfield()

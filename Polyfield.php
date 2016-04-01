@@ -232,8 +232,6 @@ class Polyfield extends Widget
 
         echo Html::endTag('div');
 
-        $this->getView()->registerJs('polyfield.push(' . Json::encode($model) . ')');
-
         /**
          * Сделано конечно костыльно, но все же интернационализация достигается
          * стандартными средствами Yii2 и не приходится запиливать ничего
@@ -247,6 +245,8 @@ class Polyfield extends Widget
             'noFilter' => Yii::t('app', '--- Нет ---'),
             'order' => Yii::t('app', 'Порядок'),
         ];
+
         $this->getView()->registerJs('polyfield.setTranslation(' . Json::encode($i18n) . ')');
+        $this->getView()->registerJs('polyfield.push(' . Json::encode($model) . ')');
     }
 }
