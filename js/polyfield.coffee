@@ -327,7 +327,7 @@ class Polyfield
         div.setAttribute 'class', 'col-lg-offset-1 col-lg-3 text-center'
 
         select = document.createElement 'select'
-        select.setAttribute 'name', "Order[#{modelName}][id]"
+        select.setAttribute 'name', "#{modelName}[#{counter}][order]"
 
         select.appendChild @orderOptions counter
         @updateOrder classSelector, counter

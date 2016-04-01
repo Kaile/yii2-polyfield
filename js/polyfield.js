@@ -287,7 +287,7 @@ Polyfield = (function() {
     div = document.createElement('div');
     div.setAttribute('class', 'col-lg-offset-1 col-lg-3 text-center');
     select = document.createElement('select');
-    select.setAttribute('name', "Order[" + modelName + "][id]");
+    select.setAttribute('name', modelName + "[" + counter + "][order]");
     select.appendChild(this.orderOptions(counter));
     this.updateOrder(classSelector, counter);
     selectId = modelName + modelId + counter;
