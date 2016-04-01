@@ -12,8 +12,6 @@ use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\widgets\ActiveForm;
 
-//TODO: Сделать для каждого атрибута отображение в соответствии с его типом
-
 /**
  * Widget that generates form with dynamic fields and dictionary filters for
  * fill while user typing
@@ -34,12 +32,6 @@ class Polyfield extends Widget
     const TYPE_TEXT = 'text';
     const TYPE_BOOL = 'boolean';
     const TYPE_TEXT_BLOCK = 'editor'; //Оставлено пока для совместимости
-
-    /**
-     *
-     * @var ActiveForm need for ActiveField
-     */
-    public $form = null;
 
     /**
      * Class of model
@@ -243,7 +235,7 @@ class Polyfield extends Widget
             'noResults' => Yii::t('app', 'Результатов нет'),
             'filter' => Yii::t('app', 'Фильтр'),
             'noFilter' => Yii::t('app', '--- Нет ---'),
-            'order' => Yii::t('app', 'Порядок'),
+            'order' => Yii::t('app', 'Позиция'),
         ];
 
         $this->getView()->registerJs('polyfield.setTranslation(' . Json::encode($i18n) . ')');
