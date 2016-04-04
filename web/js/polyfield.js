@@ -61,10 +61,11 @@ Polyfield = (function() {
     }
   };
 
-  Polyfield.prototype.generateLabel = function(forId, name) {
+  Polyfield.prototype.generateLabel = function(forId, name, htmlClass) {
     var label;
+    htmlClass = htmlClass || 'col-lg-3';
     label = document.createElement('label');
-    label.setAttribute('class', 'col-lg-3 control-label');
+    label.setAttribute('class', htmlClass + " control-label");
     label.setAttribute('for', forId);
     label.appendChild(document.createTextNode(name));
     return label;
@@ -124,10 +125,10 @@ Polyfield = (function() {
     formGroup = document.createElement('div');
     formGroup.setAttribute('class', 'form-group');
     if (label) {
-      formGroup.appendChild(this.generateLabel(attribute + counter, label));
+      formGroup.appendChild(this.generateLabel(attribute + counter, label, 'col-lg-1'));
     }
     div = document.createElement('div');
-    div.setAttribute('class', 'col-lg-7');
+    div.setAttribute('class', 'col-lg-9');
     input = document.createElement('textarea');
     input.setAttribute('name', modelName + "[" + counter + "][" + attribute + "]");
     inputId = attribute + id + counter;
@@ -144,7 +145,7 @@ Polyfield = (function() {
       body.appendChild(tinymceLang);
     }
     script = document.createElement('script');
-    script.appendChild(document.createTextNode("tinymce.init({selector: '#" + inputId + "', language: 'ru', plugins: [ 'advlist autolink lists link image charmap print preview hr anchor pagebreak', 'searchreplace wordcount visualblocks visualchars code fullscreen', 'insertdatetime media nonbreaking save table contextmenu directionality', 'emoticons template paste textcolor'], toolbar: ['undo redo | fontsizeselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | forecolor backcolor | print preview media']});"));
+    script.appendChild(document.createTextNode("tinymce.init({selector: '#" + inputId + "', language: 'ru', height: 300, plugins: [ 'advlist autolink lists link image charmap print preview hr anchor pagebreak', 'searchreplace wordcount visualblocks visualchars code fullscreen', 'insertdatetime media nonbreaking save table contextmenu directionality', 'emoticons template paste textcolor'], toolbar: ['undo redo | fontsizeselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | forecolor backcolor | print preview media']});"));
     div.appendChild(script);
     formGroup.appendChild(div);
     return formGroup;
