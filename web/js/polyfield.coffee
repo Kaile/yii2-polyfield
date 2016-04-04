@@ -72,9 +72,10 @@ class Polyfield
     # * `name`  The label value as {String}.
     #
     # Returns the document element as Node.
-    generateLabel: (forId, name) ->
+    generateLabel: (forId, name, htmlClass) ->
+        htmlClass = htmlClass || 'col-lg-3'
         label = document.createElement 'label'
-        label.setAttribute 'class', 'col-lg-3 control-label'
+        label.setAttribute 'class', "#{htmlClass} control-label"
         label.setAttribute 'for', forId
         label.appendChild document.createTextNode name
         return label
@@ -142,10 +143,10 @@ class Polyfield
         formGroup = document.createElement 'div'
         formGroup.setAttribute 'class', 'form-group'
 
-        formGroup.appendChild @generateLabel(attribute + counter, label) if label
+        formGroup.appendChild @generateLabel(attribute + counter, label, 'col-lg-1') if label
 
         div = document.createElement 'div'
-        div.setAttribute 'class', 'col-lg-7'
+        div.setAttribute 'class', 'col-lg-9'
 
         input = document.createElement 'textarea'
         input.setAttribute 'name', "#{modelName}[#{counter}][#{attribute}]"
@@ -166,7 +167,8 @@ class Polyfield
             body.appendChild tinymceLang
 
         script = document.createElement 'script'
-        script.appendChild document.createTextNode "tinymce.init({selector: '##{inputId}', language: 'ru', plugins: [
+        script.appendChild document.createTextNode "tinymce.init({selector: '##{inputId}',
+            language: 'ru', height: 300, plugins: [
             'advlist autolink lists link image charmap print preview hr anchor pagebreak',
             'searchreplace wordcount visualblocks visualchars code fullscreen',
             'insertdatetime media nonbreaking save table contextmenu directionality',
