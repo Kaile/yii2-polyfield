@@ -127,7 +127,7 @@ Polyfield = (function() {
       formGroup.appendChild(this.generateLabel(attribute + counter, label));
     }
     div = document.createElement('div');
-    div.setAttribute('class', 'col-lg-5');
+    div.setAttribute('class', 'col-lg-7');
     input = document.createElement('textarea');
     input.setAttribute('name', modelName + "[" + counter + "][" + attribute + "]");
     inputId = attribute + id + counter;
@@ -144,7 +144,7 @@ Polyfield = (function() {
       body.appendChild(tinymceLang);
     }
     script = document.createElement('script');
-    script.appendChild(document.createTextNode("tinymce.init({selector: '#" + inputId + "', language: 'ru', plugins: ['link image print preview hr anchor pagebreak']});"));
+    script.appendChild(document.createTextNode("tinymce.init({selector: '#" + inputId + "', language: 'ru', plugins: [ 'advlist autolink lists link image charmap print preview hr anchor pagebreak', 'searchreplace wordcount visualblocks visualchars code fullscreen', 'insertdatetime media nonbreaking save table contextmenu directionality', 'emoticons template paste textcolor'], toolbar: ['undo redo | fontsizeselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | forecolor backcolor | print preview media']});"));
     div.appendChild(script);
     formGroup.appendChild(div);
     return formGroup;
