@@ -145,7 +145,7 @@ Polyfield = (function() {
       body.appendChild(tinymceLang);
     }
     script = document.createElement('script');
-    script.appendChild(document.createTextNode("tinymce.init({selector: '#" + inputId + "', language: 'ru', height: 300, plugins: [ 'advlist autolink lists link image charmap print preview hr anchor pagebreak', 'searchreplace wordcount visualblocks visualchars code fullscreen', 'insertdatetime media nonbreaking save table contextmenu directionality', 'emoticons template paste textcolor'], toolbar: ['undo redo | fontsizeselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | forecolor backcolor | print preview media']});"));
+    script.appendChild(document.createTextNode("tinymce.init({selector: '#" + inputId + "', language: 'ru', height: 300, fontsize_formats: '6pt 7pt 8pt 9pt 10pt 11pt 12pt 13pt 14pt 15pt 16pt 18pt 20pt 24pt 28pt 36pt 40pt 48pt', plugins: [ 'advlist autolink lists link image charmap print preview hr anchor pagebreak', 'searchreplace wordcount visualblocks visualchars code fullscreen', 'insertdatetime media nonbreaking save table contextmenu directionality', 'emoticons template paste textcolor'], toolbar: ['undo redo | fontsizeselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | forecolor backcolor | print preview media']});"));
     div.appendChild(script);
     formGroup.appendChild(div);
     return formGroup;
