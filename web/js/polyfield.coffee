@@ -92,7 +92,7 @@ class Polyfield
     #
     # Returns the document element as Node.
     generateInput: (id, modelName, attribute, counter, value, type, label) ->
-        value = '' if typeof value is 'undefined'
+        value = '' if typeof value is 'undefined' or not value
         type  = 'hidden' if typeof type is 'undefined'
         label = off if typeof label is 'undefined'
 
