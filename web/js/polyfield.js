@@ -407,8 +407,8 @@
       }
       if (model.attributeTypes) {
         _ref = model.attributeTypes;
-        for (attrType in _ref) {
-          attribute = _ref[attrType];
+        for (attribute in _ref) {
+          attrType = _ref[attribute];
           inputElement = (function() {
             switch (false) {
               case attrType !== this.inputTypes.STRING:
@@ -471,8 +471,8 @@
         }
         if (model.attributeTypes) {
           _ref1 = model.attributeTypes;
-          for (attrType in _ref1) {
-            attribute = _ref1[attrType];
+          for (attribute in _ref1) {
+            attrType = _ref1[attribute];
             inputElement = (function() {
               switch (false) {
                 case attrType !== this.inputTypes.STRING:
