@@ -176,7 +176,7 @@ class Polyfield
                 'advlist autolink lists link image charmap print preview hr anchor pagebreak',
                 'searchreplace wordcount visualblocks visualchars code fullscreen',
                 'insertdatetime media nonbreaking save table contextmenu directionality',
-                'emoticons template paste textcolor quotes'
+                'emoticons template paste textcolor'
             ],
             toolbar: [
                 'undo redo | fontsizeselect | bold italic underline 
@@ -467,7 +467,7 @@ class Polyfield
             contentBody.appendChild @generateOrder id, model.name, model.counter
 
         if model.attributeTypes
-            for attrType, attribute of model.attributeTypes
+            for attribute, attrType of model.attributeTypes
                 inputElement = switch
                     when attrType is @inputTypes.STRING then @generateInput id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]
                     when attrType is @inputTypes.DATE then @generateDateInput id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]
@@ -515,7 +515,7 @@ class Polyfield
                 contentBody.appendChild @generateOrder id, model.name, model.counter
 
             if model.attributeTypes
-                for attrType, attribute of model.attributeTypes
+                for attribute, attrType of model.attributeTypes
                     inputElement = switch
                         when attrType is @inputTypes.STRING then @generateInput id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]
                         when attrType is @inputTypes.DATE then @generateDateInput id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]
