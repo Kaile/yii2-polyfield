@@ -73,7 +73,7 @@
 
     Polyfield.prototype.generateInput = function(id, modelName, attribute, counter, value, type, label) {
       var div, formGroup, input, inputId;
-      if (typeof value === 'undefined') {
+      if (typeof value === 'undefined' || !value) {
         value = '';
       }
       if (typeof type === 'undefined') {
