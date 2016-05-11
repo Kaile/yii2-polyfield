@@ -184,7 +184,11 @@ class Polyfield
                 | bullist numlist outdent indent | link image | forecolor backcolor 
                 | print preview media'
             ], 
-            image_advtab: true
+            image_advtab: true,
+            image_class_list: [
+                {title: 'Без масштабирования', value: 'no-scale-image'},
+                {title: 'С масштабированием', value: 'scale-image'}
+            ]
         });"
         div.appendChild script
 
