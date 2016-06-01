@@ -176,7 +176,7 @@ class Polyfield
                 'advlist autolink lists link image charmap print preview hr anchor pagebreak',
                 'searchreplace wordcount visualblocks visualchars code fullscreen',
                 'insertdatetime media nonbreaking save table contextmenu directionality',
-                'emoticons template paste textcolor'
+                'emoticons template paste textcolor quotes'
             ],
             toolbar: [
                 'undo redo | fontsizeselect | bold italic underline 
