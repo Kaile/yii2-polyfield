@@ -8,9 +8,7 @@ use yii\base\Widget;
 use yii\db\ActiveRecord;
 use yii\helpers\Html;
 use yii\helpers\Json;
-use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
-use yii\widgets\ActiveForm;
 
 /**
  * Widget that generates form with dynamic fields and dictionary filters for
@@ -113,6 +111,13 @@ class Polyfield extends Widget
      * @var string attribute of model
      */
     public $filterAttribute = '';
+    
+    /**
+     * Name of attribute in depends with will be sorted dropdown values.
+     * 
+     * @var string
+     */
+    public $sortAttribute = '';
 
     /**
      * Type of field. In depends of [[type]] view of field will be built
@@ -138,7 +143,7 @@ class Polyfield extends Widget
 
     /**
      * Order is the property that contains data for sequence of model list.
-     * It include in models view in format same as Order[<model->formName>][<model->id>].
+     * It include in models view in format same as Order[model->formName][model->id].
      *
      * @var string
      */
@@ -209,6 +214,7 @@ class Polyfield extends Widget
             }
             $model['dropdownAttribute'] = $this->dropdownAttribute;
             $model['filterAttribute'] = $this->filterAttribute;
+            $model['sortAttribute'] = $this->sortAttribute;
         }
 
         echo Html::beginTag('div', [
