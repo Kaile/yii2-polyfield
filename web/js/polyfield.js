@@ -151,16 +151,23 @@
       return formGroup;
     };
 
-    Polyfield.prototype.generateOptions = function(values, attribute, selected) {
+    Polyfield.prototype.generateOptions = function(values, attribute, selected, sortAttr) {
       var filter, option, options, value, _i, _len;
       if (typeof filter === 'undefined') {
         filter = false;
       }
+      sortAttr = sortAttr || attribute;
       options = document.createDocumentFragment();
       values = values.sort(function(a, b) {
         var first, second;
-        first = a[attribute].toUpperCase();
-        second = b[attribute].toUpperCase();
+        if (!a[sortAttr]) {
+          return -1;
+        }
+        if (!b[sortAttr]) {
+          return 1;
+        }
+        first = a[sortAttr].toUpperCase();
+        second = b[sortAttr].toUpperCase();
         if (first > second) {
           return 1;
         }
@@ -182,7 +189,7 @@
       return options;
     };
 
-    Polyfield.prototype.generateDropdown = function(id, modelName, attribute, counter, label, values, selected, filterAttr) {
+    Polyfield.prototype.generateDropdown = function(id, modelName, attribute, counter, label, values, selected, filterAttr, sortAttr) {
       var ddFragment, div, emptyOption, filterDiv, filterFormGroup, filterSelect, filterValues, formGroup, select, selectId,
         _this = this;
       if (typeof selected === 'undefined') {
@@ -199,7 +206,7 @@
       div.setAttribute('class', 'col-lg-5');
       select = document.createElement('select');
       select.setAttribute('name', "" + modelName + "[" + counter + "][id]");
-      select.appendChild(this.generateOptions(values, attribute, selected));
+      select.appendChild(this.generateOptions(values, attribute, selected, sortAttr));
       selectId = attribute + id + counter;
       select.setAttribute('id', selectId);
       select.setAttribute('class', 'form-control');
@@ -216,7 +223,7 @@
         emptyOption.setAttribute('value', 0);
         emptyOption.appendChild(document.createTextNode(this.translate('noFilter')));
         filterSelect.appendChild(emptyOption);
-        filterSelect.appendChild(this.generateOptions(filterValues, attribute));
+        filterSelect.appendChild(this.generateOptions(filterValues, attribute, sortAttr));
         filterSelect.setAttribute('class', 'form-control');
         filterDiv = div.cloneNode();
         filterDiv.appendChild(filterSelect);
@@ -224,20 +231,33 @@
         ddFragment.appendChild(filterFormGroup);
         jQuery(filterSelect).on('change', function() {
           var $filter, $select, filteredValues;
+          filterValues = function(filterVal, values, filterAttr) {
+            var filtered, item, _i, _len;
+            filterVal = Number(filterVal);
+            if (filterVal === 0) {
+              return values;
+            } else {
+              filtered = values.filter(function(value, index, array) {
+                if (Number(filterVal) === Number(value[filterAttr])) {
+                  return true;
+                } else {
+                  return false;
+                }
+              });
+              if (filtered.length) {
+                for (_i = 0, _len = filtered.length; _i < _len; _i++) {
+                  item = filtered[_i];
+                  filtered = filtered.concat(filterValues(item.id, values, filterAttr));
+                }
+              }
+            }
+            return filtered;
+          };
           $filter = jQuery(filterSelect);
           $select = jQuery(select);
           $select.empty();
-          filteredValues = values.filter(function(value, index, array) {
-            if ($filter.val() === '0') {
-              return true;
-            }
-            if (Number($filter.val()) === Number(value[filterAttr])) {
-              return true;
-            } else {
-              return false;
-            }
-          });
-          return select.appendChild(_this.generateOptions(filteredValues, attribute, selected));
+          filteredValues = filterValues($filter.val(), values, filterAttr);
+          return select.appendChild(_this.generateOptions(filteredValues, attribute, selected, sortAttr));
         });
       }
       div.appendChild(select);
@@ -420,7 +440,7 @@
               case attrType !== this.inputTypes.BOOLEAN:
                 return this.generateInput(id, model.name, attribute, model.counter, '', 'checkbox', model.attributeLabels[attribute]);
               case attrType !== this.inputTypes.DROPDOWN:
-                return this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute);
+                return this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute, model.sortAttribute);
               default:
                 return document.createElement('div');
             }
@@ -440,7 +460,7 @@
             }
           }
         } else if (model.type === this.types.DROPDOWN) {
-          contentBody.appendChild(this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute));
+          contentBody.appendChild(this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute, model.sortAttribute));
         }
       }
       collapseFragment = document.createDocumentFragment();
@@ -484,7 +504,7 @@
                 case attrType !== this.inputTypes.BOOLEAN:
                   return this.generateInput(id, model.name, attribute, model.counter, object[attribute], 'checkbox', model.attributeLabels[attribute]);
                 case attrType !== this.inputTypes.DROPDOWN:
-                  return this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, object['id'], model.filterAttribute);
+                  return this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, object['id'], model.filterAttribute, model.sortAttribute);
                 default:
                   return document.createElement('div');
               }
@@ -506,7 +526,7 @@
               }
             }
           } else if (model.type === this.types.DROPDOWN) {
-            contentBody.appendChild(this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, object['id'], model.filterAttribute));
+            contentBody.appendChild(this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, object['id'], model.filterAttribute, model.sortAttribute));
           }
         }
         collapsibleFragment = document.createDocumentFragment();
