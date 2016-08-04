@@ -89,11 +89,18 @@ class Polyfield extends Widget
     public $buttonCaption;
 
     /**
-     * Attribute what data will be selected by user
+     * Attribute what data will be selected by user.
      *
-     * @var string
+     * @var string|array
      */
     public $dropdownAttribute = 'name';
+
+    /**
+     * Attribute that shows as prefix in dropdown list.
+     *
+     * @var string name of attriubte
+     */
+    public $dropdownPrefixAttribute = '';
 
     /**
      * Contains existing models. It could need when perform editing of model
@@ -111,10 +118,10 @@ class Polyfield extends Widget
      * @var string attribute of model
      */
     public $filterAttribute = '';
-    
+
     /**
      * Name of attribute in depends with will be sorted dropdown values.
-     * 
+     *
      * @var string
      */
     public $sortAttribute = '';
@@ -213,6 +220,7 @@ class Polyfield extends Widget
                 return;
             }
             $model['dropdownAttribute'] = $this->dropdownAttribute;
+            $model['dropdownPrefixAttribute'] = $this->dropdownPrefixAttribute;
             $model['filterAttribute'] = $this->filterAttribute;
             $model['sortAttribute'] = $this->sortAttribute;
         }
