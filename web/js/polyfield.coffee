@@ -259,7 +259,6 @@ class Polyfield
         select.setAttribute 'name', "#{modelName}[#{counter}][id]"
 
         select.appendChild @generateOptions(values, attribute, selected, sortAttr, attributePrefix, valueAttribute)
-
         selectId = attribute + id + counter;
         select.setAttribute 'id', selectId
         select.setAttribute 'class', 'form-control'

@@ -101,10 +101,10 @@ class Polyfield extends Widget
      * @var string name of attriubte
      */
     public $dropdownPrefixAttribute = '';
-    
+
     /**
      * Attribute that will be inserted to dropdown value.
-     * 
+     *
      * @var string
      */
     public $dropdownValueAttribute = 'id';
