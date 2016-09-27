@@ -55,190 +55,6 @@ Polyfield = (function() {
     })(this));
   };
 
-<<<<<<< HEAD
-    Polyfield.prototype.generateLabel = function(forId, name, htmlClass) {
-      var label;
-      htmlClass = htmlClass || 'col-xs-4 col-sm-4 col-md-3 col-lg-3';
-      label = document.createElement('label');
-      label.setAttribute('class', "" + htmlClass + " control-label");
-      label.setAttribute('for', forId);
-      label.appendChild(document.createTextNode(name));
-      return label;
-    };
-
-    Polyfield.prototype.generateInput = function(id, modelName, attribute, counter, value, type, label) {
-      var div, formGroup, input, inputId;
-      if (typeof value === 'undefined' || !value) {
-        value = '';
-      }
-      if (typeof type === 'undefined') {
-        type = 'hidden';
-      }
-      if (typeof label === 'undefined') {
-        label = false;
-      }
-      formGroup = document.createElement('div');
-      formGroup.setAttribute('class', 'form-group');
-      if (label) {
-        formGroup.appendChild(this.generateLabel(attribute + counter, label));
-      }
-      div = document.createElement('div');
-      div.setAttribute('class', 'col-xs-6 col-sm-6 col-md-7 col-lg-7');
-      input = document.createElement('input');
-      input.setAttribute('type', type);
-      input.setAttribute('name', "" + modelName + "[" + counter + "][" + attribute + "]");
-      if (type !== 'hidden') {
-        inputId = attribute + id + counter;
-        input.setAttribute('id', inputId);
-        this.addToAutocomplete(inputId, modelName, attribute);
-      }
-      if (type === 'checkbox' && value) {
-        input.setAttribute('checked', 'checked');
-      }
-      input.setAttribute('class', 'form-control');
-      if (type !== 'checkbox') {
-        input.setAttribute('value', value);
-      } else {
-        input.setAttribute('value', '1');
-      }
-      div.appendChild(input);
-      formGroup.appendChild(div);
-      return formGroup;
-    };
-
-    Polyfield.prototype.generateEditor = function(id, modelName, attribute, counter, value, type, label) {
-      var div, formGroup, input, inputId, script, tinymceLang, tinymceScript;
-      if (typeof value === 'undefined') {
-        value = '';
-      }
-      if (typeof type === 'undefined') {
-        type = 'hidden';
-      }
-      if (typeof label === 'undefined') {
-        label = false;
-      }
-      formGroup = document.createElement('div');
-      formGroup.setAttribute('class', 'form-group');
-      if (label) {
-        formGroup.appendChild(this.generateLabel(attribute + counter, label, 'col-xs-1'));
-      }
-      div = document.createElement('div');
-      div.setAttribute('class', 'col-xs-9');
-      input = document.createElement('textarea');
-      input.setAttribute('name', "" + modelName + "[" + counter + "][" + attribute + "]");
-      inputId = attribute + id + counter;
-      input.setAttribute('id', inputId);
-      input.setAttribute('class', 'form-control');
-      input.appendChild(document.createTextNode(value));
-      div.appendChild(input);
-      if (typeof tinymce === 'undefined') {
-        tinymceScript = document.createElement('script');
-        tinymceScript.setAttribute('src', 'tinymce/timymce.min.js');
-        body.appendChild(tinymceScript);
-        tinymceLang = document.createElement('script');
-        tinymceLang.setAttribute('src', 'tinymce/langs/ru.js');
-        body.appendChild(tinymceLang);
-      }
-      script = document.createElement('script');
-      script.appendChild(document.createTextNode("tinymce.init({            selector: '#" + inputId + "',            language: 'ru',            height: 300,            fontsize_formats: '6pt 7pt 8pt 9pt 10pt 11pt 12pt 13pt 14pt 15pt 16pt 18pt 20pt 24pt 28pt 36pt 40pt 48pt',            plugins: [                'advlist autolink lists link image charmap print preview hr anchor pagebreak',                'searchreplace wordcount visualblocks visualchars code fullscreen',                'insertdatetime media nonbreaking save table contextmenu directionality',                'emoticons template paste textcolor quotes'            ],            toolbar: [                'undo redo | fontsizeselect | bold italic underline                | alignleft aligncenter alignright alignjustify                | bullist numlist outdent indent | link image | forecolor backcolor                | print preview media'            ],            image_advtab: true,            image_class_list: [                {title: 'Р‘РµР· РјР°СЃС€С‚Р°Р±РёСЂРѕРІР°РЅРёСЏ', value: 'no-scale-image'},                {title: 'РЎ РјР°СЃС€С‚Р°Р±РёСЂРѕРІР°РЅРёРµРј', value: 'scale-image'}            ]        });"));
-      div.appendChild(script);
-      formGroup.appendChild(div);
-      return formGroup;
-    };
-
-    Polyfield.prototype.generateOptions = function(values, attribute, selected, sortAttr, attributePrefix, valueAttribute) {
-      var filter, option, optionValue, options, value, _i, _len;
-      if (typeof attributePrefix === 'undefined') {
-        attributePrefix = '';
-      }
-      if (typeof filter === 'undefined') {
-        filter = false;
-      }
-      sortAttr = sortAttr || attribute;
-      if (!valueAttribute) {
-        valueAttribute = 'id';
-      }
-      options = document.createDocumentFragment();
-      values = values.sort(function(a, b) {
-        var first, second;
-        if (!a[sortAttr]) {
-          return -1;
-        }
-        if (!b[sortAttr]) {
-          return 1;
-        }
-        first = a[sortAttr].toUpperCase();
-        second = b[sortAttr].toUpperCase();
-        if (first > second) {
-          return 1;
-        }
-        if (first < second) {
-          return -1;
-        }
-        return 0;
-      });
-      for (_i = 0, _len = values.length; _i < _len; _i++) {
-        value = values[_i];
-        optionValue = value[attribute];
-        if (attributePrefix.length) {
-          optionValue = value[attributePrefix] + ' - ' + optionValue;
-        }
-        option = document.createElement('option');
-        option.setAttribute('value', value[valueAttribute]);
-        option.appendChild(document.createTextNode(optionValue));
-        if (value[valueAttribute] === selected) {
-          option.setAttribute('selected', true);
-        }
-        options.appendChild(option);
-      }
-      return options;
-    };
-
-    Polyfield.prototype.generateDropdown = function(id, modelName, attribute, counter, label, values, selected, filterAttr, sortAttr, attributePrefix, valueAttribute) {
-      var ddFragment, div, emptyOption, filterDiv, filterFormGroup, filterSelect, filterValues, formGroup, select, selectId,
-        _this = this;
-      if (typeof attributePrefix === 'undefined') {
-        attributePrefix = '';
-      }
-      if (typeof selected === 'undefined') {
-        selected = false;
-      }
-      if (typeof filterAttr === 'undefined') {
-        filterAttr = false;
-      }
-      formGroup = document.createElement('div');
-      ddFragment = document.createDocumentFragment();
-      formGroup.setAttribute('class', 'form-group');
-      formGroup.appendChild(this.generateLabel(attribute + counter, label));
-      div = document.createElement('div');
-      div.setAttribute('class', 'col-xs-6 col-sm-6 col-md-7 col-lg-7');
-      select = document.createElement('select');
-      select.setAttribute('name', "" + modelName + "[" + counter + "][id]");
-      select.appendChild(this.generateOptions(values, attribute, selected, sortAttr, attributePrefix, valueAttribute));
-      selectId = attribute + id + counter;
-      select.setAttribute('id', selectId);
-      select.setAttribute('class', 'form-control');
-      if (filterAttr) {
-        filterFormGroup = document.createElement('div');
-        filterFormGroup.setAttribute('class', 'form-group');
-        filterFormGroup.appendChild(this.generateLabel("filter" + counter, this.translate('filter')));
-        filterSelect = document.createElement('select');
-        filterSelect.setAttribute('id', "filter" + counter);
-        filterValues = values.filter(function(value, index, array) {
-          return !value[filterAttr];
-        });
-        emptyOption = document.createElement('option');
-        emptyOption.setAttribute('value', 0);
-        emptyOption.appendChild(document.createTextNode(this.translate('noFilter')));
-        filterSelect.appendChild(emptyOption);
-        filterSelect.appendChild(this.generateOptions(filterValues, attribute, null, sortAttr, attributePrefix, valueAttribute));
-        filterSelect.setAttribute('class', 'form-control');
-        filterDiv = div.cloneNode();
-        filterDiv.appendChild(filterSelect);
-        filterFormGroup.appendChild(filterDiv);
-        ddFragment.appendChild(filterFormGroup);
-        jQuery(filterSelect).on('change', function() {
-=======
   Polyfield.prototype.hideExcess = function(id) {
     if (jQuery('.' + id).length) {
       return jQuery('.' + id).collapsible('closeAll');
@@ -247,7 +63,7 @@ Polyfield = (function() {
 
   Polyfield.prototype.generateLabel = function(forId, name, htmlClass) {
     var label;
-    htmlClass = htmlClass || 'col-lg-3';
+    htmlClass = htmlClass || 'col-xs-4 col-sm-4 col-md-3 col-lg-3';
     label = document.createElement('label');
     label.setAttribute('class', htmlClass + " control-label");
     label.setAttribute('for', forId);
@@ -272,7 +88,7 @@ Polyfield = (function() {
       formGroup.appendChild(this.generateLabel(attribute + counter, label));
     }
     div = document.createElement('div');
-    div.setAttribute('class', 'col-lg-5');
+    div.setAttribute('class', 'col-xs-6 col-sm-6 col-md-7 col-lg-7');
     input = document.createElement('input');
     input.setAttribute('type', type);
     input.setAttribute('name', modelName + "[" + counter + "][" + attribute + "]");
@@ -309,10 +125,10 @@ Polyfield = (function() {
     formGroup = document.createElement('div');
     formGroup.setAttribute('class', 'form-group');
     if (label) {
-      formGroup.appendChild(this.generateLabel(attribute + counter, label, 'col-lg-1'));
+      formGroup.appendChild(this.generateLabel(attribute + counter, label, 'col-xs-1'));
     }
     div = document.createElement('div');
-    div.setAttribute('class', 'col-lg-9');
+    div.setAttribute('class', 'col-xs-9');
     input = document.createElement('textarea');
     input.setAttribute('name', modelName + "[" + counter + "][" + attribute + "]");
     inputId = attribute + id + counter;
@@ -335,7 +151,7 @@ Polyfield = (function() {
     return formGroup;
   };
 
-  Polyfield.prototype.generateOptions = function(values, attribute, selected, sortAttr, attributePrefix) {
+  Polyfield.prototype.generateOptions = function(values, attribute, selected, sortAttr, attributePrefix, valueAttribute) {
     var filter, j, len, option, optionValue, options, value;
     if (typeof attributePrefix === 'undefined') {
       attributePrefix = '';
@@ -344,6 +160,9 @@ Polyfield = (function() {
       filter = false;
     }
     sortAttr = sortAttr || attribute;
+    if (!valueAttribute) {
+      valueAttribute = 'id';
+    }
     options = document.createDocumentFragment();
     values = values.sort(function(a, b) {
       var first, second;
@@ -370,9 +189,9 @@ Polyfield = (function() {
         optionValue = value[attributePrefix] + ' - ' + optionValue;
       }
       option = document.createElement('option');
-      option.setAttribute('value', value.id);
+      option.setAttribute('value', value[valueAttribute]);
       option.appendChild(document.createTextNode(optionValue));
-      if (Number(value.id) === Number(selected)) {
+      if (value[valueAttribute] === selected) {
         option.setAttribute('selected', true);
       }
       options.appendChild(option);
@@ -380,7 +199,7 @@ Polyfield = (function() {
     return options;
   };
 
-  Polyfield.prototype.generateDropdown = function(id, modelName, attribute, counter, label, values, selected, filterAttr, sortAttr, attributePrefix) {
+  Polyfield.prototype.generateDropdown = function(id, modelName, attribute, counter, label, values, selected, filterAttr, sortAttr, attributePrefix, valueAttribute) {
     var ddFragment, div, emptyOption, filterDiv, filterFormGroup, filterSelect, filterValues, formGroup, select, selectId;
     if (typeof attributePrefix === 'undefined') {
       attributePrefix = '';
@@ -396,10 +215,10 @@ Polyfield = (function() {
     formGroup.setAttribute('class', 'form-group');
     formGroup.appendChild(this.generateLabel(attribute + counter, label));
     div = document.createElement('div');
-    div.setAttribute('class', 'col-lg-5');
+    div.setAttribute('class', 'col-xs-6 col-sm-6 col-md-7 col-lg-7');
     select = document.createElement('select');
     select.setAttribute('name', modelName + "[" + counter + "][id]");
-    select.appendChild(this.generateOptions(values, attribute, selected, sortAttr, attributePrefix));
+    select.appendChild(this.generateOptions(values, attribute, selected, sortAttr, attributePrefix, valueAttribute));
     selectId = attribute + id + counter;
     select.setAttribute('id', selectId);
     select.setAttribute('class', 'form-control');
@@ -416,7 +235,7 @@ Polyfield = (function() {
       emptyOption.setAttribute('value', 0);
       emptyOption.appendChild(document.createTextNode(this.translate('noFilter')));
       filterSelect.appendChild(emptyOption);
-      filterSelect.appendChild(this.generateOptions(filterValues, attribute, null, sortAttr, attributePrefix));
+      filterSelect.appendChild(this.generateOptions(filterValues, attribute, null, sortAttr, attributePrefix, valueAttribute));
       filterSelect.setAttribute('class', 'form-control');
       filterDiv = div.cloneNode();
       filterDiv.appendChild(filterSelect);
@@ -424,7 +243,6 @@ Polyfield = (function() {
       ddFragment.appendChild(filterFormGroup);
       jQuery(filterSelect).on('change', (function(_this) {
         return function() {
->>>>>>> 2473e20a3083ab3485a61837363373dcaa2276c2
           var $filter, $select, filteredValues;
           filterValues = function(filterVal, values, filterAttr) {
             var filtered, item, j, len;
@@ -452,87 +270,7 @@ Polyfield = (function() {
           $select = jQuery(select);
           $select.empty();
           filteredValues = filterValues($filter.val(), values, filterAttr);
-<<<<<<< HEAD
           return select.appendChild(_this.generateOptions(filteredValues, attribute, selected, sortAttr, attributePrefix, valueAttribute));
-        });
-      }
-      div.appendChild(select);
-      formGroup.appendChild(div);
-      ddFragment.appendChild(formGroup);
-      return ddFragment;
-    };
-
-    Polyfield.prototype.generateDateInput = function(id, modelName, attribute, counter, value, type, label) {
-      var divDate, formGroup, input, spanAddon, spanIcon;
-      if (typeof value === 'undefined') {
-        value = '';
-      }
-      if (typeof type === 'undefined') {
-        type = 'hidden';
-      }
-      if (typeof label === 'undefined') {
-        label = false;
-      }
-      formGroup = document.createElement('div');
-      formGroup.setAttribute('class', 'form-group');
-      if (label) {
-        formGroup.appendChild(this.generateLabel(attribute + counter, label));
-      }
-      divDate = document.createElement('div');
-      divDate.setAttribute('class', 'col-lg-5 input-group date');
-      input = document.createElement('input');
-      input.setAttribute('class', 'form-control');
-      input.setAttribute('type', type);
-      input.setAttribute('name', "" + modelName + "[" + counter + "][" + attribute + "]");
-      input.setAttribute('value', value);
-      spanAddon = document.createElement('span');
-      spanAddon.setAttribute('class', 'input-group-addon');
-      spanIcon = document.createElement('span');
-      spanIcon.setAttribute('class', 'glyphicon glyphicon-calendar');
-      spanAddon.appendChild(spanIcon);
-      divDate.appendChild(input);
-      divDate.appendChild(spanAddon);
-      formGroup.appendChild(divDate);
-      $(divDate).datetimepicker({
-        locale: 'ru',
-        viewMode: 'years',
-        format: 'YYYY-MM-DD'
-      });
-      return formGroup;
-    };
-
-    Polyfield.prototype.generateOrder = function(modelId, modelName, counter) {
-      var classSelector, ddFragment, div, formGroup, select, selectId;
-      formGroup = document.createElement('div');
-      ddFragment = document.createDocumentFragment();
-      classSelector = "order-" + modelName;
-      formGroup.setAttribute('class', 'form-group');
-      formGroup.appendChild(this.generateLabel(modelName + modelId + counter, this.translate('order')));
-      div = document.createElement('div');
-      div.setAttribute('class', 'col-lg-offset-1 col-lg-3 text-center');
-      select = document.createElement('select');
-      select.setAttribute('name', "" + modelName + "[" + counter + "][order]");
-      select.appendChild(this.orderOptions(counter));
-      this.updateOrder(classSelector, counter);
-      selectId = modelName + modelId + counter;
-      select.setAttribute('id', selectId);
-      select.setAttribute('class', "form-control " + classSelector);
-      div.appendChild(select);
-      formGroup.appendChild(div);
-      ddFragment.appendChild(formGroup);
-      this.bindOrderListener(classSelector);
-      return ddFragment;
-    };
-
-    Polyfield.prototype.orderOptions = function(counter) {
-      var fragment, i, option, _i;
-      fragment = document.createDocumentFragment();
-      for (i = _i = 1; 1 <= counter ? _i <= counter : _i >= counter; i = 1 <= counter ? ++_i : --_i) {
-        option = document.createElement('option');
-        if (i === counter) {
-          option.setAttribute('selected', 'selected');
-=======
-          return select.appendChild(_this.generateOptions(filteredValues, attribute, selected, sortAttr, attributePrefix));
         };
       })(this));
     }
@@ -630,7 +368,6 @@ Polyfield = (function() {
         results = [];
         for (i = j = ref = optLen + 1, ref1 = counter; ref <= ref1 ? j <= ref1 : j >= ref1; i = ref <= ref1 ? ++j : --j) {
           results.push($this.append("<option>" + i + "</option>"));
->>>>>>> 2473e20a3083ab3485a61837363373dcaa2276c2
         }
         return results;
       }
@@ -690,7 +427,7 @@ Polyfield = (function() {
     content.appendChild(document.createElement('div'));
     content.appendChild(contentBody);
     container = document.createElement('div');
-    container.setAttribute('class', 'container');
+    container.setAttribute('class', '');
     container.appendChild(content);
     return container;
   };
@@ -720,7 +457,7 @@ Polyfield = (function() {
             case attrType !== this.inputTypes.BOOLEAN:
               return this.generateInput(id, model.name, attribute, model.counter, '', 'checkbox', model.attributeLabels[attribute]);
             case attrType !== this.inputTypes.DROPDOWN:
-              return this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute);
+              return this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute);
             default:
               return document.createElement('div');
           }
@@ -740,47 +477,8 @@ Polyfield = (function() {
           }
         }
       } else if (model.type === this.types.DROPDOWN) {
-        contentBody.appendChild(this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute));
+        contentBody.appendChild(this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute));
       }
-<<<<<<< HEAD
-      return true;
-    };
-
-    Polyfield.prototype.generateCollapsible = function(id, label, counter) {
-      var closer, collapsible, relativeId, sectionId;
-      relativeId = id + counter;
-      sectionId = 'section_' + relativeId;
-      collapsible = document.createElement('div');
-      collapsible.setAttribute('id', sectionId);
-      collapsible.setAttribute('class', id);
-      collapsible.appendChild(document.createTextNode(counter + '. ' + label));
-      collapsible.appendChild(document.createElement('span'));
-      closer = document.createElement('div');
-      closer.appendChild(document.createTextNode('x'));
-      closer.setAttribute('id', 'exit_' + relativeId);
-      closer.setAttribute('class', 'polyfield-exit');
-      closer.setAttribute('title', this.translate('deleteElement'));
-      collapsible.appendChild(closer);
-      this.bindClose(relativeId);
-      return collapsible;
-    };
-
-    Polyfield.prototype.generateContainer = function(contentBody) {
-      var container, content;
-      content = document.createElement('div');
-      content.setAttribute('class', 'content');
-      content.appendChild(document.createElement('div'));
-      content.appendChild(contentBody);
-      container = document.createElement('div');
-      container.setAttribute('class', '');
-      container.appendChild(content);
-      return container;
-    };
-
-    Polyfield.prototype.appendTemplate = function(id) {
-      var attrType, attribute, collapseFragment, collapsible, contentBody, index, inputElement, model, sectionId, _ref, _ref1;
-      model = this.models[id];
-=======
     }
     collapseFragment = document.createDocumentFragment();
     collapseFragment.appendChild(collapsible);
@@ -801,7 +499,6 @@ Polyfield = (function() {
     ref = model.exists;
     for (j = 0, len = ref.length; j < len; j++) {
       object = ref[j];
->>>>>>> 2473e20a3083ab3485a61837363373dcaa2276c2
       model.counter++;
       sectionId = 'section_' + id + model.counter;
       collapsible = this.generateCollapsible(id, model.label, model.counter);
@@ -824,11 +521,7 @@ Polyfield = (function() {
               case attrType !== this.inputTypes.BOOLEAN:
                 return this.generateInput(id, model.name, attribute, model.counter, object[attribute], 'checkbox', model.attributeLabels[attribute]);
               case attrType !== this.inputTypes.DROPDOWN:
-<<<<<<< HEAD
-                return this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute);
-=======
-                return this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, object['id'], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute);
->>>>>>> 2473e20a3083ab3485a61837363373dcaa2276c2
+                return this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, object[model.dropdownValueAttribute], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute);
               default:
                 return document.createElement('div');
             }
@@ -850,11 +543,7 @@ Polyfield = (function() {
             }
           }
         } else if (model.type === this.types.DROPDOWN) {
-<<<<<<< HEAD
-          contentBody.appendChild(this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute));
-=======
-          contentBody.appendChild(this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, object['id'], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute));
->>>>>>> 2473e20a3083ab3485a61837363373dcaa2276c2
+          contentBody.appendChild(this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, object[model.dropdownValueAttribute], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute));
         }
       }
       collapsibleFragment = document.createDocumentFragment();
@@ -864,83 +553,10 @@ Polyfield = (function() {
       jQuery('#' + sectionId).collapsible({
         defaultOpen: sectionId
       });
-<<<<<<< HEAD
-      return this.bindAutocomplete();
-    };
-
-    Polyfield.prototype.appendExists = function(id) {
-      var attrType, attribute, collapsible, collapsibleFragment, contentBody, index, inputElement, model, object, sectionId, _i, _len, _ref, _ref1, _ref2;
-      model = this.models[id];
-      if (model.existsShowen) {
-        return;
-      }
-      _ref = model.exists;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        object = _ref[_i];
-        model.counter++;
-        sectionId = 'section_' + id + model.counter;
-        collapsible = this.generateCollapsible(id, model.label, model.counter);
-        contentBody = document.createElement('p');
-        if (model.order) {
-          contentBody.appendChild(this.generateOrder(id, model.name, model.counter));
-        }
-        if (model.attributeTypes) {
-          _ref1 = model.attributeTypes;
-          for (attribute in _ref1) {
-            attrType = _ref1[attribute];
-            inputElement = (function() {
-              switch (false) {
-                case attrType !== this.inputTypes.STRING:
-                  return this.generateInput(id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]);
-                case attrType !== this.inputTypes.DATE:
-                  return this.generateDateInput(id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]);
-                case attrType !== this.inputTypes.TEXT:
-                  return this.generateEditor(id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]);
-                case attrType !== this.inputTypes.BOOLEAN:
-                  return this.generateInput(id, model.name, attribute, model.counter, object[attribute], 'checkbox', model.attributeLabels[attribute]);
-                case attrType !== this.inputTypes.DROPDOWN:
-                  return this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, object[model.dropdownValueAttribute], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute);
-                default:
-                  return document.createElement('div');
-              }
-            }).call(this);
-            contentBody.appendChild(inputElement);
-          }
-        } else {
-          if (model.type === this.types.STRING || model.type === this.types.DATE || model.type === this.types.TEXT_BLOCK) {
-            _ref2 = model.attributes;
-            for (index in _ref2) {
-              attribute = _ref2[index];
-              if (__indexOf.call(model.dateAttributes, attribute) >= 0) {
-                contentBody.appendChild(this.generateDateInput(id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]));
-                continue;
-              } else if (model.type === this.types.TEXT_BLOCK) {
-                contentBody.appendChild(this.generateEditor(id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]));
-              } else {
-                contentBody.appendChild(this.generateInput(id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]));
-              }
-            }
-          } else if (model.type === this.types.DROPDOWN) {
-            contentBody.appendChild(this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, object[model.dropdownValueAttribute], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute));
-          }
-        }
-        collapsibleFragment = document.createDocumentFragment();
-        collapsibleFragment.appendChild(collapsible);
-        collapsibleFragment.appendChild(this.generateContainer(contentBody));
-        document.getElementById('content_' + id).appendChild(collapsibleFragment);
-        jQuery('#' + sectionId).collapsible({
-          defaultOpen: sectionId
-        });
-        this.bindAutocomplete();
-      }
-      return model.existsShowen = true;
-    };
-=======
       this.bindAutocomplete();
     }
     return model.existsShowen = true;
   };
->>>>>>> 2473e20a3083ab3485a61837363373dcaa2276c2
 
   Polyfield.prototype.bindClose = function(id) {
     return jQuery('body').on('click', '#exit_' + id, (function(_this) {
