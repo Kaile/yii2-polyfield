@@ -101,16 +101,13 @@ class Polyfield extends Widget
      * @var string name of attriubte
      */
     public $dropdownPrefixAttribute = '';
-<<<<<<< HEAD
-    
+
     /**
      * Attribute that will be inserted to dropdown value.
-     * 
+     *
      * @var string
      */
     public $dropdownValueAttribute = 'id';
-=======
->>>>>>> 2473e20a3083ab3485a61837363373dcaa2276c2
 
     /**
      * Contains existing models. It could need when perform editing of model
@@ -230,10 +227,7 @@ class Polyfield extends Widget
                 return;
             }
             $model['dropdownAttribute'] = $this->dropdownAttribute;
-<<<<<<< HEAD
             $model['dropdownValueAttribute'] = $this->dropdownValueAttribute;
-=======
->>>>>>> 2473e20a3083ab3485a61837363373dcaa2276c2
             $model['dropdownPrefixAttribute'] = $this->dropdownPrefixAttribute;
             $model['filterAttribute'] = $this->filterAttribute;
             $model['sortAttribute'] = $this->sortAttribute;
