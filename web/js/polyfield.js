@@ -151,8 +151,8 @@ Polyfield = (function() {
     return formGroup;
   };
 
-  Polyfield.prototype.generateOptions = function(values, attribute, selected, sortAttr, attributePrefix, valueAttribute) {
-    var filter, j, len, option, optionValue, options, value;
+  Polyfield.prototype.generateOptions = function(values, attribute, selected, sortAttr, attributePrefix, valueAttribute, exists) {
+    var existingValues, filter, j, len, option, optionValue, options, value;
     if (typeof attributePrefix === 'undefined') {
       attributePrefix = '';
     }
@@ -162,6 +162,9 @@ Polyfield = (function() {
     sortAttr = sortAttr || attribute;
     if (!valueAttribute) {
       valueAttribute = 'id';
+    }
+    if (!exists) {
+      exists = [];
     }
     options = document.createDocumentFragment();
     values = values.sort(function(a, b) {
@@ -182,6 +185,12 @@ Polyfield = (function() {
       }
       return 0;
     });
+    existingValues = exists.map(function(value) {
+      return value[attribute];
+    });
+    values = values.filter(function(value) {
+      return existingValues.indexOf(value[attribute]) === -1;
+    });
     for (j = 0, len = values.length; j < len; j++) {
       value = values[j];
       optionValue = value[attribute];
@@ -199,7 +208,7 @@ Polyfield = (function() {
     return options;
   };
 
-  Polyfield.prototype.generateDropdown = function(id, modelName, attribute, counter, label, values, selected, filterAttr, sortAttr, attributePrefix, valueAttribute) {
+  Polyfield.prototype.generateDropdown = function(id, modelName, attribute, counter, label, values, selected, filterAttr, sortAttr, attributePrefix, valueAttribute, exists) {
     var ddFragment, div, emptyOption, filterDiv, filterFormGroup, filterSelect, filterValues, formGroup, select, selectId;
     if (typeof attributePrefix === 'undefined') {
       attributePrefix = '';
@@ -218,7 +227,7 @@ Polyfield = (function() {
     div.setAttribute('class', 'col-xs-6 col-sm-6 col-md-7 col-lg-7');
     select = document.createElement('select');
     select.setAttribute('name', modelName + "[" + counter + "][id]");
-    select.appendChild(this.generateOptions(values, attribute, selected, sortAttr, attributePrefix, valueAttribute));
+    select.appendChild(this.generateOptions(values, attribute, selected, sortAttr, attributePrefix, valueAttribute, exists));
     selectId = attribute + id + counter;
     select.setAttribute('id', selectId);
     select.setAttribute('class', 'form-control');
@@ -457,7 +466,7 @@ Polyfield = (function() {
             case attrType !== this.inputTypes.BOOLEAN:
               return this.generateInput(id, model.name, attribute, model.counter, '', 'checkbox', model.attributeLabels[attribute]);
             case attrType !== this.inputTypes.DROPDOWN:
-              return this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute);
+              return this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute, (model.dropdownUnique ? model.exists : []));
             default:
               return document.createElement('div');
           }
@@ -477,7 +486,7 @@ Polyfield = (function() {
           }
         }
       } else if (model.type === this.types.DROPDOWN) {
-        contentBody.appendChild(this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute));
+        contentBody.appendChild(this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute, (model.dropdownUnique ? model.exists : [])));
       }
     }
     collapseFragment = document.createDocumentFragment();

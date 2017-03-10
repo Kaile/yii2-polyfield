@@ -202,11 +202,12 @@ class Polyfield
     # `selected`    The selected element identifier as {Number}
     #
     # Returns the document element as Node
-    generateOptions: (values, attribute, selected, sortAttr, attributePrefix, valueAttribute) ->
+    generateOptions: (values, attribute, selected, sortAttr, attributePrefix, valueAttribute, exists) ->
         attributePrefix = '' if typeof attributePrefix is 'undefined'
         filter = off if typeof filter is 'undefined'
         sortAttr = sortAttr or attribute
         valueAttribute = 'id' unless valueAttribute
+        exists = [] unless exists
         options = document.createDocumentFragment()
         values = values.sort (a, b) ->
             unless a[sortAttr]
@@ -218,6 +219,12 @@ class Polyfield
             if first > second then return 1
             if first < second then return -1
             0
+
+        existingValues = exists.map (value) ->
+            value[attribute]
+
+        values = values.filter (value) ->
+            existingValues.indexOf(value[attribute]) is -1
 
         for value in values
             optionValue = value[attribute]
@@ -242,7 +249,7 @@ class Polyfield
     # * `selected`  The option value that is selected as {String}.
     #
     # Returns the document element as Node.
-    generateDropdown: (id, modelName, attribute, counter, label, values, selected, filterAttr, sortAttr, attributePrefix, valueAttribute) ->
+    generateDropdown: (id, modelName, attribute, counter, label, values, selected, filterAttr, sortAttr, attributePrefix, valueAttribute, exists) ->
         attributePrefix = '' if typeof attributePrefix is 'undefined'
         selected = no if typeof selected is 'undefined'
         filterAttr = off if typeof filterAttr is 'undefined'
@@ -258,7 +265,7 @@ class Polyfield
         select = document.createElement 'select'
         select.setAttribute 'name', "#{modelName}[#{counter}][id]"
 
-        select.appendChild @generateOptions(values, attribute, selected, sortAttr, attributePrefix, valueAttribute)
+        select.appendChild @generateOptions(values, attribute, selected, sortAttr, attributePrefix, valueAttribute, exists)
         selectId = attribute + id + counter;
         select.setAttribute 'id', selectId
         select.setAttribute 'class', 'form-control'
@@ -498,7 +505,7 @@ class Polyfield
                     when attrType is @inputTypes.DATE then @generateDateInput id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]
                     when attrType is @inputTypes.TEXT then @generateEditor id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]
                     when attrType is @inputTypes.BOOLEAN then @generateInput id, model.name, attribute, model.counter, '', 'checkbox', model.attributeLabels[attribute]
-                    when attrType is @inputTypes.DROPDOWN then @generateDropdown id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute
+                    when attrType is @inputTypes.DROPDOWN then @generateDropdown id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute, (if model.dropdownUnique then model.exists else [])
                     else document.createElement 'div'
                 contentBody.appendChild inputElement
         else
@@ -510,7 +517,7 @@ class Polyfield
                     else
                         contentBody.appendChild @generateInput id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]
             else if model.type is @types.DROPDOWN
-                contentBody.appendChild @generateDropdown id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute
+                contentBody.appendChild @generateDropdown id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute, (if model.dropdownUnique then model.exists else [])
 
         collapseFragment = document.createDocumentFragment()
         collapseFragment.appendChild collapsible
