@@ -110,6 +110,13 @@ class Polyfield extends Widget
     public $dropdownValueAttribute = 'id';
 
     /**
+     * Selecting from list only unique values.
+     *
+     * @var bool
+     */
+    public $dropdownUnique = true;
+
+    /**
      * Contains existing models. It could need when perform editing of model
      * and its attributes
      *
@@ -229,6 +236,7 @@ class Polyfield extends Widget
             $model['dropdownAttribute'] = $this->dropdownAttribute;
             $model['dropdownValueAttribute'] = $this->dropdownValueAttribute;
             $model['dropdownPrefixAttribute'] = $this->dropdownPrefixAttribute;
+            $model['dropdownUnique'] = $this->dropdownUnique;
             $model['filterAttribute'] = $this->filterAttribute;
             $model['sortAttribute'] = $this->sortAttribute;
         }
