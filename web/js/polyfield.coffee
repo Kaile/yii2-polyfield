@@ -263,7 +263,7 @@ class Polyfield
         div.setAttribute 'class', 'col-xs-6 col-sm-6 col-md-7 col-lg-7'
 
         select = document.createElement 'select'
-        select.setAttribute 'name', "#{modelName}[#{counter}][id]"
+        select.setAttribute 'name', "#{modelName}[#{counter}][#{attribute}]"
 
         select.appendChild @generateOptions(values, attribute, selected, sortAttr, attributePrefix, valueAttribute, exists)
         selectId = attribute + id + counter;
