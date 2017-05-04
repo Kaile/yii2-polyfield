@@ -228,7 +228,7 @@
       div = document.createElement('div');
       div.setAttribute('class', 'col-xs-6 col-sm-6 col-md-7 col-lg-7');
       select = document.createElement('select');
-      select.setAttribute('name', modelName + "[" + counter + "][" + attribute + "]");
+      select.setAttribute('name', modelName + "[" + counter + "][" + valueAttribute + "]");
       select.appendChild(this.generateOptions(values, attribute, selected, sortAttr, attributePrefix, valueAttribute, exists));
       selectId = attribute + id + counter;
       select.setAttribute('id', selectId);
