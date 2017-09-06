@@ -170,6 +170,8 @@ class Polyfield
         script.appendChild document.createTextNode "tinymce.init({
             selector: '##{inputId}',
             language: 'ru',
+            relative_urls: false,
+            remove_script_host: false,
             height: 300,
             fontsize_formats: '6pt 7pt 8pt 9pt 10pt 11pt 12pt 13pt 14pt 15pt 16pt 18pt 20pt 24pt 28pt 36pt 40pt 48pt',
             plugins: [
