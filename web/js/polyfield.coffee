@@ -365,6 +365,7 @@ class Polyfield
             locale: 'ru'
             viewMode: 'years'
             format: 'YYYY-MM-DD'
+            keepInvalid: on
         )
 
         formGroup
