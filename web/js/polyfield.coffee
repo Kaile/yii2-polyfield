@@ -190,7 +190,8 @@ class Polyfield
             image_class_list: [
                 {title: 'Без масштабирования', value: 'no-scale-image'},
                 {title: 'С масштабированием', value: 'scale-image'}
-            ]
+            ],
+            image_caption
         });"
         div.appendChild script
 
