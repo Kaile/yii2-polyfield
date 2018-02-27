@@ -178,13 +178,13 @@ class Polyfield
                 'advlist autolink lists link image charmap print preview hr anchor pagebreak',
                 'searchreplace wordcount visualblocks visualchars code fullscreen',
                 'insertdatetime media nonbreaking save table contextmenu directionality',
-                'emoticons template paste textcolor quotes'
+                'emoticons template paste textcolor quotes insertfbframe'
             ],
             toolbar: [
                 'undo redo | fontsizeselect | bold italic underline
                 | alignleft aligncenter alignright alignjustify
                 | bullist numlist outdent indent | link image | forecolor backcolor
-                | print preview media'
+                | print preview media insertfbframe'
             ],
             image_advtab: true,
             image_class_list: [
