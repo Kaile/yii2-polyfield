@@ -184,7 +184,7 @@ class Polyfield
                 'undo redo | fontsizeselect | bold italic underline
                 | alignleft aligncenter alignright alignjustify
                 | bullist numlist outdent indent | link image | forecolor backcolor
-                | print preview media insertfbframe'
+                | print preview media frame'
             ],
             image_advtab: true,
             image_class_list: [
