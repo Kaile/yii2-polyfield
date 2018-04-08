@@ -13,7 +13,8 @@
 	"require": {
         "php": ">=5.4.0",
         "yiisoft/yii2": "2.0.15.1",
-        "moonlandsoft/yii2-tinymce": "dev-site-land"
+        "moonlandsoft/yii2-tinymce": "dev-site-land",
+        "bower-asset/collapsible": "^1.2"
     },
     "repositories":[
         {

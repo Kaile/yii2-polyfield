@@ -4,8 +4,24 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8663854179e20460e47d590a2e223b61",
+    "content-hash": "73e0d0ea66fe266b66e5445e7d5a78aa",
     "packages": [
+        {
+            "name": "bower-asset/collapsible",
+            "version": "1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/markitosgv/Collapsible.git",
+                "reference": "5128df45cc8ee28224545407bd387d9503ebaed2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/markitosgv/Collapsible/zipball/5128df45cc8ee28224545407bd387d9503ebaed2",
+                "reference": "5128df45cc8ee28224545407bd387d9503ebaed2",
+                "shasum": ""
+            },
+            "type": "bower-asset-library"
+        },
         {
             "name": "bower-asset/inputmask",
             "version": "3.3.11",
