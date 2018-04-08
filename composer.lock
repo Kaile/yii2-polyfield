@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "cffce8dc29785afbfa39945fe2a2136d",
+    "content-hash": "9e7de2a6fac44e1f57f8ffaa07daba33",
     "packages": [
         {
             "name": "bower-asset/collapsible",
@@ -21,6 +21,45 @@
                 "shasum": ""
             },
             "type": "bower-asset-library"
+        },
+        {
+            "name": "bower-asset/devbridge-autocomplete",
+            "version": "v1.4.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/devbridge/jQuery-Autocomplete.git",
+                "reference": "75a8ae9038df457cc2df24d90bd0e8bca9b34875"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/devbridge/jQuery-Autocomplete/zipball/75a8ae9038df457cc2df24d90bd0e8bca9b34875",
+                "reference": "75a8ae9038df457cc2df24d90bd0e8bca9b34875",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/jquery": ">=1.7"
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": "dist/jquery.autocomplete.js",
+                "bower-asset-ignore": [
+                    "**/.*",
+                    "node_modules",
+                    "bower_components",
+                    "spec",
+                    "scripts",
+                    "content"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Autocomplete provides suggestions while you type into the text field.",
+            "keywords": [
+                "ajax",
+                "autocomplete"
+            ],
+            "time": "2017-12-11T19:09:11+00:00"
         },
         {
             "name": "bower-asset/eonasdan-bootstrap-datetimepicker",
@@ -455,33 +494,28 @@
             "time": "2018-03-29T14:50:09+00:00"
         },
         {
-            "name": "trntv/yii2-bootstrap-datetimepicker",
-            "version": "1.5.0",
+            "name": "trntv/yii2-datetime-widget",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/trntv/yii2-bootstrap-datetimepicker.git",
-                "reference": "bbb0d8b18b41f70eb4d3a1339d4c64ab33593914"
+                "url": "https://github.com/trntv/yii2-datetime-widget.git",
+                "reference": "9f636a202494b28caeedb8a96708b57af1217b98"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/trntv/yii2-bootstrap-datetimepicker/zipball/bbb0d8b18b41f70eb4d3a1339d4c64ab33593914",
-                "reference": "bbb0d8b18b41f70eb4d3a1339d4c64ab33593914",
+                "url": "https://api.github.com/repos/trntv/yii2-datetime-widget/zipball/9f636a202494b28caeedb8a96708b57af1217b98",
+                "reference": "9f636a202494b28caeedb8a96708b57af1217b98",
                 "shasum": ""
             },
             "require": {
-                "bower-asset/eonasdan-bootstrap-datetimepicker": "~4.7",
-                "yiisoft/yii2": "~2.0"
+                "bower-asset/eonasdan-bootstrap-datetimepicker": "^4.17",
+                "bower-asset/moment": "^2.21",
+                "yiisoft/yii2": "^2.0"
             },
             "type": "yii2-extension",
-            "extra": {
-                "asset-installer-paths": {
-                    "npm-asset-library": "vendor/npm",
-                    "bower-asset-library": "vendor/bower"
-                }
-            },
             "autoload": {
                 "psr-4": {
-                    "trntv\\yii\\datetimepicker\\": "src/"
+                    "trntv\\yii\\datetime\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -490,20 +524,19 @@
             ],
             "authors": [
                 {
-                    "name": "Eugine Terentev",
+                    "name": "Eugene Terentev",
                     "email": "eugene@terentev.net"
                 }
             ],
-            "description": "Datetimepicker widget for Yii2 framework",
+            "description": "Date/Time Picker widget for Yii2 framework",
             "keywords": [
-                "DateTimePicker",
                 "bootstrap",
+                "datetime picker",
                 "extension",
                 "widget",
                 "yii2"
             ],
-            "abandoned": "trntv/yii2-datetime-widget",
-            "time": "2015-04-26T18:37:03+00:00"
+            "time": "2018-03-17T15:18:47+00:00"
         },
         {
             "name": "yiisoft/yii2",
