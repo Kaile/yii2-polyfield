@@ -158,14 +158,6 @@ class Polyfield
 
         div.appendChild input
 
-        if typeof tinymce is 'undefined'
-            tinymceScript = document.createElement 'script'
-            tinymceScript.setAttribute 'src', 'tinymce/timymce.min.js'
-            body.appendChild tinymceScript
-            tinymceLang = document.createElement 'script'
-            tinymceLang.setAttribute 'src', 'tinymce/langs/ru.js'
-            body.appendChild tinymceLang
-
         script = document.createElement 'script'
         script.appendChild document.createTextNode "tinymce.init({
             selector: '##{inputId}',

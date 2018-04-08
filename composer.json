@@ -1,6 +1,6 @@
 {
     "name": "kaile/yii2-polyfield",
-    "description": "Dynamicaly adds new fields in form.",
+    "description": "Dynamically adds new fields in form.",
     "type": "yii2-extension",
     "keywords": ["yii2","extension","dynamic fields"],
     "license": "BSD",
@@ -11,8 +11,19 @@
         }
     ],
 	"require": {
-		"php": ">=5.4.0"
-	},
+        "php": ">=5.4.0",
+        "yiisoft/yii2": "2.0.15.1",
+        "moonlandsoft/yii2-tinymce": "dev-site-land",
+        "bower-asset/collapsible": "^1.2",
+        "bower-asset/devbridge-autocomplete": "^1.4",
+        "trntv/yii2-datetime-widget": "^1.1"
+    },
+    "repositories":[
+        {
+            "type": "git",
+            "url": "https://github.com/Kaile/yii2-tinymce.git"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "kaile\\polyfield\\": ""
