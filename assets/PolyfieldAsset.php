@@ -29,5 +29,6 @@ class PolyfieldAsset extends AssetBundle
 
     public $depends = [
         'kaile\polyfield\assets\CollapsibleAsset',
+        'moonland\tinymce\TinyMCEAsset',
     ];
 }
