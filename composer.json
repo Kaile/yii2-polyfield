@@ -14,7 +14,8 @@
         "php": ">=5.4.0",
         "yiisoft/yii2": "2.0.15.1",
         "moonlandsoft/yii2-tinymce": "dev-site-land",
-        "bower-asset/collapsible": "^1.2"
+        "bower-asset/collapsible": "^1.2",
+        "trntv/yii2-bootstrap-datetimepicker": "^1.5"
     },
     "repositories":[
         {

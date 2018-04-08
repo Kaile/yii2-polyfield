@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "73e0d0ea66fe266b66e5445e7d5a78aa",
+    "content-hash": "cffce8dc29785afbfa39945fe2a2136d",
     "packages": [
         {
             "name": "bower-asset/collapsible",
@@ -21,6 +21,53 @@
                 "shasum": ""
             },
             "type": "bower-asset-library"
+        },
+        {
+            "name": "bower-asset/eonasdan-bootstrap-datetimepicker",
+            "version": "4.17.47",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Eonasdan/bootstrap-datetimepicker.git",
+                "reference": "25c11d79e614bc6463a87c3dd9cbf8280422e006"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Eonasdan/bootstrap-datetimepicker/zipball/25c11d79e614bc6463a87c3dd9cbf8280422e006",
+                "reference": "25c11d79e614bc6463a87c3dd9cbf8280422e006",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/jquery": ">=1.8.3",
+                "bower-asset/moment": ">=2.10.5"
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "build/css/bootstrap-datetimepicker.min.css",
+                    "build/js/bootstrap-datetimepicker.min.js"
+                ],
+                "bower-asset-ignore": [
+                    "**/.*",
+                    "node_modules",
+                    "bower_components",
+                    "test",
+                    "tests"
+                ],
+                "bower-asset-private": false
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "bootstrap3 datetimepicker",
+            "keywords": [
+                "bootstrap",
+                "datepicker",
+                "datetimepicker",
+                "moment",
+                "timepicker",
+                "twitter-bootstrap"
+            ],
+            "time": "2017-02-28T14:32:02+00:00"
         },
         {
             "name": "bower-asset/inputmask",
@@ -113,6 +160,50 @@
                 "library"
             ],
             "time": "2017-03-20T19:02:00+00:00"
+        },
+        {
+            "name": "bower-asset/moment",
+            "version": "2.22.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/moment/moment.git",
+                "reference": "db71a655fc51fe58009675608a400d0d4cd0ca87"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/moment/moment/zipball/db71a655fc51fe58009675608a400d0d4cd0ca87",
+                "reference": "db71a655fc51fe58009675608a400d0d4cd0ca87",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": "moment.js",
+                "bower-asset-ignore": [
+                    "**/.*",
+                    "benchmarks",
+                    "bower_components",
+                    "meteor",
+                    "node_modules",
+                    "scripts",
+                    "tasks",
+                    "test",
+                    "component.json",
+                    "composer.json",
+                    "CONTRIBUTING.md",
+                    "ender.js",
+                    "Gruntfile.js",
+                    "Moment.js.nuspec",
+                    "package.js",
+                    "package.json",
+                    "ISSUE_TEMPLATE.md",
+                    "typing-tests",
+                    "min/tests.js"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "time": "2018-03-30T21:53:58+00:00"
         },
         {
             "name": "bower-asset/punycode",
@@ -362,6 +453,57 @@
                 "yii2"
             ],
             "time": "2018-03-29T14:50:09+00:00"
+        },
+        {
+            "name": "trntv/yii2-bootstrap-datetimepicker",
+            "version": "1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/trntv/yii2-bootstrap-datetimepicker.git",
+                "reference": "bbb0d8b18b41f70eb4d3a1339d4c64ab33593914"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/trntv/yii2-bootstrap-datetimepicker/zipball/bbb0d8b18b41f70eb4d3a1339d4c64ab33593914",
+                "reference": "bbb0d8b18b41f70eb4d3a1339d4c64ab33593914",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/eonasdan-bootstrap-datetimepicker": "~4.7",
+                "yiisoft/yii2": "~2.0"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "asset-installer-paths": {
+                    "npm-asset-library": "vendor/npm",
+                    "bower-asset-library": "vendor/bower"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "trntv\\yii\\datetimepicker\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Eugine Terentev",
+                    "email": "eugene@terentev.net"
+                }
+            ],
+            "description": "Datetimepicker widget for Yii2 framework",
+            "keywords": [
+                "DateTimePicker",
+                "bootstrap",
+                "extension",
+                "widget",
+                "yii2"
+            ],
+            "abandoned": "trntv/yii2-datetime-widget",
+            "time": "2015-04-26T18:37:03+00:00"
         },
         {
             "name": "yiisoft/yii2",
