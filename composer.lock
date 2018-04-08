@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "9e7de2a6fac44e1f57f8ffaa07daba33",
+    "content-hash": "bb97f28b274ad80e688dfcc7b09248e5",
     "packages": [
         {
             "name": "bower-asset/collapsible",
@@ -457,7 +457,7 @@
         },
         {
             "name": "moonlandsoft/yii2-tinymce",
-            "version": "dev-site-land",
+            "version": "1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kaile/yii2-tinymce.git",
@@ -696,9 +696,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "moonlandsoft/yii2-tinymce": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
