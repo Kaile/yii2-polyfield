@@ -1,0 +1,31 @@
+{
+  "name": "yii2-polyfield",
+  "version": "1.7.17",
+  "description": "Extension for Yii2 PHP framework.",
+  "main": "web/js/polyfield.coffee",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kaile/yii2-polyfield.git"
+  },
+  "keywords": [
+    "yii2",
+    "extension",
+    "polyfield",
+    "dynamic",
+    "fields"
+  ],
+  "author": "Mikhail Kornilov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Kaile/yii2-polyfield/issues"
+  },
+  "homepage": "https://github.com/Kaile/yii2-polyfield#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "coffeescript": "^2.2.4"
+  }
+}
