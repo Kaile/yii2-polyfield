@@ -8,7 +8,7 @@ use yii\web\AssetBundle;
  * Asset bundle for polyfield.js file
  *
  * @created 22.05.2015 16:50:28
- * @author Mihail Kornilov <fix-06 at yandex.ru>
+ * @author Mikhail Kornilov <fix-06 at yandex.ru>
  *
  * @since 1.0
  */
