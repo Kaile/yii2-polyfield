@@ -13,7 +13,7 @@
 	"require": {
         "php": ">=5.4.0",
         "yiisoft/yii2": "2.0.15.1",
-        "moonlandsoft/yii2-tinymce": "dev-site-land",
+        "moonlandsoft/yii2-tinymce": "^1.0",
         "bower-asset/collapsible": "^1.2",
         "bower-asset/devbridge-autocomplete": "^1.4",
         "trntv/yii2-datetime-widget": "^1.1"
