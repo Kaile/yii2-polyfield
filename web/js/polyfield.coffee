@@ -216,8 +216,8 @@ class Polyfield
             newvalues = [];
             for key, value in values 
                 obj = {};
-                obj[attribute] = key
-                obj[valueAttribute] = value
+                obj[valueAttribute] = key
+                obj[attribute] = value
                 newvalues.push(obj);
             values = newvalues
 

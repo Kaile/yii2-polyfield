@@ -235,8 +235,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             for (value = j = 0, len = values.length; j < len; value = ++j) {
               key = values[value];
               obj = {};
-              obj[attribute] = key;
-              obj[valueAttribute] = value;
+              obj[valueAttribute] = key;
+              obj[attribute] = value;
               newvalues.push(obj);
             }
             values = newvalues;
