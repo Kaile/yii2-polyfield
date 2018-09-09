@@ -159,6 +159,14 @@ class Polyfield extends Widget
 
     /**
      * Key value pairs where key is attribute name and value is type.
+     * For HTML elements that needs a prepared data (e.t. dropdown or select2) 
+     * value can be sets as array with keys as param name and values as param values:
+     * ```php
+     * ['status' => [
+     *      'type' => Polyfield::TYPE_SELECT2,
+     *      'data' => Statuses::find()->all(),
+     * ]];
+     * ```
      *
      * @var array
      */
