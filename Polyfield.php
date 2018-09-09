@@ -245,6 +245,12 @@ class Polyfield extends Widget
             'dateAttributes' => $this->dateAttributes,
             'attributeTypes' => $this->attributeTypes,
             'order' => $this->order,
+            'dropdownAttribute' => $this->dropdownAttribute,
+            'dropdownValueAttribute' => $this->dropdownValueAttribute,
+            'dropdownPrefixAttribute' => $this->dropdownPrefixAttribute,
+            'dropdownUnique' => $this->dropdownUnique,
+            'filterAttribute' => $this->filterAttribute,
+            'sortAttribute' => $this->sortAttribute,
         ];
 
         echo Html::endTag('fieldset');
@@ -261,12 +267,6 @@ class Polyfield extends Widget
                 ]);
                 return;
             }
-            $model['dropdownAttribute'] = $this->dropdownAttribute;
-            $model['dropdownValueAttribute'] = $this->dropdownValueAttribute;
-            $model['dropdownPrefixAttribute'] = $this->dropdownPrefixAttribute;
-            $model['dropdownUnique'] = $this->dropdownUnique;
-            $model['filterAttribute'] = $this->filterAttribute;
-            $model['sortAttribute'] = $this->sortAttribute;
         }
 
         echo Html::beginTag('div', [
