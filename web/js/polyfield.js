@@ -105,7 +105,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         // * `attribute` The attribute name in model as {String}.
         // * `counter`   The sequence model number as {Number}.
         // * `value`     The value of attribute as {String}.
-        // * `type`        The type of input ['text', 'hidden'] avalable as {String}
+        // * `type`      The type of input ['text', 'hidden', 'checkbox'] avalable as {String}
         // * `label`     The label for attribute as {String}.
 
         // Returns the document element as Node.
@@ -124,16 +124,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             label = false;
           }
           formGroup = document.createElement('div');
-          formGroup.setAttribute('class', 'form-group');
-          if (label) {
-            formGroup.appendChild(this.generateLabel(attribute + counter, label));
+          if (type !== this.inputTypes.HIDDEN) {
+            formGroup.setAttribute('class', 'form-group');
+            if (label) {
+              formGroup.appendChild(this.generateLabel(attribute + counter, label));
+            }
           }
           div = document.createElement('div');
           div.setAttribute('class', 'col-xs-6 col-sm-6 col-md-7 col-lg-7');
           input = document.createElement('input');
           input.setAttribute('type', type);
           input.setAttribute('name', modelName + '[' + counter + '][' + attribute + ']');
-          if (type !== 'hidden') {
+          if (type !== this.inputTypes.HIDDEN) {
             inputId = attribute + id + counter;
             input.setAttribute('id', inputId);
             this.addToAutocomplete(inputId, modelName, attribute);
@@ -200,16 +202,20 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         // Private: Generates option tags for select list
 
-        // `values`      The options values as {Array}
-        // `attribute`   The attribute value of what takes as {String}
-        // `selected`    The selected element identifier as {Number}
+        // * `values`      The options values as {Array}
+        // * `attribute`   The attribute value of what takes as {String}
+        // * `selected`    The selected element identifier as {Number}
+        // * `sortAttr`  The option for add attribute in accordance with which options sorted
+        // * `attributePrefix` The option add attribute values as prefix for current attribute values
+        // * `valueAttribute`  The attribute name value of it will be seted in options values
+        // * `exists`    The data with existing values
 
         // Returns the document element as Node
 
       }, {
         key: 'generateOptions',
         value: function generateOptions(values, attribute, selected, sortAttr, attributePrefix, valueAttribute, exists) {
-          var existingValues, filter, j, len, option, optionValue, options, value;
+          var existingValues, filter, j, k, key, len, len1, newvalues, obj, option, optionValue, options, value;
           if (typeof attributePrefix === 'undefined') {
             attributePrefix = '';
           }
@@ -224,6 +230,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             exists = [];
           }
           options = document.createDocumentFragment();
+          if (!values.sort) {
+            newvalues = [];
+            for (value = j = 0, len = values.length; j < len; value = ++j) {
+              key = values[value];
+              obj = {};
+              obj[attribute] = key;
+              obj[valueAttribute] = value;
+              newvalues.push(obj);
+            }
+            values = newvalues;
+          }
           values = values.sort(function (a, b) {
             var first, second;
             if (!a[sortAttr]) {
@@ -248,8 +265,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           values = values.filter(function (value) {
             return existingValues.indexOf(value[attribute]) === -1;
           });
-          for (j = 0, len = values.length; j < len; j++) {
-            value = values[j];
+          for (k = 0, len1 = values.length; k < len1; k++) {
+            value = values[k];
             optionValue = value[attribute];
             if (attributePrefix.length) {
               optionValue = value[attributePrefix] + ' - ' + optionValue;
@@ -274,6 +291,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         // * `label`     The label for attribute as {String}.
         // * `values`    The select option values as {Array}.
         // * `selected`  The option value that is selected as {String}.
+        // * `filterAttr` The option for add filter dropdown element
+        // * `sortAttr`  The option for add attribute in accordance with which options sorted
+        // * `attributePrefix` The option add attribute values as prefix for current attribute values
+        // * `valueAttribute`  The attribute name value of it will be seted in options values
+        // * `exists`    The data with existing values
 
         // Returns the document element as Node.
 
@@ -563,7 +585,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: 'appendTemplate',
         value: function appendTemplate(id) {
-          var attrType, attribute, collapseFragment, collapsible, contentBody, index, inputElement, model, ref, ref1, sectionId;
+          var attrType, attrValues, attribute, collapseFragment, collapsible, contentBody, index, inputElement, model, ref, ref1, sectionId;
           model = this.models[id];
           model.counter++;
           sectionId = 'section_' + id + model.counter;
@@ -576,6 +598,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             ref = model.attributeTypes;
             for (attribute in ref) {
               attrType = ref[attribute];
+              attrValues = null;
+              if ((typeof attrType === 'undefined' ? 'undefined' : _typeof(attrType)) === 'object') {
+                attrValues = attrType.data;
+                attrType = attrType.type;
+              }
               inputElement = function () {
                 switch (false) {
                   case attrType !== this.inputTypes.STRING:
@@ -584,10 +611,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     return this.generateDateInput(id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]);
                   case attrType !== this.inputTypes.TEXT:
                     return this.generateEditor(id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]);
+                  case attrType !== this.inputTypes.HIDDEN:
+                    return this.generateInput(id, model.name, attribute, model.counter, '', 'hidden', model.attributeLabels[attribute]);
                   case attrType !== this.inputTypes.BOOLEAN:
                     return this.generateInput(id, model.name, attribute, model.counter, '', 'checkbox', model.attributeLabels[attribute]);
                   case attrType !== this.inputTypes.DROPDOWN:
-                    return this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute, model.dropdownUnique ? model.exists : []);
+                    return this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[attribute], attrValues || model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute, model.dropdownUnique ? model.exists : []);
                   default:
                     return document.createElement('div');
                 }
@@ -627,7 +656,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: 'appendExists',
         value: function appendExists(id) {
-          var attrType, attribute, collapsible, collapsibleFragment, contentBody, index, inputElement, j, len, model, object, ref, ref1, ref2, sectionId;
+          var attrType, attrValues, attribute, collapsible, collapsibleFragment, contentBody, index, inputElement, j, len, model, object, ref, ref1, ref2, sectionId;
           model = this.models[id];
           if (model.existsShowen) {
             return;
@@ -646,6 +675,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               ref1 = model.attributeTypes;
               for (attribute in ref1) {
                 attrType = ref1[attribute];
+                attrValues = null;
+                if ((typeof attrType === 'undefined' ? 'undefined' : _typeof(attrType)) === 'object') {
+                  attrValues = attrType.data;
+                  attrType = attrType.type;
+                }
                 inputElement = function () {
                   switch (false) {
                     case attrType !== this.inputTypes.STRING:
@@ -654,10 +688,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                       return this.generateDateInput(id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]);
                     case attrType !== this.inputTypes.TEXT:
                       return this.generateEditor(id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]);
+                    case attrType !== this.inputTypes.HIDDEN:
+                      return this.generateInput(id, model.name, attribute, model.counter, object[attribute], 'hidden', model.attributeLabels[attribute]);
                     case attrType !== this.inputTypes.BOOLEAN:
                       return this.generateInput(id, model.name, attribute, model.counter, object[attribute], 'checkbox', model.attributeLabels[attribute]);
                     case attrType !== this.inputTypes.DROPDOWN:
-                      return this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, object[model.dropdownValueAttribute], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute);
+                      return this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[attribute], attrValues || model.dropdownValues, object[model.dropdownValueAttribute], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute);
                     default:
                       return document.createElement('div');
                   }
@@ -798,7 +834,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       DATE: 'date',
       STRING: 'string',
       BOOLEAN: 'boolean',
-      DROPDOWN: 'dropdown'
+      DROPDOWN: 'dropdown',
+      SELECT2: 'select2',
+      HIDDEN: 'hidden'
     };
 
     // Private: list of active models.
