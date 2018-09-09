@@ -649,6 +649,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           jQuery('#' + sectionId).collapsible({
             defaultOpen: '' + sectionId
           });
+          this.createSelect2(sectionId);
           return this.bindAutocomplete();
         }
 
@@ -728,6 +729,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             jQuery('#' + sectionId).collapsible({
               defaultOpen: sectionId
             });
+            this.createSelect2(sectionId);
             this.bindAutocomplete();
           }
           return model.existsShowen = true;
@@ -791,6 +793,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             });
           }
           return this.completes = [];
+        }
+      }, {
+        key: 'createSelect2',
+        value: function createSelect2(sectionId) {
+          return jQuery('#' + sectionId).next().contents().find('select').select2();
         }
 
         // Public: sets translation parameters for polyfield widget
