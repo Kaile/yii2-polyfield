@@ -19,6 +19,15 @@
         "trntv/yii2-datetime-widget": "^1.1",
         "bower-asset/select2-bootstrap-theme": "@beta"
     },
+    "config": {
+        "process-timeout": 1800,
+        "fxp-asset": {
+            "installer-paths": {
+                "npm-asset-library": "vendor/npm",
+                "bower-asset-library": "vendor/bower"
+            }
+        }
+    },
     "repositories":[
         {
             "type": "git",
