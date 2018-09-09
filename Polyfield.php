@@ -3,6 +3,8 @@
 namespace kaile\polyfield;
 
 use kaile\polyfield\assets\PolyfieldAsset;
+use kaile\polyfield\assets\Select2Asset;
+use kaile\polyfield\assets\Select2BootstrapThemeAsset;
 use Yii;
 use yii\base\Widget;
 use yii\db\ActiveRecord;
@@ -26,6 +28,7 @@ class Polyfield extends Widget
      */
     const TYPE_STRING = 'string';
     const TYPE_DROPDOWN = 'dropdown';
+    const TYPE_SELECT2 = 'select2';
     const TYPE_DATE = 'date';
     const TYPE_TEXT = 'text';
     const TYPE_BOOL = 'boolean';
@@ -155,8 +158,7 @@ class Polyfield extends Widget
     public $dateAttributes = ['date'];
 
     /**
-     * Key value pairs where key it is type name and value is attribute name.
-     * Value also can be an array with list of attributes that is a same type.
+     * Key value pairs where key is attribute name and value is type.
      *
      * @var array
      */
@@ -169,6 +171,24 @@ class Polyfield extends Widget
      * @var string
      */
     public $order = false;
+
+    /**
+     * Data for Select2 field.
+     * Format of data:
+     * ```php
+     * ['id' => 'name']
+     * ```
+     *
+     * @var array
+     */
+    public $select2Data = [];
+
+    /**
+     * Render select2 with bootstrap theme
+     *
+     * @var bool
+     */
+    public $select2BootstrapTheme = true;
 
     /**
      * @inheritdoc
@@ -217,6 +237,7 @@ class Polyfield extends Widget
             'dateAttributes' => $this->dateAttributes,
             'attributeTypes' => $this->attributeTypes,
             'order' => $this->order,
+            'select2Data' => $this->select2Data,
         ];
 
         echo Html::endTag('fieldset');
@@ -267,6 +288,15 @@ class Polyfield extends Widget
             'noFilter' => Yii::t('app', '--- Нет ---'),
             'order' => Yii::t('app', 'Позиция'),
         ];
+
+        if ($this->type === static::TYPE_SELECT2 || in_array(static::TYPE_SELECT2, $this->attributeTypes)) {
+            if ($this->select2BootstrapTheme) {
+                Select2BootstrapThemeAsset::register($this->getView());
+                $this->getView()->registerJs('$.fn.select2.defaults.set( "theme", "bootstrap" );');
+            } else {
+                Select2Asset::register($this->getView());
+            }
+        }
 
         $this->getView()->registerJs('polyfield.setTranslation(' . Json::encode($i18n) . ')');
         $this->getView()->registerJs('polyfield.push(' . Json::encode($model) . ')');
