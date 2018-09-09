@@ -616,7 +616,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                   case attrType !== this.inputTypes.BOOLEAN:
                     return this.generateInput(id, model.name, attribute, model.counter, '', 'checkbox', model.attributeLabels[attribute]);
                   case attrType !== this.inputTypes.DROPDOWN:
-                    return this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[attribute], attrValues || model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute, model.dropdownUnique ? model.exists : []);
+                    return this.generateDropdown(id, model.name, attribute, model.counter, model.attributeLabels[attribute], attrValues || model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute, model.dropdownUnique ? model.exists : []);
                   default:
                     return document.createElement('div');
                 }
@@ -693,7 +693,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     case attrType !== this.inputTypes.BOOLEAN:
                       return this.generateInput(id, model.name, attribute, model.counter, object[attribute], 'checkbox', model.attributeLabels[attribute]);
                     case attrType !== this.inputTypes.DROPDOWN:
-                      return this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[attribute], attrValues || model.dropdownValues, object[model.dropdownValueAttribute], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute);
+                      return this.generateDropdown(id, model.name, attribute, model.counter, model.attributeLabels[attribute], attrValues || model.dropdownValues, object[model.dropdownValueAttribute], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute);
                     default:
                       return document.createElement('div');
                   }

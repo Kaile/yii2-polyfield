@@ -528,7 +528,7 @@ class Polyfield
                     when attrType is @inputTypes.TEXT then @generateEditor id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]
                     when attrType is @inputTypes.HIDDEN then @generateInput id, model.name, attribute, model.counter, '', 'hidden', model.attributeLabels[attribute]
                     when attrType is @inputTypes.BOOLEAN then @generateInput id, model.name, attribute, model.counter, '', 'checkbox', model.attributeLabels[attribute]
-                    when attrType is @inputTypes.DROPDOWN then @generateDropdown id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[attribute], attrValues ||model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute, (if model.dropdownUnique then model.exists else [])
+                    when attrType is @inputTypes.DROPDOWN then @generateDropdown id, model.name, attribute, model.counter, model.attributeLabels[attribute], attrValues ||model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute, (if model.dropdownUnique then model.exists else [])
                     else document.createElement 'div'
                 contentBody.appendChild inputElement
         else
@@ -581,7 +581,7 @@ class Polyfield
                         when attrType is @inputTypes.TEXT then @generateEditor id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]
                         when attrType is @inputTypes.HIDDEN then @generateInput id, model.name, attribute, model.counter, object[attribute], 'hidden', model.attributeLabels[attribute]
                         when attrType is @inputTypes.BOOLEAN then @generateInput id, model.name, attribute, model.counter, object[attribute], 'checkbox', model.attributeLabels[attribute]
-                        when attrType is @inputTypes.DROPDOWN then @generateDropdown id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[attribute], attrValues || model.dropdownValues, object[model.dropdownValueAttribute], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute
+                        when attrType is @inputTypes.DROPDOWN then @generateDropdown id, model.name, attribute, model.counter, model.attributeLabels[attribute], attrValues || model.dropdownValues, object[model.dropdownValueAttribute], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute
                         else document.createElement 'div'
                     contentBody.appendChild inputElement
             else
