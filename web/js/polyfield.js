@@ -215,7 +215,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: 'generateOptions',
         value: function generateOptions(values, attribute, selected, sortAttr, attributePrefix, valueAttribute, exists) {
-          var existingValues, filter, j, k, key, len, len1, option, optionValue, options, value;
+          var existingValues, filter, j, key, len, option, optionValue, options, value;
           if (typeof attributePrefix === 'undefined') {
             attributePrefix = '';
           }
@@ -270,8 +270,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               options.appendChild(option);
             }
           } else {
-            for (value = k = 0, len1 = values.length; k < len1; value = ++k) {
-              key = values[value];
+            for (key in values) {
+              value = values[key];
               optionValue = value;
               option = document.createElement('option');
               option.setAttribute('value', key);
@@ -597,7 +597,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           if (model.order) {
             contentBody.appendChild(this.generateOrder(id, model.name, model.counter));
           }
-          if (model.attributeTypes) {
+          if (typeof model.attributeTypes.length === 'undefined') {
             ref = model.attributeTypes;
             for (attribute in ref) {
               attrType = ref[attribute];
@@ -619,7 +619,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                   case attrType !== this.inputTypes.BOOLEAN:
                     return this.generateInput(id, model.name, attribute, model.counter, '', 'checkbox', model.attributeLabels[attribute]);
                   case attrType !== this.inputTypes.DROPDOWN:
-                    return this.generateDropdown(id, model.name, attribute, model.counter, model.attributeLabels[attribute], attrValues || model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute, model.dropdownUnique ? model.exists : []);
+                    return this.generateDropdown(id, model.name, attribute, model.counter, model.attributeLabels[attribute], attrValues || model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, attribute, model.dropdownUnique ? model.exists : []);
                   default:
                     return document.createElement('div');
                 }
@@ -674,7 +674,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             if (model.order) {
               contentBody.appendChild(this.generateOrder(id, model.name, model.counter));
             }
-            if (model.attributeTypes) {
+            if (typeof model.attributeTypes.length === 'undefined') {
               ref1 = model.attributeTypes;
               for (attribute in ref1) {
                 attrType = ref1[attribute];
@@ -696,7 +696,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     case attrType !== this.inputTypes.BOOLEAN:
                       return this.generateInput(id, model.name, attribute, model.counter, object[attribute], 'checkbox', model.attributeLabels[attribute]);
                     case attrType !== this.inputTypes.DROPDOWN:
-                      return this.generateDropdown(id, model.name, attribute, model.counter, model.attributeLabels[attribute], attrValues || model.dropdownValues, object[model.dropdownValueAttribute], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute);
+                      return this.generateDropdown(id, model.name, attribute, model.counter, model.attributeLabels[attribute], attrValues || model.dropdownValues, object[model.dropdownValueAttribute], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, attribute);
                     default:
                       return document.createElement('div');
                   }
