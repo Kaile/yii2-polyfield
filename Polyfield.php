@@ -296,16 +296,10 @@ class Polyfield extends Widget
             'order' => Yii::t('app', 'Позиция'),
         ];
 
-        if ($this->type === static::TYPE_SELECT2 || in_array(static::TYPE_SELECT2, $this->attributeTypes)) {
-            if ($this->select2BootstrapTheme) {
-                Select2BootstrapThemeAsset::register($this->getView());
-                $this->getView()->registerJs('$.fn.select2.defaults.set( "theme", "bootstrap" );');
-            } else {
-                Select2Asset::register($this->getView());
-            }
-        }
-
+        Select2BootstrapThemeAsset::register($this->getView());
+        
         $this->getView()->registerJs('polyfield.setTranslation(' . Json::encode($i18n) . ')');
         $this->getView()->registerJs('polyfield.push(' . Json::encode($model) . ')');
+        $this->getView()->registerJs('$.fn.select2.defaults.set( "theme", "bootstrap" );');
     }
 }
