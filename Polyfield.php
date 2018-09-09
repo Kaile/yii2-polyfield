@@ -28,10 +28,21 @@ class Polyfield extends Widget
      */
     const TYPE_STRING = 'string';
     const TYPE_DROPDOWN = 'dropdown';
+    /**
+     * Data for Select2 field.
+     * Format of data:
+     * ```php
+     * ['id' => 'name'];
+     * ```
+     */
     const TYPE_SELECT2 = 'select2';
     const TYPE_DATE = 'date';
     const TYPE_TEXT = 'text';
     const TYPE_BOOL = 'boolean';
+    /**
+     * Hidden text field
+     */
+    const TYPE_HIDDEN = 'hidden';
     const TYPE_TEXT_BLOCK = 'editor'; //Оставлено пока для совместимости
 
     /**
@@ -181,17 +192,6 @@ class Polyfield extends Widget
     public $order = false;
 
     /**
-     * Data for Select2 field.
-     * Format of data:
-     * ```php
-     * ['id' => 'name']
-     * ```
-     *
-     * @var array
-     */
-    public $select2Data = [];
-
-    /**
      * Render select2 with bootstrap theme
      *
      * @var bool
@@ -245,7 +245,6 @@ class Polyfield extends Widget
             'dateAttributes' => $this->dateAttributes,
             'attributeTypes' => $this->attributeTypes,
             'order' => $this->order,
-            'select2Data' => $this->select2Data,
         ];
 
         echo Html::endTag('fieldset');
