@@ -215,7 +215,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: 'generateOptions',
         value: function generateOptions(values, attribute, selected, sortAttr, attributePrefix, valueAttribute, exists) {
-          var existingValues, filter, j, k, key, len, len1, newvalues, obj, option, optionValue, options, value;
+          var existingValues, filter, j, k, key, len, len1, option, optionValue, options, value;
           if (typeof attributePrefix === 'undefined') {
             attributePrefix = '';
           }
@@ -230,54 +230,57 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             exists = [];
           }
           options = document.createDocumentFragment();
-          if (!values.sort) {
-            newvalues = [];
-            for (value = j = 0, len = values.length; j < len; value = ++j) {
+          if (values.sort) {
+            values = values.sort(function (a, b) {
+              var first, second;
+              if (!a[sortAttr]) {
+                return -1;
+              }
+              if (!b[sortAttr]) {
+                return 1;
+              }
+              first = a[sortAttr].toUpperCase();
+              second = b[sortAttr].toUpperCase();
+              if (first > second) {
+                return 1;
+              }
+              if (first < second) {
+                return -1;
+              }
+              return 0;
+            });
+            existingValues = exists.map(function (value) {
+              return value[attribute];
+            });
+            values = values.filter(function (value) {
+              return existingValues.indexOf(value[attribute]) === -1;
+            });
+            for (j = 0, len = values.length; j < len; j++) {
+              value = values[j];
+              optionValue = value[attribute];
+              if (attributePrefix.length) {
+                optionValue = value[attributePrefix] + ' - ' + optionValue;
+              }
+              option = document.createElement('option');
+              option.setAttribute('value', value[valueAttribute]);
+              option.appendChild(document.createTextNode(optionValue));
+              if (value[valueAttribute] === selected) {
+                option.setAttribute('selected', true);
+              }
+              options.appendChild(option);
+            }
+          } else {
+            for (value = k = 0, len1 = values.length; k < len1; value = ++k) {
               key = values[value];
-              obj = {};
-              obj[valueAttribute] = key;
-              obj[attribute] = value;
-              newvalues.push(obj);
+              optionValue = value;
+              option = document.createElement('option');
+              option.setAttribute('value', key);
+              option.appendChild(document.createTextNode(optionValue));
+              if (key === selected) {
+                option.setAttribute('selected', true);
+              }
+              options.appendChild(option);
             }
-            values = newvalues;
-          }
-          values = values.sort(function (a, b) {
-            var first, second;
-            if (!a[sortAttr]) {
-              return -1;
-            }
-            if (!b[sortAttr]) {
-              return 1;
-            }
-            first = a[sortAttr].toUpperCase();
-            second = b[sortAttr].toUpperCase();
-            if (first > second) {
-              return 1;
-            }
-            if (first < second) {
-              return -1;
-            }
-            return 0;
-          });
-          existingValues = exists.map(function (value) {
-            return value[attribute];
-          });
-          values = values.filter(function (value) {
-            return existingValues.indexOf(value[attribute]) === -1;
-          });
-          for (k = 0, len1 = values.length; k < len1; k++) {
-            value = values[k];
-            optionValue = value[attribute];
-            if (attributePrefix.length) {
-              optionValue = value[attributePrefix] + ' - ' + optionValue;
-            }
-            option = document.createElement('option');
-            option.setAttribute('value', value[valueAttribute]);
-            option.appendChild(document.createTextNode(optionValue));
-            if (value[valueAttribute] === selected) {
-              option.setAttribute('selected', true);
-            }
-            options.appendChild(option);
           }
           return options;
         }
@@ -316,14 +319,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           }
           formGroup = document.createElement('div');
           ddFragment = document.createDocumentFragment();
+          selectId = attribute + id + counter;
           formGroup.setAttribute('class', 'form-group');
-          formGroup.appendChild(this.generateLabel(attribute + counter, label));
+          formGroup.appendChild(this.generateLabel(selectId, label));
           div = document.createElement('div');
           div.setAttribute('class', 'col-xs-6 col-sm-6 col-md-7 col-lg-7');
           select = document.createElement('select');
           select.setAttribute('name', modelName + '[' + counter + '][' + valueAttribute + ']');
           select.appendChild(this.generateOptions(values, attribute, selected, sortAttr, attributePrefix, valueAttribute, exists));
-          selectId = attribute + id + counter;
           select.setAttribute('id', selectId);
           select.setAttribute('class', 'form-control');
           if (filterAttr) {

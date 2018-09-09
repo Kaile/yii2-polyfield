@@ -212,42 +212,43 @@ class Polyfield
         exists = [] unless exists
         options = document.createDocumentFragment()
         
-        unless values.sort
-            newvalues = [];
-            for key, value in values 
-                obj = {};
-                obj[valueAttribute] = key
-                obj[attribute] = value
-                newvalues.push(obj);
-            values = newvalues
+        if values.sort
+            values = values.sort (a, b) ->
+                unless a[sortAttr]
+                    return -1
+                unless b[sortAttr]
+                    return 1
+                first = a[sortAttr].toUpperCase()
+                second = b[sortAttr].toUpperCase()
+                if first > second then return 1
+                if first < second then return -1
+                0
 
-        values = values.sort (a, b) ->
-            unless a[sortAttr]
-                return -1
-            unless b[sortAttr]
-                return 1
-            first = a[sortAttr].toUpperCase()
-            second = b[sortAttr].toUpperCase()
-            if first > second then return 1
-            if first < second then return -1
-            0
+            existingValues = exists.map (value) ->
+                value[attribute]
 
-        existingValues = exists.map (value) ->
-            value[attribute]
+            values = values.filter (value) ->
+                existingValues.indexOf(value[attribute]) is -1
 
-        values = values.filter (value) ->
-            existingValues.indexOf(value[attribute]) is -1
-
-        for value in values
-            optionValue = value[attribute]
-            if attributePrefix.length
-                optionValue = value[attributePrefix] + ' - ' + optionValue
-            option = document.createElement 'option'
-            option.setAttribute 'value', value[valueAttribute]
-            option.appendChild document.createTextNode optionValue
-            if value[valueAttribute] is selected
-                option.setAttribute 'selected', true
-            options.appendChild option
+            for value in values
+                optionValue = value[attribute]
+                if attributePrefix.length
+                    optionValue = value[attributePrefix] + ' - ' + optionValue
+                option = document.createElement 'option'
+                option.setAttribute 'value', value[valueAttribute]
+                option.appendChild document.createTextNode optionValue
+                if value[valueAttribute] is selected
+                    option.setAttribute 'selected', true
+                options.appendChild option
+        else
+            for key, value in values
+                optionValue = value
+                option = document.createElement 'option'
+                option.setAttribute 'value', key
+                option.appendChild document.createTextNode optionValue
+                if key is selected
+                    option.setAttribute 'selected', true
+                options.appendChild option
         return options
 
     # Private: Generates select HTML element
@@ -272,9 +273,10 @@ class Polyfield
         filterAttr = off if typeof filterAttr is 'undefined'
         formGroup = document.createElement 'div'
         ddFragment = document.createDocumentFragment()
+        selectId = attribute + id + counter;
 
         formGroup.setAttribute 'class', 'form-group'
-        formGroup.appendChild @generateLabel(attribute + counter, label)
+        formGroup.appendChild @generateLabel(selectId, label)
 
         div = document.createElement 'div'
         div.setAttribute 'class', 'col-xs-6 col-sm-6 col-md-7 col-lg-7'
@@ -283,7 +285,6 @@ class Polyfield
         select.setAttribute 'name', "#{modelName}[#{counter}][#{valueAttribute}]"
 
         select.appendChild @generateOptions(values, attribute, selected, sortAttr, attributePrefix, valueAttribute, exists)
-        selectId = attribute + id + counter;
         select.setAttribute 'id', selectId
         select.setAttribute 'class', 'form-control'
 
