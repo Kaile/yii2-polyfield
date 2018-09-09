@@ -124,8 +124,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             label = false;
           }
           formGroup = document.createElement('div');
+          formGroup.setAttribute('class', 'form-group');
           if (type !== this.inputTypes.HIDDEN) {
-            formGroup.setAttribute('class', 'form-group');
             if (label) {
               formGroup.appendChild(this.generateLabel(attribute + counter, label));
             }

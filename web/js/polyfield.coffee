@@ -99,9 +99,9 @@ class Polyfield
         label = off if typeof label is 'undefined'
 
         formGroup = document.createElement 'div'
+        formGroup.setAttribute 'class', 'form-group'
 
         unless type is @inputTypes.HIDDEN
-            formGroup.setAttribute 'class', 'form-group'
             formGroup.appendChild @generateLabel(attribute + counter, label) if label
 
         div = document.createElement 'div'
