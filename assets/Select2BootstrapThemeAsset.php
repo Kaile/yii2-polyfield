@@ -19,6 +19,6 @@ class Select2BootstrapThemeAsset extends AssetBundle
         'select2-bootstrap.min.css',
     ];
     public $depends = [
-        'Select2Asset',
+        'kaile\polyfield\assets\Select2Asset',
     ];
 }
