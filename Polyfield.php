@@ -162,7 +162,7 @@ class Polyfield extends Widget
      *
      * @var array
      */
-    public $attributeTypes = null; // Потом переделать и другие типы на использование данного свойства
+    public $attributeTypes = [];
 
     /**
      * Order is the property that contains data for sequence of model list.
