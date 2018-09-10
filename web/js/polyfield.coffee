@@ -12,6 +12,8 @@ class Polyfield
         STRING: 'string'
         BOOLEAN: 'boolean'
         DROPDOWN: 'dropdown'
+        SELECT2: 'select2'
+        HIDDEN: 'hidden'
 
     constructor: ->
         jQuery('body').on 'blur', 'input[type="text"]', ->
@@ -87,7 +89,7 @@ class Polyfield
     # * `attribute` The attribute name in model as {String}.
     # * `counter`   The sequence model number as {Number}.
     # * `value`     The value of attribute as {String}.
-    # * `type`        The type of input ['text', 'hidden'] avalable as {String}
+    # * `type`      The type of input ['text', 'hidden', 'checkbox'] avalable as {String}
     # * `label`     The label for attribute as {String}.
     #
     # Returns the document element as Node.
@@ -99,7 +101,8 @@ class Polyfield
         formGroup = document.createElement 'div'
         formGroup.setAttribute 'class', 'form-group'
 
-        formGroup.appendChild @generateLabel(attribute + counter, label) if label
+        unless type is @inputTypes.HIDDEN
+            formGroup.appendChild @generateLabel(attribute + counter, label) if label
 
         div = document.createElement 'div'
         div.setAttribute 'class', 'col-xs-6 col-sm-6 col-md-7 col-lg-7'
@@ -107,7 +110,7 @@ class Polyfield
         input = document.createElement 'input'
         input.setAttribute 'type', type
         input.setAttribute 'name', "#{modelName}[#{counter}][#{attribute}]"
-        unless type is 'hidden'
+        unless type is @inputTypes.HIDDEN
             inputId = attribute + id + counter;
             input.setAttribute 'id', inputId
             @addToAutocomplete inputId, modelName, attribute
@@ -192,9 +195,13 @@ class Polyfield
 
     # Private: Generates option tags for select list
     #
-    # `values`      The options values as {Array}
-    # `attribute`   The attribute value of what takes as {String}
-    # `selected`    The selected element identifier as {Number}
+    # * `values`      The options values as {Array}
+    # * `attribute`   The attribute value of what takes as {String}
+    # * `selected`    The selected element identifier as {Number}
+    # * `sortAttr`  The option for add attribute in accordance with which options sorted
+    # * `attributePrefix` The option add attribute values as prefix for current attribute values
+    # * `valueAttribute`  The attribute name value of it will be seted in options values
+    # * `exists`    The data with existing values
     #
     # Returns the document element as Node
     generateOptions: (values, attribute, selected, sortAttr, attributePrefix, valueAttribute, exists) ->
@@ -204,33 +211,44 @@ class Polyfield
         valueAttribute = 'id' unless valueAttribute
         exists = [] unless exists
         options = document.createDocumentFragment()
-        values = values.sort (a, b) ->
-            unless a[sortAttr]
-                return -1
-            unless b[sortAttr]
-                return 1
-            first = a[sortAttr].toUpperCase()
-            second = b[sortAttr].toUpperCase()
-            if first > second then return 1
-            if first < second then return -1
-            0
+        
+        if values.sort
+            values = values.sort (a, b) ->
+                unless a[sortAttr]
+                    return -1
+                unless b[sortAttr]
+                    return 1
+                first = a[sortAttr].toUpperCase()
+                second = b[sortAttr].toUpperCase()
+                if first > second then return 1
+                if first < second then return -1
+                0
 
-        existingValues = exists.map (value) ->
-            value[attribute]
+            existingValues = exists.map (value) ->
+                value[attribute]
 
-        values = values.filter (value) ->
-            existingValues.indexOf(value[attribute]) is -1
+            values = values.filter (value) ->
+                existingValues.indexOf(value[attribute]) is -1
 
-        for value in values
-            optionValue = value[attribute]
-            if attributePrefix.length
-                optionValue = value[attributePrefix] + ' - ' + optionValue
-            option = document.createElement 'option'
-            option.setAttribute 'value', value[valueAttribute]
-            option.appendChild document.createTextNode optionValue
-            if value[valueAttribute] is selected
-                option.setAttribute 'selected', true
-            options.appendChild option
+            for value in values
+                optionValue = value[attribute]
+                if attributePrefix.length
+                    optionValue = value[attributePrefix] + ' - ' + optionValue
+                option = document.createElement 'option'
+                option.setAttribute 'value', value[valueAttribute]
+                option.appendChild document.createTextNode optionValue
+                if value[valueAttribute] is selected
+                    option.setAttribute 'selected', true
+                options.appendChild option
+        else
+            for key, value of values
+                optionValue = value
+                option = document.createElement 'option'
+                option.setAttribute 'value', key
+                option.appendChild document.createTextNode optionValue
+                if key is selected
+                    option.setAttribute 'selected', true
+                options.appendChild option
         return options
 
     # Private: Generates select HTML element
@@ -242,6 +260,11 @@ class Polyfield
     # * `label`     The label for attribute as {String}.
     # * `values`    The select option values as {Array}.
     # * `selected`  The option value that is selected as {String}.
+    # * `filterAttr` The option for add filter dropdown element
+    # * `sortAttr`  The option for add attribute in accordance with which options sorted
+    # * `attributePrefix` The option add attribute values as prefix for current attribute values
+    # * `valueAttribute`  The attribute name value of it will be seted in options values
+    # * `exists`    The data with existing values
     #
     # Returns the document element as Node.
     generateDropdown: (id, modelName, attribute, counter, label, values, selected, filterAttr, sortAttr, attributePrefix, valueAttribute, exists) ->
@@ -250,9 +273,10 @@ class Polyfield
         filterAttr = off if typeof filterAttr is 'undefined'
         formGroup = document.createElement 'div'
         ddFragment = document.createDocumentFragment()
+        selectId = attribute + id + counter;
 
         formGroup.setAttribute 'class', 'form-group'
-        formGroup.appendChild @generateLabel(attribute + counter, label)
+        formGroup.appendChild @generateLabel(selectId, label)
 
         div = document.createElement 'div'
         div.setAttribute 'class', 'col-xs-6 col-sm-6 col-md-7 col-lg-7'
@@ -261,7 +285,6 @@ class Polyfield
         select.setAttribute 'name', "#{modelName}[#{counter}][#{valueAttribute}]"
 
         select.appendChild @generateOptions(values, attribute, selected, sortAttr, attributePrefix, valueAttribute, exists)
-        selectId = attribute + id + counter;
         select.setAttribute 'id', selectId
         select.setAttribute 'class', 'form-control'
 
@@ -494,14 +517,19 @@ class Polyfield
         if model.order
             contentBody.appendChild @generateOrder id, model.name, model.counter
 
-        if model.attributeTypes
+        if typeof model.attributeTypes.length is 'undefined'
             for attribute, attrType of model.attributeTypes
+                attrValues = null;
+                if typeof attrType is 'object'
+                    attrValues = attrType.data
+                    attrType = attrType.type
                 inputElement = switch
                     when attrType is @inputTypes.STRING then @generateInput id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]
                     when attrType is @inputTypes.DATE then @generateDateInput id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]
                     when attrType is @inputTypes.TEXT then @generateEditor id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]
+                    when attrType is @inputTypes.HIDDEN then @generateInput id, model.name, attribute, model.counter, '', 'hidden', model.attributeLabels[attribute]
                     when attrType is @inputTypes.BOOLEAN then @generateInput id, model.name, attribute, model.counter, '', 'checkbox', model.attributeLabels[attribute]
-                    when attrType is @inputTypes.DROPDOWN then @generateDropdown id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute, (if model.dropdownUnique then model.exists else [])
+                    when attrType is @inputTypes.DROPDOWN then @generateDropdown id, model.name, attribute, model.counter, model.attributeLabels[attribute], attrValues ||model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, attribute, (if model.dropdownUnique then model.exists else [])
                     else document.createElement 'div'
                 contentBody.appendChild inputElement
         else
@@ -522,6 +550,7 @@ class Polyfield
         document.getElementById('content_' + id).appendChild collapseFragment
         jQuery('#' + sectionId).collapsible
             defaultOpen: "#{sectionId}"
+        @createSelect2(sectionId)
         @bindAutocomplete()
 
     # Public: generates existing models structure in view
@@ -542,14 +571,19 @@ class Polyfield
             if model.order
                 contentBody.appendChild @generateOrder id, model.name, model.counter
 
-            if model.attributeTypes
+            if typeof model.attributeTypes.length is 'undefined'
                 for attribute, attrType of model.attributeTypes
+                    attrValues = null;
+                    if typeof attrType is 'object'
+                        attrValues = attrType.data
+                        attrType = attrType.type
                     inputElement = switch
                         when attrType is @inputTypes.STRING then @generateInput id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]
                         when attrType is @inputTypes.DATE then @generateDateInput id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]
                         when attrType is @inputTypes.TEXT then @generateEditor id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]
+                        when attrType is @inputTypes.HIDDEN then @generateInput id, model.name, attribute, model.counter, object[attribute], 'hidden', model.attributeLabels[attribute]
                         when attrType is @inputTypes.BOOLEAN then @generateInput id, model.name, attribute, model.counter, object[attribute], 'checkbox', model.attributeLabels[attribute]
-                        when attrType is @inputTypes.DROPDOWN then @generateDropdown id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, object[model.dropdownValueAttribute], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute
+                        when attrType is @inputTypes.DROPDOWN then @generateDropdown id, model.name, attribute, model.counter, model.attributeLabels[attribute], attrValues || model.dropdownValues, object[model.dropdownValueAttribute], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, attribute
                         else document.createElement 'div'
                     contentBody.appendChild inputElement
             else
@@ -572,6 +606,7 @@ class Polyfield
             document.getElementById('content_' + id).appendChild collapsibleFragment
             jQuery('#' + sectionId).collapsible
                 defaultOpen: sectionId
+            @createSelect2(sectionId)
             @bindAutocomplete()
         model.existsShowen = on
 
@@ -610,6 +645,9 @@ class Polyfield
                     modelName: object.modelName
                     attributeName: object.attribute
         @completes = []
+
+    createSelect2: (sectionId) ->
+        jQuery("##{sectionId}").next().contents().find('select').select2()
 
     # Public: sets translation parameters for polyfield widget
     #

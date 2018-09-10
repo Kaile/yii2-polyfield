@@ -3,6 +3,8 @@
 namespace kaile\polyfield;
 
 use kaile\polyfield\assets\PolyfieldAsset;
+use kaile\polyfield\assets\Select2Asset;
+use kaile\polyfield\assets\Select2BootstrapThemeAsset;
 use Yii;
 use yii\base\Widget;
 use yii\db\ActiveRecord;
@@ -26,9 +28,21 @@ class Polyfield extends Widget
      */
     const TYPE_STRING = 'string';
     const TYPE_DROPDOWN = 'dropdown';
+    /**
+     * Data for Select2 field.
+     * Format of data:
+     * ```php
+     * ['id' => 'name'];
+     * ```
+     */
+    const TYPE_SELECT2 = 'select2';
     const TYPE_DATE = 'date';
     const TYPE_TEXT = 'text';
     const TYPE_BOOL = 'boolean';
+    /**
+     * Hidden text field
+     */
+    const TYPE_HIDDEN = 'hidden';
     const TYPE_TEXT_BLOCK = 'editor'; //Оставлено пока для совместимости
 
     /**
@@ -155,12 +169,19 @@ class Polyfield extends Widget
     public $dateAttributes = ['date'];
 
     /**
-     * Key value pairs where key it is type name and value is attribute name.
-     * Value also can be an array with list of attributes that is a same type.
+     * Key value pairs where key is attribute name and value is type.
+     * For HTML elements that needs a prepared data (e.t. dropdown or select2) 
+     * value can be sets as array with keys as param name and values as param values:
+     * ```php
+     * ['status' => [
+     *      'type' => Polyfield::TYPE_SELECT2,
+     *      'data' => Statuses::find()->all(),
+     * ]];
+     * ```
      *
      * @var array
      */
-    public $attributeTypes = null; // Потом переделать и другие типы на использование данного свойства
+    public $attributeTypes = [];
 
     /**
      * Order is the property that contains data for sequence of model list.
@@ -169,6 +190,13 @@ class Polyfield extends Widget
      * @var string
      */
     public $order = false;
+
+    /**
+     * Render select2 with bootstrap theme
+     *
+     * @var bool
+     */
+    public $select2BootstrapTheme = true;
 
     /**
      * @inheritdoc
@@ -217,6 +245,12 @@ class Polyfield extends Widget
             'dateAttributes' => $this->dateAttributes,
             'attributeTypes' => $this->attributeTypes,
             'order' => $this->order,
+            'dropdownAttribute' => $this->dropdownAttribute,
+            'dropdownValueAttribute' => $this->dropdownValueAttribute,
+            'dropdownPrefixAttribute' => $this->dropdownPrefixAttribute,
+            'dropdownUnique' => $this->dropdownUnique,
+            'filterAttribute' => $this->filterAttribute,
+            'sortAttribute' => $this->sortAttribute,
         ];
 
         echo Html::endTag('fieldset');
@@ -233,12 +267,6 @@ class Polyfield extends Widget
                 ]);
                 return;
             }
-            $model['dropdownAttribute'] = $this->dropdownAttribute;
-            $model['dropdownValueAttribute'] = $this->dropdownValueAttribute;
-            $model['dropdownPrefixAttribute'] = $this->dropdownPrefixAttribute;
-            $model['dropdownUnique'] = $this->dropdownUnique;
-            $model['filterAttribute'] = $this->filterAttribute;
-            $model['sortAttribute'] = $this->sortAttribute;
         }
 
         echo Html::beginTag('div', [
@@ -268,7 +296,13 @@ class Polyfield extends Widget
             'order' => Yii::t('app', 'Позиция'),
         ];
 
+        Select2BootstrapThemeAsset::register($this->getView());
+        
         $this->getView()->registerJs('polyfield.setTranslation(' . Json::encode($i18n) . ')');
         $this->getView()->registerJs('polyfield.push(' . Json::encode($model) . ')');
+        $this->getView()->registerJs('$.fn.select2.defaults.set("theme", "bootstrap");');
+        $this->getView()->registerJs('$.fn.select2.defaults.set("allowClear", true);');
+        $this->getView()->registerJs('$.fn.select2.defaults.set("language", "' . mb_strcut(Yii::$app->language, 0, 2, 'utf-8') . '");');
+        $this->getView()->registerJs('$.fn.select2.defaults.set("placeholder", "' . Yii::t('app', 'Выберите элемент из списка') . '");');
     }
 }
