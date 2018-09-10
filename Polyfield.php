@@ -302,6 +302,7 @@ class Polyfield extends Widget
         $this->getView()->registerJs('polyfield.push(' . Json::encode($model) . ')');
         $this->getView()->registerJs('$.fn.select2.defaults.set("theme", "bootstrap");');
         $this->getView()->registerJs('$.fn.select2.defaults.set("allowClear", true);');
+        $this->getView()->registerJs('$.fn.select2.defaults.set("language", "' . mb_strcut(Yii::$app->language, 0, 2, 'utf-8') . '");');
         $this->getView()->registerJs('$.fn.select2.defaults.set("placeholder", "' . Yii::t('app', 'Выберите элемент из списка') . '");');
     }
 }
