@@ -264,7 +264,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               option = document.createElement('option');
               option.setAttribute('value', value[valueAttribute]);
               option.appendChild(document.createTextNode(optionValue));
-              if (value[valueAttribute] === selected) {
+              if (String(value[valueAttribute]) === String(selected)) {
                 option.setAttribute('selected', true);
               }
               options.appendChild(option);
@@ -276,7 +276,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               option = document.createElement('option');
               option.setAttribute('value', key);
               option.appendChild(document.createTextNode(optionValue));
-              if (key === selected) {
+              if (String(key) === String(selected)) {
                 option.setAttribute('selected', true);
               }
               options.appendChild(option);
@@ -660,7 +660,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: 'appendExists',
         value: function appendExists(id) {
-          var attrType, attrValues, attribute, collapsible, collapsibleFragment, contentBody, index, inputElement, j, len, model, object, ref, ref1, ref2, sectionId;
+          var attrType, attrValues, attribute, collapsible, collapsibleFragment, contentBody, dropdownValueAttribute, index, inputElement, j, len, model, object, ref, ref1, ref2, sectionId;
           model = this.models[id];
           if (model.existsShowen) {
             return;
@@ -680,8 +680,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               for (attribute in ref1) {
                 attrType = ref1[attribute];
                 attrValues = null;
+                dropdownValueAttribute = model.dropdownValueAttribute;
                 if ((typeof attrType === 'undefined' ? 'undefined' : _typeof(attrType)) === 'object') {
                   attrValues = attrType.data;
+                  dropdownValueAttribute = attribute;
                   attrType = attrType.type;
                 }
                 inputElement = function () {
@@ -697,7 +699,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     case attrType !== this.inputTypes.BOOLEAN:
                       return this.generateInput(id, model.name, attribute, model.counter, object[attribute], 'checkbox', model.attributeLabels[attribute]);
                     case attrType !== this.inputTypes.DROPDOWN:
-                      return this.generateDropdown(id, model.name, attribute, model.counter, model.attributeLabels[attribute], attrValues || model.dropdownValues, object[model.dropdownValueAttribute], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, attribute);
+                      return this.generateDropdown(id, model.name, attribute, model.counter, model.attributeLabels[attribute], attrValues || model.dropdownValues, object[dropdownValueAttribute], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, attribute);
                     default:
                       return document.createElement('div');
                   }
