@@ -237,7 +237,7 @@ class Polyfield
                 option = document.createElement 'option'
                 option.setAttribute 'value', value[valueAttribute]
                 option.appendChild document.createTextNode optionValue
-                if value[valueAttribute] is selected
+                if String(value[valueAttribute]) is String(selected)
                     option.setAttribute 'selected', true
                 options.appendChild option
         else
@@ -246,7 +246,7 @@ class Polyfield
                 option = document.createElement 'option'
                 option.setAttribute 'value', key
                 option.appendChild document.createTextNode optionValue
-                if key is selected
+                if String(key) is String(selected)
                     option.setAttribute 'selected', true
                 options.appendChild option
         return options
@@ -574,8 +574,10 @@ class Polyfield
             if typeof model.attributeTypes.length is 'undefined'
                 for attribute, attrType of model.attributeTypes
                     attrValues = null;
+                    dropdownValueAttribute = model.dropdownValueAttribute;
                     if typeof attrType is 'object'
                         attrValues = attrType.data
+                        dropdownValueAttribute = attribute
                         attrType = attrType.type
                     inputElement = switch
                         when attrType is @inputTypes.STRING then @generateInput id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]
@@ -583,7 +585,7 @@ class Polyfield
                         when attrType is @inputTypes.TEXT then @generateEditor id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]
                         when attrType is @inputTypes.HIDDEN then @generateInput id, model.name, attribute, model.counter, object[attribute], 'hidden', model.attributeLabels[attribute]
                         when attrType is @inputTypes.BOOLEAN then @generateInput id, model.name, attribute, model.counter, object[attribute], 'checkbox', model.attributeLabels[attribute]
-                        when attrType is @inputTypes.DROPDOWN then @generateDropdown id, model.name, attribute, model.counter, model.attributeLabels[attribute], attrValues || model.dropdownValues, object[model.dropdownValueAttribute], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, attribute
+                        when attrType is @inputTypes.DROPDOWN then @generateDropdown id, model.name, attribute, model.counter, model.attributeLabels[attribute], attrValues || model.dropdownValues, object[dropdownValueAttribute], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, attribute
                         else document.createElement 'div'
                     contentBody.appendChild inputElement
             else
