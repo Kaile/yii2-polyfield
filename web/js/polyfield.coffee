@@ -649,6 +649,7 @@ class Polyfield
                 params:
                     modelName: object.modelName
                     attributeName: object.attribute
+                triggerSelectOnValidInput: false
         @completes = []
 
     createSelect2: (sectionId) ->
