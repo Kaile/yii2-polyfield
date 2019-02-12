@@ -796,7 +796,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               params: {
                 modelName: object.modelName,
                 attributeName: object.attribute
-              }
+              },
+              triggerSelectOnValidInput: false
             });
           }
           return this.completes = [];

@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "bower-asset/bootstrap",
-            "version": "v3.3.7",
+            "version": "v3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "0b9c4a4007c44201dce9a6cc1a38407005c26c86"
+                "reference": "4c547f2175b9a05aa43551f6927da83fe249ce42"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/0b9c4a4007c44201dce9a6cc1a38407005c26c86",
-                "reference": "0b9c4a4007c44201dce9a6cc1a38407005c26c86",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/4c547f2175b9a05aa43551f6927da83fe249ce42",
+                "reference": "4c547f2175b9a05aa43551f6927da83fe249ce42",
                 "shasum": ""
             },
             "require": {
@@ -54,7 +54,7 @@
                 "responsive",
                 "web"
             ],
-            "time": "2016-07-25T15:51:55+00:00"
+            "time": "2018-12-13T23:45:51+00:00"
         },
         {
             "name": "bower-asset/collapsible",
@@ -74,16 +74,16 @@
         },
         {
             "name": "bower-asset/devbridge-autocomplete",
-            "version": "v1.4.7",
+            "version": "v1.4.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/devbridge/jQuery-Autocomplete.git",
-                "reference": "75a8ae9038df457cc2df24d90bd0e8bca9b34875"
+                "reference": "ca78cd68918b86177f197880f8eb852c6ac3b3a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/devbridge/jQuery-Autocomplete/zipball/75a8ae9038df457cc2df24d90bd0e8bca9b34875",
-                "reference": "75a8ae9038df457cc2df24d90bd0e8bca9b34875",
+                "url": "https://api.github.com/repos/devbridge/jQuery-Autocomplete/zipball/ca78cd68918b86177f197880f8eb852c6ac3b3a5",
+                "reference": "ca78cd68918b86177f197880f8eb852c6ac3b3a5",
                 "shasum": ""
             },
             "require": {
@@ -109,7 +109,7 @@
                 "ajax",
                 "autocomplete"
             ],
-            "time": "2017-12-11T19:09:11+00:00"
+            "time": "2018-08-21T16:06:24+00:00"
         },
         {
             "name": "bower-asset/eonasdan-bootstrap-datetimepicker",
@@ -252,16 +252,16 @@
         },
         {
             "name": "bower-asset/moment",
-            "version": "2.22.0",
+            "version": "2.24.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/moment/moment.git",
-                "reference": "db71a655fc51fe58009675608a400d0d4cd0ca87"
+                "reference": "96d0d6791ab495859d09a868803d31a55c917de1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/moment/moment/zipball/db71a655fc51fe58009675608a400d0d4cd0ca87",
-                "reference": "db71a655fc51fe58009675608a400d0d4cd0ca87",
+                "url": "https://api.github.com/repos/moment/moment/zipball/96d0d6791ab495859d09a868803d31a55c917de1",
+                "reference": "96d0d6791ab495859d09a868803d31a55c917de1",
                 "shasum": ""
             },
             "type": "bower-asset-library",
@@ -292,7 +292,7 @@
             "license": [
                 "MIT"
             ],
-            "time": "2018-03-30T21:53:58+00:00"
+            "time": "2019-01-21T20:59:53+00:00"
         },
         {
             "name": "bower-asset/punycode",
@@ -577,11 +577,11 @@
         },
         {
             "name": "moonlandsoft/yii2-tinymce",
-            "version": "1.0.4",
+            "version": "1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kaile/yii2-tinymce.git",
-                "reference": "c6608e3253841ef4a0ecdf2a36db0fce4a6b7625"
+                "reference": "3e8cc4094df37e566bd4c55ee3f6bc413f4c0e27"
             },
             "require": {
                 "moonlandsoft/helpers": "*",
@@ -611,20 +611,20 @@
                 "wyswyg",
                 "yii2"
             ],
-            "time": "2018-03-29T14:50:09+00:00"
+            "time": "2018-04-24T14:18:45+00:00"
         },
         {
             "name": "trntv/yii2-datetime-widget",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/trntv/yii2-datetime-widget.git",
-                "reference": "9f636a202494b28caeedb8a96708b57af1217b98"
+                "reference": "0340f8aec151f893604dc730624d159205cbf57f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/trntv/yii2-datetime-widget/zipball/9f636a202494b28caeedb8a96708b57af1217b98",
-                "reference": "9f636a202494b28caeedb8a96708b57af1217b98",
+                "url": "https://api.github.com/repos/trntv/yii2-datetime-widget/zipball/0340f8aec151f893604dc730624d159205cbf57f",
+                "reference": "0340f8aec151f893604dc730624d159205cbf57f",
                 "shasum": ""
             },
             "require": {
@@ -656,7 +656,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2018-03-17T15:18:47+00:00"
+            "time": "2018-11-23T12:01:56+00:00"
         },
         {
             "name": "yiisoft/yii2",
@@ -760,16 +760,16 @@
         },
         {
             "name": "yiisoft/yii2-composer",
-            "version": "2.0.6",
+            "version": "2.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-composer.git",
-                "reference": "163419f1f197e02f015713b0d4f85598d8f8aa80"
+                "reference": "1439e78be1218c492e6cde251ed87d3f128b9534"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-composer/zipball/163419f1f197e02f015713b0d4f85598d8f8aa80",
-                "reference": "163419f1f197e02f015713b0d4f85598d8f8aa80",
+                "url": "https://api.github.com/repos/yiisoft/yii2-composer/zipball/1439e78be1218c492e6cde251ed87d3f128b9534",
+                "reference": "1439e78be1218c492e6cde251ed87d3f128b9534",
                 "shasum": ""
             },
             "require": {
@@ -810,7 +810,7 @@
                 "extension installer",
                 "yii2"
             ],
-            "time": "2018-03-21T16:15:55+00:00"
+            "time": "2018-07-05T15:44:47+00:00"
         }
     ],
     "packages-dev": [],
