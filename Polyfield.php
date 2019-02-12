@@ -170,7 +170,7 @@ class Polyfield extends Widget
 
     /**
      * Key value pairs where key is attribute name and value is type.
-     * For HTML elements that needs a prepared data (e.t. dropdown or select2) 
+     * For HTML elements that needs a prepared data (e.t. dropdown or select2)
      * value can be sets as array with keys as param name and values as param values:
      * ```php
      * ['status' => [
@@ -197,6 +197,13 @@ class Polyfield extends Widget
      * @var bool
      */
     public $select2BootstrapTheme = true;
+
+    /**
+     * Autocompletition for string input types
+     *
+     * @var bool
+     */
+    public $autocomplete = true;
 
     /**
      * @inheritdoc
@@ -251,6 +258,7 @@ class Polyfield extends Widget
             'dropdownUnique' => $this->dropdownUnique,
             'filterAttribute' => $this->filterAttribute,
             'sortAttribute' => $this->sortAttribute,
+            'autocomplete' => $this->autocomplete,
         ];
 
         echo Html::endTag('fieldset');
@@ -297,7 +305,7 @@ class Polyfield extends Widget
         ];
 
         Select2BootstrapThemeAsset::register($this->getView());
-        
+
         $this->getView()->registerJs('polyfield.setTranslation(' . Json::encode($i18n) . ')');
         $this->getView()->registerJs('polyfield.push(' . Json::encode($model) . ')');
         $this->getView()->registerJs('$.fn.select2.defaults.set("theme", "bootstrap");');

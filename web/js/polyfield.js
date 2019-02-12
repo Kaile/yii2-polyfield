@@ -112,7 +112,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
       }, {
         key: 'generateInput',
-        value: function generateInput(id, modelName, attribute, counter, value, type, label) {
+        value: function generateInput(id, modelName, attribute, counter, value, type, label, autocomplete) {
           var div, formGroup, input, inputId;
           if (typeof value === 'undefined' || !value) {
             value = '';
@@ -122,6 +122,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           }
           if (typeof label === 'undefined') {
             label = false;
+          }
+          if (typeof autocomplete === 'undefined') {
+            autocomplete = true;
           }
           formGroup = document.createElement('div');
           formGroup.setAttribute('class', 'form-group');
@@ -138,7 +141,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           if (type !== this.inputTypes.HIDDEN) {
             inputId = attribute + id + counter;
             input.setAttribute('id', inputId);
-            this.addToAutocomplete(inputId, modelName, attribute);
+            if (autocomplete === true) {
+              this.addToAutocomplete(inputId, modelName, attribute);
+            }
           }
           if (type === 'checkbox' && value) {
             input.setAttribute('checked', 'checked');
@@ -609,7 +614,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               inputElement = function () {
                 switch (false) {
                   case attrType !== this.inputTypes.STRING:
-                    return this.generateInput(id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]);
+                    return this.generateInput(id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute], model.autocomplete);
                   case attrType !== this.inputTypes.DATE:
                     return this.generateDateInput(id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]);
                   case attrType !== this.inputTypes.TEXT:
@@ -635,7 +640,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                   contentBody.appendChild(this.generateDateInput(id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]));
                   continue;
                 } else {
-                  contentBody.appendChild(this.generateInput(id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]));
+                  contentBody.appendChild(this.generateInput(id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute], model.autocomplete));
                 }
               }
             } else if (model.type === this.types.DROPDOWN) {
@@ -689,7 +694,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 inputElement = function () {
                   switch (false) {
                     case attrType !== this.inputTypes.STRING:
-                      return this.generateInput(id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]);
+                      return this.generateInput(id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute], model.autocomplete);
                     case attrType !== this.inputTypes.DATE:
                       return this.generateDateInput(id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]);
                     case attrType !== this.inputTypes.TEXT:
@@ -717,7 +722,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                   } else if (model.type === this.types.TEXT_BLOCK) {
                     contentBody.appendChild(this.generateEditor(id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]));
                   } else {
-                    contentBody.appendChild(this.generateInput(id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]));
+                    contentBody.appendChild(this.generateInput(id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute], model.autocomplete));
                   }
                 }
               } else if (model.type === this.types.DROPDOWN) {
