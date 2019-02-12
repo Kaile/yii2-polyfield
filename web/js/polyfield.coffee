@@ -93,10 +93,11 @@ class Polyfield
     # * `label`     The label for attribute as {String}.
     #
     # Returns the document element as Node.
-    generateInput: (id, modelName, attribute, counter, value, type, label) ->
+    generateInput: (id, modelName, attribute, counter, value, type, label, autocomplete) ->
         value = '' if typeof value is 'undefined' or not value
         type  = 'hidden' if typeof type is 'undefined'
         label = off if typeof label is 'undefined'
+        autocomplete = true if typeof autocomplete is 'undefined';
 
         formGroup = document.createElement 'div'
         formGroup.setAttribute 'class', 'form-group'
@@ -113,7 +114,9 @@ class Polyfield
         unless type is @inputTypes.HIDDEN
             inputId = attribute + id + counter;
             input.setAttribute 'id', inputId
-            @addToAutocomplete inputId, modelName, attribute
+
+            if autocomplete is on
+                @addToAutocomplete inputId, modelName, attribute
 
         if type is 'checkbox' and value then input.setAttribute 'checked', 'checked'
 
@@ -211,7 +214,7 @@ class Polyfield
         valueAttribute = 'id' unless valueAttribute
         exists = [] unless exists
         options = document.createDocumentFragment()
-        
+
         if values.sort
             values = values.sort (a, b) ->
                 unless a[sortAttr]
@@ -524,7 +527,7 @@ class Polyfield
                     attrValues = attrType.data
                     attrType = attrType.type
                 inputElement = switch
-                    when attrType is @inputTypes.STRING then @generateInput id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]
+                    when attrType is @inputTypes.STRING then @generateInput id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute], model.autocomplete
                     when attrType is @inputTypes.DATE then @generateDateInput id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]
                     when attrType is @inputTypes.TEXT then @generateEditor id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]
                     when attrType is @inputTypes.HIDDEN then @generateInput id, model.name, attribute, model.counter, '', 'hidden', model.attributeLabels[attribute]
@@ -539,7 +542,7 @@ class Polyfield
                         contentBody.appendChild @generateDateInput id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]
                         continue
                     else
-                        contentBody.appendChild @generateInput id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]
+                        contentBody.appendChild @generateInput id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute], model.autocomplete
             else if model.type is @types.DROPDOWN
                 contentBody.appendChild @generateDropdown id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute, (if model.dropdownUnique then model.exists else [])
 
@@ -580,7 +583,7 @@ class Polyfield
                         dropdownValueAttribute = attribute
                         attrType = attrType.type
                     inputElement = switch
-                        when attrType is @inputTypes.STRING then @generateInput id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]
+                        when attrType is @inputTypes.STRING then @generateInput id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute], model.autocomplete
                         when attrType is @inputTypes.DATE then @generateDateInput id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]
                         when attrType is @inputTypes.TEXT then @generateEditor id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]
                         when attrType is @inputTypes.HIDDEN then @generateInput id, model.name, attribute, model.counter, object[attribute], 'hidden', model.attributeLabels[attribute]
@@ -597,7 +600,7 @@ class Polyfield
                         else if model.type is @types.TEXT_BLOCK
                             contentBody.appendChild @generateEditor id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]
                         else
-                            contentBody.appendChild @generateInput id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]
+                            contentBody.appendChild @generateInput id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute], model.autocomplete
                 else if model.type is @types.DROPDOWN
                     contentBody.appendChild @generateDropdown id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, object[model.dropdownValueAttribute], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute
 
