@@ -219,8 +219,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
       }, {
         key: 'generateOptions',
-        value: function generateOptions(values, attribute, selected, sortAttr, attributePrefix, valueAttribute, exists) {
-          var existingValues, filter, j, key, len, option, optionValue, options, value;
+        value: function generateOptions(values, attribute, selected, sortAttr, attributePrefix, valueAttribute, exists, template) {
+          var existingValues, filter, j, k, key, len, option, optionValue, options, v, value;
           if (typeof attributePrefix === 'undefined') {
             attributePrefix = '';
           }
@@ -262,7 +262,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             });
             for (j = 0, len = values.length; j < len; j++) {
               value = values[j];
-              optionValue = value[attribute];
+              optionValue = template;
+              for (k in value) {
+                v = value[k];
+                optionValue = optionValue.replace('{' + k + '}', v);
+              }
               if (attributePrefix.length) {
                 optionValue = value[attributePrefix] + ' - ' + optionValue;
               }
@@ -309,7 +313,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
       }, {
         key: 'generateDropdown',
-        value: function generateDropdown(id, modelName, attribute, counter, label, values, selected, filterAttr, sortAttr, attributePrefix, valueAttribute, exists) {
+        value: function generateDropdown(id, modelName, attribute, counter, label, values, selected, filterAttr, sortAttr, attributePrefix, valueAttribute, exists, template) {
           var _this2 = this;
 
           var ddFragment, div, emptyOption, filterDiv, filterFormGroup, filterSelect, _filterValues, formGroup, select, selectId;
@@ -331,7 +335,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           div.setAttribute('class', 'col-xs-6 col-sm-6 col-md-7 col-lg-7');
           select = document.createElement('select');
           select.setAttribute('name', modelName + '[' + counter + '][' + valueAttribute + ']');
-          select.appendChild(this.generateOptions(values, attribute, selected, sortAttr, attributePrefix, valueAttribute, exists));
+          select.appendChild(this.generateOptions(values, attribute, selected, sortAttr, attributePrefix, valueAttribute, exists, template));
           select.setAttribute('id', selectId);
           select.setAttribute('class', 'form-control');
           if (filterAttr) {
@@ -347,7 +351,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             emptyOption.setAttribute('value', 0);
             emptyOption.appendChild(document.createTextNode(this.translate('noFilter')));
             filterSelect.appendChild(emptyOption);
-            filterSelect.appendChild(this.generateOptions(_filterValues, attribute, null, sortAttr, attributePrefix, valueAttribute));
+            filterSelect.appendChild(this.generateOptions(_filterValues, attribute, null, sortAttr, attributePrefix, valueAttribute, null, template));
             filterSelect.setAttribute('class', 'form-control');
             filterDiv = div.cloneNode();
             filterDiv.appendChild(filterSelect);
@@ -381,7 +385,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               $select = jQuery(select);
               $select.empty();
               filteredValues = _filterValues($filter.val(), values, filterAttr);
-              return select.appendChild(_this2.generateOptions(filteredValues, attribute, selected, sortAttr, attributePrefix, valueAttribute));
+              return select.appendChild(_this2.generateOptions(filteredValues, attribute, selected, sortAttr, attributePrefix, valueAttribute, null, template));
             });
           }
           div.appendChild(select);
@@ -624,7 +628,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                   case attrType !== this.inputTypes.BOOLEAN:
                     return this.generateInput(id, model.name, attribute, model.counter, '', 'checkbox', model.attributeLabels[attribute]);
                   case attrType !== this.inputTypes.DROPDOWN:
-                    return this.generateDropdown(id, model.name, attribute, model.counter, model.attributeLabels[attribute], attrValues || model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, attribute, model.dropdownUnique ? model.exists : []);
+                    return this.generateDropdown(id, model.name, attribute, model.counter, model.attributeLabels[attribute], attrValues || model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, attribute, model.dropdownUnique ? model.exists : [], model.dropdownAttributeTemplate);
                   default:
                     return document.createElement('div');
                 }
@@ -644,7 +648,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 }
               }
             } else if (model.type === this.types.DROPDOWN) {
-              contentBody.appendChild(this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute, model.dropdownUnique ? model.exists : []));
+              contentBody.appendChild(this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute, model.dropdownUnique ? model.exists : [], model.dropdownAttributeTemplate));
             }
           }
           collapseFragment = document.createDocumentFragment();
@@ -704,7 +708,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     case attrType !== this.inputTypes.BOOLEAN:
                       return this.generateInput(id, model.name, attribute, model.counter, object[attribute], 'checkbox', model.attributeLabels[attribute]);
                     case attrType !== this.inputTypes.DROPDOWN:
-                      return this.generateDropdown(id, model.name, attribute, model.counter, model.attributeLabels[attribute], attrValues || model.dropdownValues, object[dropdownValueAttribute], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, attribute);
+                      return this.generateDropdown(id, model.name, attribute, model.counter, model.attributeLabels[attribute], attrValues || model.dropdownValues, object[dropdownValueAttribute], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, attribute, [], model.dropdownAttributeTemplate);
                     default:
                       return document.createElement('div');
                   }
@@ -726,7 +730,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                   }
                 }
               } else if (model.type === this.types.DROPDOWN) {
-                contentBody.appendChild(this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, object[model.dropdownValueAttribute], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute));
+                contentBody.appendChild(this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, object[model.dropdownValueAttribute], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute, [], model.dropdownAttributeTemplate));
               }
             }
             collapsibleFragment = document.createDocumentFragment();

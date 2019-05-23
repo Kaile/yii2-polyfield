@@ -19,7 +19,7 @@ use yii\web\BadRequestHttpException;
  * @created 19.05.2015 13:10:47
  * @author Mihail Kornilov <fix-06 at yandex.ru>
  *
- * @since 1.1
+ * @since 1.2
  */
 class Polyfield extends Widget
 {
@@ -106,6 +106,8 @@ class Polyfield extends Widget
      * Attribute what data will be selected by user.
      *
      * @var string|array
+     *
+     * @deprecated 1.2 replaced with [[dropdownAttibuteTemplate]] property
      */
     public $dropdownAttribute = 'name';
 
@@ -113,6 +115,8 @@ class Polyfield extends Widget
      * Attribute that shows as prefix in dropdown list.
      *
      * @var string name of attriubte
+     *
+     * @deprecated 1.2 replaced with [[dropdownAttributeTemplate]] property
      */
     public $dropdownPrefixAttribute = '';
 
@@ -206,6 +210,16 @@ class Polyfield extends Widget
     public $autocomplete = true;
 
     /**
+     * Dropdown attrubte template for options. This is [[dropdownAttribute]] analog, but
+     * has more functionality.
+     * If set it value for example to '{id} - {name}' then options will be shown as '102 - option name'
+     * and dropdown attribute value will be ignored
+     *
+     * @var string
+     */
+    public $dropdownAttributeTemplate = '{__dropdownAttribute}';
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -215,9 +229,13 @@ class Polyfield extends Widget
         } elseif ( ! $this->model && ! $this->modelClass ) {
             throw new BadRequestHttpException(Yii::t('app', 'Не указан необходимый параметр model (modelClass) для работы виджета Polyfield'));
         }
+
         if (empty($this->attributes)) {
-            $this->attributes = array_keys($this->model->getAttributes());
+            $this->attributes = $this->model->attributes();
         }
+
+        $this->dropdownAttributeTemplate = str_replace('__dropdownAttribute', $this->dropdownAttribute, $this->dropdownAttributeTemplate);
+
         PolyfieldAsset::register($this->getView());
     }
 
@@ -255,6 +273,7 @@ class Polyfield extends Widget
             'dropdownAttribute' => $this->dropdownAttribute,
             'dropdownValueAttribute' => $this->dropdownValueAttribute,
             'dropdownPrefixAttribute' => $this->dropdownPrefixAttribute,
+            'dropdownAttributeTemplate' => $this->dropdownAttributeTemplate,
             'dropdownUnique' => $this->dropdownUnique,
             'filterAttribute' => $this->filterAttribute,
             'sortAttribute' => $this->sortAttribute,
