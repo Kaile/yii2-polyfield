@@ -293,7 +293,7 @@ class Polyfield
 
         select.appendChild @generateOptions(values, attribute, selected, sortAttr, attributePrefix, valueAttribute, exists, template)
         select.setAttribute 'id', selectId
-        select.setAttribute 'class', 'form-control'
+        select.setAttribute 'class', 'form-control select2'
 
         if filterAttr
             filterFormGroup = document.createElement 'div'
@@ -657,7 +657,7 @@ class Polyfield
         @completes = []
 
     createSelect2: (sectionId) ->
-        jQuery("##{sectionId}").next().contents().find('select').select2()
+        jQuery("##{sectionId}").next().contents().find('select.select2').select2()
 
     # Public: sets translation parameters for polyfield widget
     #
