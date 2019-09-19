@@ -3,7 +3,6 @@
 namespace kaile\polyfield;
 
 use kaile\polyfield\assets\PolyfieldAsset;
-use kaile\polyfield\assets\Select2Asset;
 use kaile\polyfield\assets\Select2BootstrapThemeAsset;
 use Yii;
 use yii\base\Widget;
@@ -220,6 +219,13 @@ class Polyfield extends Widget
     public $dropdownAttributeTemplate = '{__dropdownAttribute}';
 
     /**
+     * Exclude from dropdown list existing values
+     *
+     * @var bool
+     */
+    public $excludeExistingValues = true;
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -278,6 +284,7 @@ class Polyfield extends Widget
             'filterAttribute' => $this->filterAttribute,
             'sortAttribute' => $this->sortAttribute,
             'autocomplete' => $this->autocomplete,
+            'excludeExistingValues' => $this->excludeExistingValues,
         ];
 
         echo Html::endTag('fieldset');

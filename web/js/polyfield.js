@@ -213,12 +213,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         // * `attributePrefix` The option add attribute values as prefix for current attribute values
         // * `valueAttribute`  The attribute name value of it will be seted in options values
         // * `exists`    The data with existing values
+        // * `template`  Template for showed attributes
+        // * `excludeExistingValues` enable/disable show in list existing values
 
         // Returns the document element as Node
 
       }, {
         key: 'generateOptions',
-        value: function generateOptions(values, attribute, selected, sortAttr, attributePrefix, valueAttribute, exists, template) {
+        value: function generateOptions(values, attribute, selected, sortAttr, attributePrefix, valueAttribute, exists, template, excludeExistingValues) {
           var existingValues, filter, j, k, key, len, option, optionValue, options, v, value;
           if (typeof attributePrefix === 'undefined') {
             attributePrefix = '';
@@ -254,11 +256,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               return 0;
             });
             existingValues = exists.map(function (value) {
-              return value[attribute];
+              return value['id'];
             });
-            values = values.filter(function (value) {
-              return existingValues.indexOf(value[attribute]) === -1;
-            });
+            if (excludeExistingValues) {
+              values = values.filter(function (value) {
+                return existingValues.indexOf(value['id']) === -1;
+              });
+            }
             for (j = 0, len = values.length; j < len; j++) {
               value = values[j];
               optionValue = template;
@@ -307,12 +311,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         // * `attributePrefix` The option add attribute values as prefix for current attribute values
         // * `valueAttribute`  The attribute name value of it will be seted in options values
         // * `exists`    The data with existing values
+        // * `template`  Template for showed attributes
+        // * `excludeExistingValues` enable/disable show in list existing values
 
         // Returns the document element as Node.
 
       }, {
         key: 'generateDropdown',
-        value: function generateDropdown(id, modelName, attribute, counter, label, values, selected, filterAttr, sortAttr, attributePrefix, valueAttribute, exists, template) {
+        value: function generateDropdown(id, modelName, attribute, counter, label, values, selected, filterAttr, sortAttr, attributePrefix, valueAttribute, exists, template, excludeExistingValues) {
           var _this2 = this;
 
           var ddFragment, div, emptyOption, filterDiv, filterFormGroup, filterSelect, _filterValues, formGroup, select, selectId;
@@ -334,7 +340,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           div.setAttribute('class', 'col-xs-6 col-sm-6 col-md-7 col-lg-7');
           select = document.createElement('select');
           select.setAttribute('name', modelName + '[' + counter + '][' + valueAttribute + ']');
-          select.appendChild(this.generateOptions(values, attribute, selected, sortAttr, attributePrefix, valueAttribute, exists, template));
+          select.appendChild(this.generateOptions(values, attribute, selected, sortAttr, attributePrefix, valueAttribute, exists, template, excludeExistingValues));
           select.setAttribute('id', selectId);
           select.setAttribute('class', 'form-control select2');
           if (filterAttr) {
@@ -350,7 +356,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             emptyOption.setAttribute('value', 0);
             emptyOption.appendChild(document.createTextNode(this.translate('noFilter')));
             filterSelect.appendChild(emptyOption);
-            filterSelect.appendChild(this.generateOptions(_filterValues, attribute, null, sortAttr, attributePrefix, valueAttribute, null, template));
+            filterSelect.appendChild(this.generateOptions(_filterValues, attribute, null, sortAttr, attributePrefix, valueAttribute, null, template, excludeExistingValues));
             filterSelect.setAttribute('class', 'form-control');
             filterDiv = div.cloneNode();
             filterDiv.appendChild(filterSelect);
@@ -384,7 +390,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               $select = jQuery(select);
               $select.empty();
               filteredValues = _filterValues($filter.val(), values, filterAttr);
-              return select.appendChild(_this2.generateOptions(filteredValues, attribute, selected, sortAttr, attributePrefix, valueAttribute, null, template));
+              return select.appendChild(_this2.generateOptions(filteredValues, attribute, selected, sortAttr, attributePrefix, valueAttribute, null, template, excludeExistingValues));
             });
           }
           div.appendChild(select);
@@ -627,7 +633,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                   case attrType !== this.inputTypes.BOOLEAN:
                     return this.generateInput(id, model.name, attribute, model.counter, '', 'checkbox', model.attributeLabels[attribute]);
                   case attrType !== this.inputTypes.DROPDOWN:
-                    return this.generateDropdown(id, model.name, attribute, model.counter, model.attributeLabels[attribute], attrValues || model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, attribute, model.dropdownUnique ? model.exists : [], model.dropdownAttributeTemplate);
+                    return this.generateDropdown(id, model.name, attribute, model.counter, model.attributeLabels[attribute], attrValues || model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, attribute, model.dropdownUnique ? model.exists : [], model.dropdownAttributeTemplate, model.excludeExistingValues);
                   default:
                     return document.createElement('div');
                 }
@@ -647,7 +653,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 }
               }
             } else if (model.type === this.types.DROPDOWN) {
-              contentBody.appendChild(this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute, model.dropdownUnique ? model.exists : [], model.dropdownAttributeTemplate));
+              contentBody.appendChild(this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute, model.dropdownUnique ? model.exists : [], model.dropdownAttributeTemplate, model.excludeExistingValues));
             }
           }
           collapseFragment = document.createDocumentFragment();
@@ -707,7 +713,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     case attrType !== this.inputTypes.BOOLEAN:
                       return this.generateInput(id, model.name, attribute, model.counter, object[attribute], 'checkbox', model.attributeLabels[attribute]);
                     case attrType !== this.inputTypes.DROPDOWN:
-                      return this.generateDropdown(id, model.name, attribute, model.counter, model.attributeLabels[attribute], attrValues || model.dropdownValues, object[dropdownValueAttribute], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, attribute, [], model.dropdownAttributeTemplate);
+                      return this.generateDropdown(id, model.name, attribute, model.counter, model.attributeLabels[attribute], attrValues || model.dropdownValues, object[dropdownValueAttribute], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, attribute, [], model.dropdownAttributeTemplate, model.excludeExistingValues);
                     default:
                       return document.createElement('div');
                   }
@@ -729,7 +735,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                   }
                 }
               } else if (model.type === this.types.DROPDOWN) {
-                contentBody.appendChild(this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, object[model.dropdownValueAttribute], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute, [], model.dropdownAttributeTemplate));
+                contentBody.appendChild(this.generateDropdown(id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, object[model.dropdownValueAttribute], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute, [], model.dropdownAttributeTemplate, model.excludeExistingValues));
               }
             }
             collapsibleFragment = document.createDocumentFragment();
