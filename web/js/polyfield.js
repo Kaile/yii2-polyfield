@@ -172,7 +172,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
       }, {
         key: 'generateEditor',
-        value: function generateEditor(id, modelName, attribute, counter, value, type, label) {
+        value: function generateEditor(id, modelName, attribute, counter, value, type, label, editorConfig) {
           var div, formGroup, input, inputId, script;
           if (typeof value === 'undefined') {
             value = '';
@@ -198,7 +198,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           input.appendChild(document.createTextNode(value));
           div.appendChild(input);
           script = document.createElement('script');
-          script.appendChild(document.createTextNode('tinymce.init({ selector: \'#' + inputId + '\', language: \'ru\', relative_urls: false, remove_script_host: false, height: 300, fontsize_formats: \'6pt 7pt 8pt 9pt 10pt 11pt 12pt 13pt 14pt 15pt 16pt 18pt 20pt 24pt 28pt 36pt 40pt 48pt\', plugins: [ \'advlist autolink lists link image charmap print preview hr anchor pagebreak\', \'searchreplace wordcount visualblocks visualchars code fullscreen\', \'insertdatetime media nonbreaking save table contextmenu directionality\', \'emoticons template paste textcolor quotes insertfbframe\' ], toolbar: [ \'undo redo | fontsizeselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | forecolor backcolor | print preview media frame\' ], image_advtab: true, image_class_list: [ {title: \'\u0411\u0435\u0437 \u043C\u0430\u0441\u0448\u0442\u0430\u0431\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F\', value: \'no-scale-image\'}, {title: \'\u0421 \u043C\u0430\u0441\u0448\u0442\u0430\u0431\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435\u043C\', value: \'scale-image\'} ], image_caption: true });'));
+          script.appendChild(document.createTextNode('tinymce.init({ selector: \'#' + inputId + '\', ' + editorConfig + ' });'));
           div.appendChild(script);
           formGroup.appendChild(div);
           return formGroup;
@@ -602,7 +602,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: 'appendTemplate',
         value: function appendTemplate(id) {
-          var attrType, attrValues, attribute, collapseFragment, collapsible, contentBody, index, inputElement, model, ref, ref1, sectionId;
+          var attrType, attrValues, attribute, collapseFragment, collapsible, contentBody, content_, index, inputElement, model, ref, ref1, sectionId;
           model = this.models[id];
           model.counter++;
           sectionId = 'section_' + id + model.counter;
@@ -627,7 +627,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                   case attrType !== this.inputTypes.DATE:
                     return this.generateDateInput(id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]);
                   case attrType !== this.inputTypes.TEXT:
-                    return this.generateEditor(id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]);
+                    return this.generateEditor(id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute], model.editorConfig);
                   case attrType !== this.inputTypes.HIDDEN:
                     return this.generateInput(id, model.name, attribute, model.counter, '', 'hidden', model.attributeLabels[attribute]);
                   case attrType !== this.inputTypes.BOOLEAN:
@@ -659,7 +659,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           collapseFragment = document.createDocumentFragment();
           collapseFragment.appendChild(collapsible);
           collapseFragment.appendChild(this.generateContainer(contentBody));
-          document.getElementById('content_' + id).appendChild(collapseFragment);
+          content_ = document.getElementById('content_' + id);
+          content_.appendChild(collapseFragment);
           jQuery('#' + sectionId).collapsible({
             defaultOpen: '' + sectionId
           });
@@ -674,7 +675,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: 'appendExists',
         value: function appendExists(id) {
-          var attrType, attrValues, attribute, collapsible, collapsibleFragment, contentBody, dropdownValueAttribute, index, inputElement, j, len, model, object, ref, ref1, ref2, sectionId;
+          var attrType, attrValues, attribute, collapsible, collapsibleFragment, contentBody, content_, dropdownValueAttribute, index, inputElement, j, len, model, object, ref, ref1, ref2, sectionId;
           model = this.models[id];
           if (model.existsShowen) {
             return;
@@ -707,7 +708,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     case attrType !== this.inputTypes.DATE:
                       return this.generateDateInput(id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]);
                     case attrType !== this.inputTypes.TEXT:
-                      return this.generateEditor(id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]);
+                      return this.generateEditor(id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute], model.editorConfig);
                     case attrType !== this.inputTypes.HIDDEN:
                       return this.generateInput(id, model.name, attribute, model.counter, object[attribute], 'hidden', model.attributeLabels[attribute]);
                     case attrType !== this.inputTypes.BOOLEAN:
@@ -729,7 +730,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     contentBody.appendChild(this.generateDateInput(id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]));
                     continue;
                   } else if (model.type === this.types.TEXT_BLOCK) {
-                    contentBody.appendChild(this.generateEditor(id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]));
+                    contentBody.appendChild(this.generateEditor(id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute], model.editorConfig));
                   } else {
                     contentBody.appendChild(this.generateInput(id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute], model.autocomplete));
                   }
@@ -741,7 +742,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             collapsibleFragment = document.createDocumentFragment();
             collapsibleFragment.appendChild(collapsible);
             collapsibleFragment.appendChild(this.generateContainer(contentBody));
-            document.getElementById('content_' + id).appendChild(collapsibleFragment);
+            content_ = document.getElementById('content_' + id);
+            content_.appendChild(collapsibleFragment);
             jQuery('#' + sectionId).collapsible({
               defaultOpen: sectionId
             });
