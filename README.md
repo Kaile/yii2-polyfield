@@ -10,7 +10,7 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require --prefer-dist kaile/yii2-polyfield "*"
+composer --prefer-dist kaile/yii2-polyfield "*"
 ```
 
 or add
@@ -25,7 +25,7 @@ to the require section of your `composer.json` file.
 Usage
 -----
 
-Once the extension is installed, simply use it in your code by  :
+Once the extension is installed, simply use it in your code by:
 
 ```php
 <?= \kaile\polyfield\Polyfield::widget(); ?>

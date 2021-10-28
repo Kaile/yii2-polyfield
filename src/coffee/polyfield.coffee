@@ -141,7 +141,7 @@ class Polyfield
     # * `label`     The label for attribute as {String}.
     #
     # Returns the document element as Node.
-    generateEditor: (id, modelName, attribute, counter, value, type, label) ->
+    generateEditor: (id, modelName, attribute, counter, value, type, label, editorConfig) ->
         value = '' if typeof value is 'undefined'
         type  = 'hidden' if typeof type is 'undefined'
         label = off if typeof label is 'undefined'
@@ -167,29 +167,7 @@ class Polyfield
         script = document.createElement 'script'
         script.appendChild document.createTextNode "tinymce.init({
             selector: '##{inputId}',
-            language: 'ru',
-            relative_urls: false,
-            remove_script_host: false,
-            height: 300,
-            fontsize_formats: '6pt 7pt 8pt 9pt 10pt 11pt 12pt 13pt 14pt 15pt 16pt 18pt 20pt 24pt 28pt 36pt 40pt 48pt',
-            plugins: [
-                'advlist autolink lists link image charmap print preview hr anchor pagebreak',
-                'searchreplace wordcount visualblocks visualchars code fullscreen',
-                'insertdatetime media nonbreaking save table contextmenu directionality',
-                'emoticons template paste textcolor quotes insertfbframe'
-            ],
-            toolbar: [
-                'undo redo | fontsizeselect | bold italic underline
-                | alignleft aligncenter alignright alignjustify
-                | bullist numlist outdent indent | link image | forecolor backcolor
-                | print preview media frame'
-            ],
-            image_advtab: true,
-            image_class_list: [
-                {title: 'Без масштабирования', value: 'no-scale-image'},
-                {title: 'С масштабированием', value: 'scale-image'}
-            ],
-            image_caption: true
+            #{editorConfig}
         });"
         div.appendChild script
 
@@ -538,7 +516,7 @@ class Polyfield
                 inputElement = switch
                     when attrType is @inputTypes.STRING then @generateInput id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute], model.autocomplete
                     when attrType is @inputTypes.DATE then @generateDateInput id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]
-                    when attrType is @inputTypes.TEXT then @generateEditor id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute]
+                    when attrType is @inputTypes.TEXT then @generateEditor id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute], model.editorConfig
                     when attrType is @inputTypes.HIDDEN then @generateInput id, model.name, attribute, model.counter, '', 'hidden', model.attributeLabels[attribute]
                     when attrType is @inputTypes.BOOLEAN then @generateInput id, model.name, attribute, model.counter, '', 'checkbox', model.attributeLabels[attribute]
                     when attrType is @inputTypes.DROPDOWN then @generateDropdown id, model.name, attribute, model.counter, model.attributeLabels[attribute], attrValues ||model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, attribute, (if model.dropdownUnique then model.exists else []), model.dropdownAttributeTemplate, model.excludeExistingValues
@@ -559,7 +537,8 @@ class Polyfield
         collapseFragment.appendChild collapsible
         collapseFragment.appendChild @generateContainer contentBody
 
-        document.getElementById('content_' + id).appendChild collapseFragment
+        content_ = document.getElementById('content_' + id)
+        content_.appendChild collapseFragment
         jQuery('#' + sectionId).collapsible
             defaultOpen: "#{sectionId}"
         @createSelect2(sectionId)
@@ -594,7 +573,7 @@ class Polyfield
                     inputElement = switch
                         when attrType is @inputTypes.STRING then @generateInput id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute], model.autocomplete
                         when attrType is @inputTypes.DATE then @generateDateInput id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]
-                        when attrType is @inputTypes.TEXT then @generateEditor id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]
+                        when attrType is @inputTypes.TEXT then @generateEditor id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute], model.editorConfig
                         when attrType is @inputTypes.HIDDEN then @generateInput id, model.name, attribute, model.counter, object[attribute], 'hidden', model.attributeLabels[attribute]
                         when attrType is @inputTypes.BOOLEAN then @generateInput id, model.name, attribute, model.counter, object[attribute], 'checkbox', model.attributeLabels[attribute]
                         when attrType is @inputTypes.DROPDOWN then @generateDropdown id, model.name, attribute, model.counter, model.attributeLabels[attribute], attrValues || model.dropdownValues, object[dropdownValueAttribute], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, attribute, [], model.dropdownAttributeTemplate, model.excludeExistingValues
@@ -607,7 +586,7 @@ class Polyfield
                             contentBody.appendChild @generateDateInput id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]
                             continue
                         else if model.type is @types.TEXT_BLOCK
-                            contentBody.appendChild @generateEditor id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute]
+                            contentBody.appendChild @generateEditor id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute], model.editorConfig
                         else
                             contentBody.appendChild @generateInput id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute], model.autocomplete
                 else if model.type is @types.DROPDOWN
@@ -617,7 +596,8 @@ class Polyfield
             collapsibleFragment.appendChild collapsible
             collapsibleFragment.appendChild @generateContainer contentBody
 
-            document.getElementById('content_' + id).appendChild collapsibleFragment
+            content_ = document.getElementById('content_' + id)
+            content_.appendChild collapsibleFragment
             jQuery('#' + sectionId).collapsible
                 defaultOpen: sectionId
             @createSelect2(sectionId)
