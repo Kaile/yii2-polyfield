@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9eec37af879c6a70d9daafc1d8ac4e50",
+    "content-hash": "ec576da252e8a9cd5269e614cd3bb709",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -577,14 +577,16 @@
         },
         {
             "name": "moonlandsoft/yii2-tinymce",
-            "version": "1.0.5",
+            "version": "1.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kaile/yii2-tinymce.git",
-                "reference": "3e8cc4094df37e566bd4c55ee3f6bc413f4c0e27"
+                "reference": "721c3d9eb0eedb8e9a77208d02bebba0c0a47bd4"
             },
             "require": {
                 "moonlandsoft/helpers": "*",
+                "npm-asset/tinymce": "^5.9",
+                "npm-asset/tinymce-i18n": "^20.12",
                 "yiisoft/yii2": "*"
             },
             "type": "yii2-extension",
@@ -600,6 +602,10 @@
                 {
                     "name": "Moh Khoirul Anam",
                     "email": "moh.khoirul.anaam@gmail.com"
+                },
+                {
+                    "name": "Mikhail Kornilov",
+                    "email": "mikh.kornilov@gmail.com"
                 }
             ],
             "description": "The TinyMCE Extension for yii framework",
@@ -611,7 +617,31 @@
                 "wyswyg",
                 "yii2"
             ],
-            "time": "2018-04-24T14:18:45+00:00"
+            "time": "2021-10-27T14:10:08+00:00"
+        },
+        {
+            "name": "npm-asset/tinymce",
+            "version": "5.9.2",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/tinymce/-/tinymce-5.9.2.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "LGPL-2.1"
+            ]
+        },
+        {
+            "name": "npm-asset/tinymce-i18n",
+            "version": "20.12.25",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/tinymce-i18n/-/tinymce-i18n-20.12.25.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
         },
         {
             "name": "trntv/yii2-datetime-widget",
@@ -839,5 +869,5 @@
         "php": ">=5.4.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.1.0"
 }
