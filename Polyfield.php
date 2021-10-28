@@ -247,7 +247,7 @@ class Polyfield extends Widget
             'advlist autolink lists link image charmap print preview hr anchor pagebreak',
             'searchreplace wordcount visualblocks visualchars code fullscreen',
             'insertdatetime media nonbreaking save table directionality',
-            'emoticons template paste quotes insertfbframe'
+            'emoticons template paste'
         ],
         'toolbar' => [
             'undo redo | fontsizeselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
