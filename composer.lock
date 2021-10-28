@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ec576da252e8a9cd5269e614cd3bb709",
+    "content-hash": "7d0a1e547cea67ad1d22be7ec8662406",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -577,11 +577,11 @@
         },
         {
             "name": "moonlandsoft/yii2-tinymce",
-            "version": "1.0.6",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kaile/yii2-tinymce.git",
-                "reference": "721c3d9eb0eedb8e9a77208d02bebba0c0a47bd4"
+                "reference": "b2fd3832b58c94f158f6b7b455a7646271764c86"
             },
             "require": {
                 "moonlandsoft/helpers": "*",
@@ -617,7 +617,7 @@
                 "wyswyg",
                 "yii2"
             ],
-            "time": "2021-10-27T14:10:08+00:00"
+            "time": "2021-10-28T12:57:00+00:00"
         },
         {
             "name": "npm-asset/tinymce",
