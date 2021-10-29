@@ -252,7 +252,7 @@ class Polyfield extends Widget
         ],
         'toolbar' => [
             'undo redo | fontsizeselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-            'forecolor backcolor | print preview media frame | blockquote',
+            'forecolor backcolor | print preview media | blockquote',
         ],
         'image_advtab' => 'true',
         'image_class_list' => [
