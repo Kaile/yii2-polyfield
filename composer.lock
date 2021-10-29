@@ -382,11 +382,11 @@
         },
         {
             "name": "moonlandsoft/yii2-tinymce",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kaile/yii2-tinymce.git",
-                "reference": "b2fd3832b58c94f158f6b7b455a7646271764c86"
+                "reference": "32c337086054926c7fddace556116be8f7f6023f"
             },
             "require": {
                 "moonlandsoft/helpers": "*",
@@ -422,7 +422,7 @@
                 "wyswyg",
                 "yii2"
             ],
-            "time": "2021-10-28T12:57:00+00:00"
+            "time": "2021-10-29T11:48:55+00:00"
         },
         {
             "name": "npm-asset/tinymce",

@@ -4,6 +4,7 @@ namespace kaile\polyfield;
 
 use kaile\polyfield\assets\PolyfieldAsset;
 use kaile\polyfield\assets\Select2BootstrapThemeAsset;
+use moonland\tinymce\TinyMCELangAsset;
 use Yii;
 use yii\base\Widget;
 use yii\db\ActiveRecord;
@@ -247,7 +248,7 @@ class Polyfield extends Widget
             'advlist autolink lists link image charmap print preview hr anchor pagebreak',
             'searchreplace wordcount visualblocks visualchars code fullscreen',
             'insertdatetime media nonbreaking save table directionality',
-            'emoticons template paste quotes insertfbframe'
+            'emoticons template paste'
         ],
         'toolbar' => [
             'undo redo | fontsizeselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
@@ -304,6 +305,13 @@ class Polyfield extends Widget
         return implode(',', $options);
     }
 
+    protected function getTinyMceLanguageUrl()
+    {
+        $asset = new TinyMCELangAsset();
+
+		return Yii::$app->assetManager->getPublishedUrl($asset->js[0]);
+    }
+
     /**
      * @inheritdoc
      */
@@ -322,6 +330,8 @@ class Polyfield extends Widget
         $this->dropdownAttributeTemplate = str_replace('__dropdownAttribute', $this->dropdownAttribute, $this->dropdownAttributeTemplate);
 
         PolyfieldAsset::register($this->getView());
+
+        $this->defaultEditorConfig['language_url'] = $this->getTinyMceLanguageUrl();
 
         $this->editorConfig = array_merge($this->defaultEditorConfig, $this->editorConfig);
     }

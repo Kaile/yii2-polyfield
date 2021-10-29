@@ -2,6 +2,9 @@
 
 namespace kaile\polyfield\assets;
 
+use moonland\tinymce\TinyMCEAsset;
+use moonland\tinymce\TinyMCELangAsset;
+use trntv\yii\datetime\assets\DateTimeAsset;
 use yii\web\AssetBundle;
 
 /**
@@ -24,9 +27,10 @@ class PolyfieldAsset extends AssetBundle
     ];
 
     public $depends = [
-        'kaile\polyfield\assets\CollapsibleAsset',
-        'kaile\polyfield\assets\JqueryAutocompleteAsset',
-        'moonland\tinymce\TinyMCEAsset',
-        'trntv\yii\datetime\assets\DateTimeAsset',
+        CollapsibleAsset::class,
+        JqueryAutocompleteAsset::class,
+        TinyMCEAsset::class,
+        TinyMCELangAsset::class,
+        DateTimeAsset::class,
     ];
 }
