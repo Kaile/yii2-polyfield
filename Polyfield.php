@@ -43,6 +43,10 @@ class Polyfield extends Widget
      * Hidden text field
      */
     const TYPE_HIDDEN = 'hidden';
+
+    /**
+     * @deprecated 1.2
+     */
     const TYPE_TEXT_BLOCK = 'editor'; //Оставлено пока для совместимости
 
     /**
@@ -312,7 +316,29 @@ class Polyfield extends Widget
     {
         $asset = new TinyMCELangAsset();
 
-		return Yii::$app->assetManager->getPublishedUrl($asset->js[0]);
+        return Yii::$app->assetManager->getPublishedUrl($asset->js[0]);
+    }
+
+    /**
+     * Check types of attributes and returns true if editor is used or false otherwise
+     *
+     * @return bool
+     */
+    protected function isNeedEditor()
+    {
+        if ($this->type === static::TYPE_TEXT || $this->type === static::TYPE_TEXT_BLOCK) {
+            return true;
+        }
+
+        foreach ($this->attributeTypes as $attrType) {
+            if (is_array($attrType) && array_key_exists('type', $attrType) && ($attrType['type'] === static::TYPE_TEXT || $attrType['type'] === static::TYPE_TEXT_BLOCK)) {
+                return true;
+            } elseif ($attrType === static::TYPE_TEXT || $attrType === static::TYPE_TEXT_BLOCK) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -379,8 +405,11 @@ class Polyfield extends Widget
             'sortAttribute' => $this->sortAttribute,
             'autocomplete' => $this->autocomplete,
             'excludeExistingValues' => $this->excludeExistingValues,
-            'editorConfig' => $this->generateEditorConfig(),
         ];
+
+        if ($this->isNeedEditor()) {
+            $model['editorConfig'] = $this->generateEditorConfig();
+        }
 
         echo Html::endTag('fieldset');
 
