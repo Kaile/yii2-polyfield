@@ -198,7 +198,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           input.appendChild(document.createTextNode(value));
           div.appendChild(input);
           script = document.createElement('script');
-          script.appendChild(document.createTextNode('tinymce.init({ selector: \'#' + inputId + '\', ' + editorConfig + ' });'));
+          editorConfig = editorConfig.replace(/^\{/, '{"selector": "#' + inputId + '",');
+          script.appendChild(document.createTextNode('tinymce.init(JSON.parse(\'' + editorConfig + '\'));'));
           div.appendChild(script);
           formGroup.appendChild(div);
           return formGroup;

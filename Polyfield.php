@@ -247,9 +247,9 @@ class Polyfield extends Widget
      */
     public $defaultEditorConfig = [
         'language' => 'ru',
-        'relative_urls' => 'false',
-        'remove_script_host' => 'false',
-        'height' => '300',
+        'relative_urls' => false,
+        'remove_script_host' => false,
+        'height' => 300,
         'fontsize_formats' => '6pt 7pt 8pt 9pt 10pt 11pt 12pt 13pt 14pt 15pt 16pt 18pt 20pt 24pt 28pt 36pt 40pt 48pt',
         'plugins' => [
             'advlist autolink lists link image charmap print preview hr anchor pagebreak',
@@ -261,34 +261,13 @@ class Polyfield extends Widget
             'undo redo | fontsizeselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
             'forecolor backcolor | print preview media | blockquote',
         ],
-        'image_advtab' => 'true',
+        'image_advtab' => true,
         'image_class_list' => [
-            "{title: 'Без масштабирования', value: 'no-scale-image'}",
-            "{title: 'С масштабированием', value: 'scale-image'}",
+            ['title' => 'Без масштабирования', 'value' => 'no-scale-image'],
+            ['title' => 'С масштабированием', 'value' => 'scale-image'],
         ],
-        'image_caption' => 'true',
+        'image_caption' => true,
     ];
-
-    /**
-     * Add quotes for values to set it as string values in client script
-     *
-     * @param string $value
-     *
-     * @return string
-     */
-    protected function quotedValue($value)
-    {
-        // Не добавляем кавычки для булевых значений
-        if (is_bool($value) || in_array($value, ['true', 'false'])) {
-            return $value;
-        } elseif (substr($value, 0, 1) === '{' && substr($value, -1) === '}') { // Не добавляем кавычки для объектов
-            return $value;
-        } elseif (substr($value, 0, 1) === '[' && substr($value, -1) === ']') { // Не добавляем кавычки для массивов
-            return $value;
-        } else {
-            return "'{$value}'";
-        }
-    }
 
     /**
      * Generate configuration for TinyMCE editor in string format to set it via client script
@@ -297,19 +276,7 @@ class Polyfield extends Widget
      */
     protected function generateEditorConfig()
     {
-        $options = [];
-
-        foreach ($this->editorConfig as $option => $value) {
-            if (is_string($value)) {
-                $options[] = "{$option}: {$this->quotedValue($value)}";
-            } elseif (is_array($value)) {
-                $options[] = "{$option}: [" . implode(',', array_map(function ($v) {
-                    return $this->quotedValue($v);
-                }, $value)) . "]";
-            }
-        }
-
-        return implode(',', $options);
+        return json_encode($this->editorConfig);
     }
 
     protected function getTinyMceLanguageUrl()
