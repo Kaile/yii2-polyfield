@@ -43,6 +43,10 @@ class Polyfield extends Widget
      * Hidden text field
      */
     const TYPE_HIDDEN = 'hidden';
+
+    /**
+     * @deprecated 1.2
+     */
     const TYPE_TEXT_BLOCK = 'editor'; //Оставлено пока для совместимости
 
     /**
@@ -177,10 +181,13 @@ class Polyfield extends Widget
      * For HTML elements that needs a prepared data (e.t. dropdown or select2)
      * value can be sets as array with keys as param name and values as param values:
      * ```php
-     * ['status' => [
-     *      'type' => Polyfield::TYPE_SELECT2,
-     *      'data' => Statuses::find()->all(),
-     * ]];
+     * [
+     *      'name' => Polyfield::TYPE_STRING,
+     *      'status' => [
+     *          'type' => Polyfield::TYPE_SELECT2,
+     *          'data' => Statuses::find()->all(),
+     *      ]
+     * ];
      * ```
      *
      * @var array
@@ -240,9 +247,9 @@ class Polyfield extends Widget
      */
     public $defaultEditorConfig = [
         'language' => 'ru',
-        'relative_urls' => 'false',
-        'remove_script_host' => 'false',
-        'height' => '300',
+        'relative_urls' => false,
+        'remove_script_host' => false,
+        'height' => 300,
         'fontsize_formats' => '6pt 7pt 8pt 9pt 10pt 11pt 12pt 13pt 14pt 15pt 16pt 18pt 20pt 24pt 28pt 36pt 40pt 48pt',
         'plugins' => [
             'advlist autolink lists link image charmap print preview hr anchor pagebreak',
@@ -252,36 +259,15 @@ class Polyfield extends Widget
         ],
         'toolbar' => [
             'undo redo | fontsizeselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-            'forecolor backcolor | print preview media frame | blockquote',
+            'forecolor backcolor | print preview media | blockquote',
         ],
-        'image_advtab' => 'true',
+        'image_advtab' => true,
         'image_class_list' => [
-            "{title: 'Без масштабирования', value: 'no-scale-image'}",
-            "{title: 'С масштабированием', value: 'scale-image'}",
+            ['title' => 'Без масштабирования', 'value' => 'no-scale-image'],
+            ['title' => 'С масштабированием', 'value' => 'scale-image'],
         ],
-        'image_caption' => 'true',
+        'image_caption' => true,
     ];
-
-    /**
-     * Add quotes for values to set it as string values in client script
-     *
-     * @param string $value
-     *
-     * @return string
-     */
-    protected function quotedValue($value)
-    {
-        // Не добавляем кавычки для булевых значений
-        if (is_bool($value) || in_array($value, ['true', 'false'])) {
-            return $value;
-        } elseif (substr($value, 0, 1) === '{' && substr($value, -1) === '}') { // Не добавляем кавычки для объектов
-            return $value;
-        } elseif (substr($value, 0, 1) === '[' && substr($value, -1) === ']') { // Не добавляем кавычки для массивов
-            return $value;
-        } else {
-            return "'{$value}'";
-        }
-    }
 
     /**
      * Generate configuration for TinyMCE editor in string format to set it via client script
@@ -290,26 +276,36 @@ class Polyfield extends Widget
      */
     protected function generateEditorConfig()
     {
-        $options = [];
-
-        foreach ($this->editorConfig as $option => $value) {
-            if (is_string($value)) {
-                $options[] = "{$option}: {$this->quotedValue($value)}";
-            } elseif (is_array($value)) {
-                $options[] = "{$option}: [" . implode(',', array_map(function ($v) {
-                    return $this->quotedValue($v);
-                }, $value)) . "]";
-            }
-        }
-
-        return implode(',', $options);
+        return json_encode($this->editorConfig);
     }
 
     protected function getTinyMceLanguageUrl()
     {
         $asset = new TinyMCELangAsset();
 
-		return Yii::$app->assetManager->getPublishedUrl($asset->js[0]);
+        return Yii::$app->assetManager->getPublishedUrl($asset->js[0]);
+    }
+
+    /**
+     * Check types of attributes and returns true if editor is used or false otherwise
+     *
+     * @return bool
+     */
+    protected function isNeedEditor()
+    {
+        if ($this->type === static::TYPE_TEXT || $this->type === static::TYPE_TEXT_BLOCK) {
+            return true;
+        }
+
+        foreach ($this->attributeTypes as $attrType) {
+            if (is_array($attrType) && array_key_exists('type', $attrType) && ($attrType['type'] === static::TYPE_TEXT || $attrType['type'] === static::TYPE_TEXT_BLOCK)) {
+                return true;
+            } elseif ($attrType === static::TYPE_TEXT || $attrType === static::TYPE_TEXT_BLOCK) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -376,8 +372,11 @@ class Polyfield extends Widget
             'sortAttribute' => $this->sortAttribute,
             'autocomplete' => $this->autocomplete,
             'excludeExistingValues' => $this->excludeExistingValues,
-            'editorConfig' => $this->generateEditorConfig(),
         ];
+
+        if ($this->isNeedEditor()) {
+            $model['editorConfig'] = $this->generateEditorConfig();
+        }
 
         echo Html::endTag('fieldset');
 
