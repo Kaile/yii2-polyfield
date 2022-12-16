@@ -8,6 +8,7 @@ use moonland\tinymce\TinyMCELangAsset;
 use Yii;
 use yii\base\Widget;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\web\BadRequestHttpException;
@@ -252,21 +253,15 @@ class Polyfield extends Widget
         'height' => 300,
         'fontsize_formats' => '6pt 7pt 8pt 9pt 10pt 11pt 12pt 13pt 14pt 15pt 16pt 18pt 20pt 24pt 28pt 36pt 40pt 48pt',
         'plugins' => [
-            'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+            'advlist autolink lists link image charmap preview anchor pagebreak',
             'searchreplace wordcount visualblocks visualchars code fullscreen',
             'insertdatetime media nonbreaking save table directionality',
-            'emoticons template paste'
+            'emoticons template'
         ],
         'toolbar' => [
             'undo redo | fontsizeselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
             'forecolor backcolor | print preview media | blockquote',
         ],
-        'image_advtab' => true,
-        'image_class_list' => [
-            ['title' => 'Без масштабирования', 'value' => 'no-scale-image'],
-            ['title' => 'С масштабированием', 'value' => 'scale-image'],
-        ],
-        'image_caption' => true,
     ];
 
     /**
@@ -329,7 +324,8 @@ class Polyfield extends Widget
 
         $this->defaultEditorConfig['language_url'] = $this->getTinyMceLanguageUrl();
 
-        $this->editorConfig = array_merge($this->defaultEditorConfig, $this->editorConfig);
+        $this->editorConfig = ArrayHelper::merge($this->defaultEditorConfig, $this->editorConfig);
+        $this->editorConfig['plugins'] = implode(' ', $this->editorConfig['plugins']);
     }
 
     /**

@@ -4,29 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7d0a1e547cea67ad1d22be7ec8662406",
+    "content-hash": "a48c56eff19a12f1c8455821e7fae9a2",
     "packages": [
-        {
-            "name": "bower-asset/bootstrap",
-            "version": "v3.4.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "68b0d231a13201eb14acd3dc84e51543d16e5f7e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/68b0d231a13201eb14acd3dc84e51543d16e5f7e",
-                "reference": "68b0d231a13201eb14acd3dc84e51543d16e5f7e"
-            },
-            "require": {
-                "bower-asset/jquery": ">=1.9.1,<4.0"
-            },
-            "type": "bower-asset",
-            "license": [
-                "MIT"
-            ]
-        },
         {
             "name": "bower-asset/collapsible",
             "version": "1.2.1",
@@ -41,27 +20,6 @@
                 "reference": "5128df45cc8ee28224545407bd387d9503ebaed2"
             },
             "type": "bower-asset"
-        },
-        {
-            "name": "bower-asset/devbridge-autocomplete",
-            "version": "v1.4.11",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:devbridge/jQuery-Autocomplete.git",
-                "reference": "9b30e414dd8b87e1831f9f28870b88d646f3553c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/devbridge/jQuery-Autocomplete/zipball/9b30e414dd8b87e1831f9f28870b88d646f3553c",
-                "reference": "9b30e414dd8b87e1831f9f28870b88d646f3553c"
-            },
-            "require": {
-                "bower-asset/jquery": ">=1.7"
-            },
-            "type": "bower-asset",
-            "license": [
-                "MIT"
-            ]
         },
         {
             "name": "bower-asset/eonasdan-bootstrap-datetimepicker",
@@ -90,7 +48,7 @@
             "version": "3.3.11",
             "source": {
                 "type": "git",
-                "url": "git@github.com:RobinHerbots/Inputmask.git",
+                "url": "https://github.com/RobinHerbots/Inputmask.git",
                 "reference": "5e670ad62f50c738388d4dcec78d2888505ad77b"
             },
             "dist": {
@@ -108,16 +66,16 @@
         },
         {
             "name": "bower-asset/jquery",
-            "version": "3.6.0",
+            "version": "3.6.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/jquery/jquery-dist.git",
-                "reference": "e786e3d9707ffd9b0dd330ca135b66344dcef85a"
+                "url": "git@github.com:jquery/jquery-dist.git",
+                "reference": "3711efedf0ca2e998cd0417324f717f2e0b828ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jquery/jquery-dist/zipball/e786e3d9707ffd9b0dd330ca135b66344dcef85a",
-                "reference": "e786e3d9707ffd9b0dd330ca135b66344dcef85a"
+                "url": "https://api.github.com/repos/jquery/jquery-dist/zipball/3711efedf0ca2e998cd0417324f717f2e0b828ec",
+                "reference": "3711efedf0ca2e998cd0417324f717f2e0b828ec"
             },
             "type": "bower-asset",
             "license": [
@@ -158,57 +116,17 @@
             "type": "bower-asset"
         },
         {
-            "name": "bower-asset/select2",
-            "version": "4.0.13",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:ivaynberg/select2.git",
-                "reference": "45f2b83ceed5231afa7b3d5b12b58ad335edd82e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ivaynberg/select2/zipball/45f2b83ceed5231afa7b3d5b12b58ad335edd82e",
-                "reference": "45f2b83ceed5231afa7b3d5b12b58ad335edd82e"
-            },
-            "type": "bower-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "bower-asset/select2-bootstrap-theme",
-            "version": "0.1.0-beta.10",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:fk/select2-bootstrap-theme.git",
-                "reference": "7ad6e79f01dbb67c5f77ef102f9570266eca1aea"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/fk/select2-bootstrap-theme/zipball/7ad6e79f01dbb67c5f77ef102f9570266eca1aea",
-                "reference": "7ad6e79f01dbb67c5f77ef102f9570266eca1aea"
-            },
-            "require": {
-                "bower-asset/bootstrap": ">=3.3.4,<4.0.0",
-                "bower-asset/select2": ">=4.0.0,<5.0.0"
-            },
-            "type": "bower-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
             "name": "bower-asset/yii2-pjax",
-            "version": "2.0.7.1",
+            "version": "2.0.8",
             "source": {
                 "type": "git",
-                "url": "https://github.com/yiisoft/jquery-pjax.git",
-                "reference": "aef7b953107264f00234902a3880eb50dafc48be"
+                "url": "git@github.com:yiisoft/jquery-pjax.git",
+                "reference": "a9298d57da63d14a950f1b94366a864bc62264fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/jquery-pjax/zipball/aef7b953107264f00234902a3880eb50dafc48be",
-                "reference": "aef7b953107264f00234902a3880eb50dafc48be"
+                "url": "https://api.github.com/repos/yiisoft/jquery-pjax/zipball/a9298d57da63d14a950f1b94366a864bc62264fb",
+                "reference": "a9298d57da63d14a950f1b94366a864bc62264fb"
             },
             "require": {
                 "bower-asset/jquery": ">=1.8"
@@ -284,32 +202,39 @@
         },
         {
             "name": "ezyang/htmlpurifier",
-            "version": "v4.13.0",
+            "version": "v4.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "08e27c97e4c6ed02f37c5b2b20488046c8d90d75"
+                "reference": "523407fb06eb9e5f3d59889b3978d5bfe94299c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/08e27c97e4c6ed02f37c5b2b20488046c8d90d75",
-                "reference": "08e27c97e4c6ed02f37c5b2b20488046c8d90d75",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/523407fb06eb9e5f3d59889b3978d5bfe94299c8",
+                "reference": "523407fb06eb9e5f3d59889b3978d5bfe94299c8",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.2"
+                "php": "~5.6.0 || ~7.0.0 || ~7.1.0 || ~7.2.0 || ~7.3.0 || ~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0"
             },
             "require-dev": {
-                "simpletest/simpletest": "dev-master#72de02a7b80c6bb8864ef9bf66d41d2f58f826bd"
+                "cerdic/css-tidy": "^1.7 || ^2.0",
+                "simpletest/simpletest": "dev-master"
+            },
+            "suggest": {
+                "cerdic/css-tidy": "If you want to use the filter 'Filter.ExtractStyleBlocks'.",
+                "ext-bcmath": "Used for unit conversion and imagecrash protection",
+                "ext-iconv": "Converts text to and from non-UTF-8 encodings",
+                "ext-tidy": "Used for pretty-printing HTML"
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "HTMLPurifier": "library/"
-                },
                 "files": [
                     "library/HTMLPurifier.composer.php"
                 ],
+                "psr-0": {
+                    "HTMLPurifier": "library/"
+                },
                 "exclude-from-classmap": [
                     "/library/HTMLPurifier/Language/"
                 ]
@@ -332,120 +257,395 @@
             ],
             "support": {
                 "issues": "https://github.com/ezyang/htmlpurifier/issues",
-                "source": "https://github.com/ezyang/htmlpurifier/tree/master"
+                "source": "https://github.com/ezyang/htmlpurifier/tree/v4.16.0"
             },
-            "time": "2020-06-29T00:56:53+00:00"
+            "time": "2022-09-18T07:06:19+00:00"
         },
         {
-            "name": "moonlandsoft/helpers",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/moonlandsoft/helpers.git",
-                "reference": "8a8c981b17112f04e1da0bd0de8d56adfb8e5adf"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/moonlandsoft/helpers/zipball/8a8c981b17112f04e1da0bd0de8d56adfb8e5adf",
-                "reference": "8a8c981b17112f04e1da0bd0de8d56adfb8e5adf",
-                "shasum": ""
-            },
-            "require": {
-                "yiisoft/yii2": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "moonland\\helpers\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Moh Khoirul Anam",
-                    "email": "moh.khoirul.anaam@gmail.com"
-                }
-            ],
-            "description": "Helper for all widgets",
-            "keywords": [
-                "extension",
-                "yii2"
-            ],
-            "support": {
-                "issues": "https://github.com/moonlandsoft/helpers/issues",
-                "source": "https://github.com/moonlandsoft/helpers/tree/master"
-            },
-            "time": "2015-01-23T14:45:15+00:00"
-        },
-        {
-            "name": "moonlandsoft/yii2-tinymce",
+            "name": "npm-asset/abbrev",
             "version": "1.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Kaile/yii2-tinymce.git",
-                "reference": "32c337086054926c7fddace556116be8f7f6023f"
-            },
-            "require": {
-                "moonlandsoft/helpers": "*",
-                "npm-asset/tinymce": "^5.9",
-                "npm-asset/tinymce-i18n": "^20.12",
-                "yiisoft/yii2": "*"
-            },
-            "type": "yii2-extension",
-            "autoload": {
-                "psr-4": {
-                    "moonland\\tinymce\\": ""
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Moh Khoirul Anam",
-                    "email": "moh.khoirul.anaam@gmail.com"
-                },
-                {
-                    "name": "Mikhail Kornilov",
-                    "email": "mikh.kornilov@gmail.com"
-                }
-            ],
-            "description": "The TinyMCE Extension for yii framework",
-            "keywords": [
-                "editor",
-                "extension",
-                "text",
-                "tinymce",
-                "wyswyg",
-                "yii2"
-            ],
-            "time": "2021-10-29T11:48:55+00:00"
-        },
-        {
-            "name": "npm-asset/tinymce",
-            "version": "5.9.2",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/tinymce/-/tinymce-5.9.2.tgz"
+                "url": "https://registry.npmjs.org/abbrev/-/abbrev-1.1.1.tgz"
             },
             "type": "npm-asset",
             "license": [
-                "LGPL-2.1"
+                "ISC"
+            ]
+        },
+        {
+            "name": "npm-asset/balanced-match",
+            "version": "1.0.2",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/balanced-match/-/balanced-match-1.0.2.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/brace-expansion",
+            "version": "2.0.1",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-2.0.1.tgz"
+            },
+            "require": {
+                "npm-asset/balanced-match": ">=1.0.0,<2.0.0"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/commander",
+            "version": "2.20.3",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/commander/-/commander-2.20.3.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/config-chain",
+            "version": "1.1.13",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/config-chain/-/config-chain-1.1.13.tgz"
+            },
+            "require": {
+                "npm-asset/ini": ">=1.3.4,<2.0.0",
+                "npm-asset/proto-list": "~1.2.1"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT",
+                "https://raw.githubusercontent.com/dominictarr/config-chain/master/LICENCE"
+            ]
+        },
+        {
+            "name": "npm-asset/devbridge-autocomplete",
+            "version": "1.4.11",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/devbridge-autocomplete/-/devbridge-autocomplete-1.4.11.tgz"
+            },
+            "require": {
+                "npm-asset/jquery": ">=1.7",
+                "npm-asset/types--jquery": ">=2.0.32,<3.0.0"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/editorconfig",
+            "version": "0.15.3",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/editorconfig/-/editorconfig-0.15.3.tgz"
+            },
+            "require": {
+                "npm-asset/commander": ">=2.19.0,<3.0.0",
+                "npm-asset/lru-cache": ">=4.1.5,<5.0.0",
+                "npm-asset/semver": ">=5.6.0,<6.0.0",
+                "npm-asset/sigmund": ">=1.0.1,<2.0.0"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/fs.realpath",
+            "version": "1.0.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "ISC"
+            ]
+        },
+        {
+            "name": "npm-asset/glob",
+            "version": "8.0.3",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/glob/-/glob-8.0.3.tgz"
+            },
+            "require": {
+                "npm-asset/fs.realpath": ">=1.0.0,<2.0.0",
+                "npm-asset/inflight": ">=1.0.4,<2.0.0",
+                "npm-asset/inherits": "~2",
+                "npm-asset/minimatch": ">=5.0.1,<6.0.0",
+                "npm-asset/once": ">=1.3.0,<2.0.0"
+            },
+            "type": "npm-asset",
+            "license": [
+                "ISC"
+            ]
+        },
+        {
+            "name": "npm-asset/inflight",
+            "version": "1.0.6",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/inflight/-/inflight-1.0.6.tgz"
+            },
+            "require": {
+                "npm-asset/once": ">=1.3.0,<2.0.0",
+                "npm-asset/wrappy": "~1"
+            },
+            "type": "npm-asset",
+            "license": [
+                "ISC"
+            ]
+        },
+        {
+            "name": "npm-asset/inherits",
+            "version": "2.0.4",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/inherits/-/inherits-2.0.4.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "ISC"
+            ]
+        },
+        {
+            "name": "npm-asset/ini",
+            "version": "1.3.8",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/ini/-/ini-1.3.8.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "ISC"
+            ]
+        },
+        {
+            "name": "npm-asset/jquery",
+            "version": "3.6.2",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/jquery/-/jquery-3.6.2.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/js-beautify",
+            "version": "1.14.7",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/js-beautify/-/js-beautify-1.14.7.tgz"
+            },
+            "require": {
+                "npm-asset/config-chain": ">=1.1.13,<2.0.0",
+                "npm-asset/editorconfig": ">=0.15.3,<0.16.0",
+                "npm-asset/glob": ">=8.0.3,<9.0.0",
+                "npm-asset/nopt": ">=6.0.0,<7.0.0"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/lru-cache",
+            "version": "4.1.5",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/lru-cache/-/lru-cache-4.1.5.tgz"
+            },
+            "require": {
+                "npm-asset/pseudomap": ">=1.0.2,<2.0.0",
+                "npm-asset/yallist": ">=2.1.2,<3.0.0"
+            },
+            "type": "npm-asset",
+            "license": [
+                "ISC"
+            ]
+        },
+        {
+            "name": "npm-asset/minimatch",
+            "version": "5.1.1",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/minimatch/-/minimatch-5.1.1.tgz"
+            },
+            "require": {
+                "npm-asset/brace-expansion": ">=2.0.1,<3.0.0"
+            },
+            "type": "npm-asset",
+            "license": [
+                "ISC"
+            ]
+        },
+        {
+            "name": "npm-asset/nopt",
+            "version": "6.0.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/nopt/-/nopt-6.0.0.tgz"
+            },
+            "require": {
+                "npm-asset/abbrev": ">=1.0.0,<2.0.0"
+            },
+            "type": "npm-asset",
+            "license": [
+                "ISC"
+            ]
+        },
+        {
+            "name": "npm-asset/once",
+            "version": "1.4.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/once/-/once-1.4.0.tgz"
+            },
+            "require": {
+                "npm-asset/wrappy": "~1"
+            },
+            "type": "npm-asset",
+            "license": [
+                "ISC"
+            ]
+        },
+        {
+            "name": "npm-asset/proto-list",
+            "version": "1.2.4",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/proto-list/-/proto-list-1.2.4.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "ISC"
+            ]
+        },
+        {
+            "name": "npm-asset/pseudomap",
+            "version": "1.0.2",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/pseudomap/-/pseudomap-1.0.2.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "ISC"
+            ]
+        },
+        {
+            "name": "npm-asset/select2-bootstrap-theme",
+            "version": "0.1.0-beta.10",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/select2-bootstrap-theme/-/select2-bootstrap-theme-0.1.0-beta.10.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/semver",
+            "version": "5.7.1",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/semver/-/semver-5.7.1.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "ISC"
+            ]
+        },
+        {
+            "name": "npm-asset/sigmund",
+            "version": "1.0.1",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/sigmund/-/sigmund-1.0.1.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "ISC"
+            ]
+        },
+        {
+            "name": "npm-asset/tinymce",
+            "version": "6.3.1",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/tinymce/-/tinymce-6.3.1.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
             ]
         },
         {
             "name": "npm-asset/tinymce-i18n",
-            "version": "20.12.25",
+            "version": "22.5.2",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/tinymce-i18n/-/tinymce-i18n-20.12.25.tgz"
+                "url": "https://registry.npmjs.org/tinymce-i18n/-/tinymce-i18n-22.5.2.tgz"
+            },
+            "require": {
+                "npm-asset/js-beautify": ">=1.14.3,<2.0.0"
             },
             "type": "npm-asset",
             "license": [
                 "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/types--jquery",
+            "version": "2.0.60",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/@types/jquery/-/jquery-2.0.60.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/wrappy",
+            "version": "1.0.2",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/wrappy/-/wrappy-1.0.2.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "ISC"
+            ]
+        },
+        {
+            "name": "npm-asset/yallist",
+            "version": "2.1.2",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/yallist/-/yallist-2.1.2.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "ISC"
             ]
         },
         {
@@ -549,16 +749,16 @@
         },
         {
             "name": "yiisoft/yii2",
-            "version": "2.0.43",
+            "version": "2.0.47",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "f370955faa3067d9b27879aaf14b0978a805cd59"
+                "reference": "8ecf57895d9c4b29cf9658ffe57af5f3d0e25254"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/f370955faa3067d9b27879aaf14b0978a805cd59",
-                "reference": "f370955faa3067d9b27879aaf14b0978a805cd59",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/8ecf57895d9c4b29cf9658ffe57af5f3d0e25254",
+                "reference": "8ecf57895d9c4b29cf9658ffe57af5f3d0e25254",
                 "shasum": ""
             },
             "require": {
@@ -614,7 +814,7 @@
                 {
                     "name": "Carsten Brandt",
                     "email": "mail@cebe.cc",
-                    "homepage": "https://cebe.cc/",
+                    "homepage": "https://www.cebe.cc/",
                     "role": "Core framework development"
                 },
                 {
@@ -647,11 +847,11 @@
                 "yii2"
             ],
             "support": {
-                "forum": "http://www.yiiframework.com/forum/",
-                "irc": "irc://irc.libera.chat:6697/yii",
+                "forum": "https://forum.yiiframework.com/",
+                "irc": "ircs://irc.libera.chat:6697/yii",
                 "issues": "https://github.com/yiisoft/yii2/issues?state=open",
                 "source": "https://github.com/yiisoft/yii2",
-                "wiki": "http://www.yiiframework.com/wiki/"
+                "wiki": "https://www.yiiframework.com/wiki"
             },
             "funding": [
                 {
@@ -667,7 +867,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-08-09T17:38:43+00:00"
+            "time": "2022-11-18T16:21:58+00:00"
         },
         {
             "name": "yiisoft/yii2-composer",
@@ -750,7 +950,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "bower-asset/select2-bootstrap-theme": 10
+        "npm-asset/select2-bootstrap-theme": 10
     },
     "prefer-stable": false,
     "prefer-lowest": false,
@@ -758,5 +958,5 @@
         "php": ">=5.4.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.3.0"
 }

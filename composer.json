@@ -13,14 +13,18 @@
 	"require": {
         "php": ">=5.4.0",
         "yiisoft/yii2": "^2.0",
-        "moonlandsoft/yii2-tinymce": "^1.1",
-        "bower-asset/collapsible": "^1.2",
-        "bower-asset/devbridge-autocomplete": "^1.4",
         "trntv/yii2-datetime-widget": "^1.1",
-        "bower-asset/select2-bootstrap-theme": "@beta"
+        "npm-asset/select2-bootstrap-theme": "@beta",
+        "bower-asset/collapsible": "^1.2",
+        "npm-asset/devbridge-autocomplete": "^1.4",
+        "npm-asset/tinymce": "^6.3",
+        "npm-asset/tinymce-i18n": "^22.5"
     },
     "config": {
-        "process-timeout": 1800
+        "process-timeout": 1800,
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true
+        }
     },
     "repositories":[
         {
