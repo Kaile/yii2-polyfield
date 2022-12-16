@@ -4,29 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "33aceaf7fd053f0f90529be346d82749",
+    "content-hash": "a48c56eff19a12f1c8455821e7fae9a2",
     "packages": [
-        {
-            "name": "bower-asset/bootstrap",
-            "version": "v3.4.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "68b0d231a13201eb14acd3dc84e51543d16e5f7e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/68b0d231a13201eb14acd3dc84e51543d16e5f7e",
-                "reference": "68b0d231a13201eb14acd3dc84e51543d16e5f7e"
-            },
-            "require": {
-                "bower-asset/jquery": ">=1.9.1,<4.0"
-            },
-            "type": "bower-asset",
-            "license": [
-                "MIT"
-            ]
-        },
         {
             "name": "bower-asset/collapsible",
             "version": "1.2.1",
@@ -41,27 +20,6 @@
                 "reference": "5128df45cc8ee28224545407bd387d9503ebaed2"
             },
             "type": "bower-asset"
-        },
-        {
-            "name": "bower-asset/devbridge-autocomplete",
-            "version": "v1.4.11",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:devbridge/jQuery-Autocomplete.git",
-                "reference": "9b30e414dd8b87e1831f9f28870b88d646f3553c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/devbridge/jQuery-Autocomplete/zipball/9b30e414dd8b87e1831f9f28870b88d646f3553c",
-                "reference": "9b30e414dd8b87e1831f9f28870b88d646f3553c"
-            },
-            "require": {
-                "bower-asset/jquery": ">=1.7"
-            },
-            "type": "bower-asset",
-            "license": [
-                "MIT"
-            ]
         },
         {
             "name": "bower-asset/eonasdan-bootstrap-datetimepicker",
@@ -156,46 +114,6 @@
                 "reference": "38c8d3131a82567bfef18da09f7f4db68c84f8a3"
             },
             "type": "bower-asset"
-        },
-        {
-            "name": "bower-asset/select2",
-            "version": "4.0.13",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:ivaynberg/select2.git",
-                "reference": "45f2b83ceed5231afa7b3d5b12b58ad335edd82e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ivaynberg/select2/zipball/45f2b83ceed5231afa7b3d5b12b58ad335edd82e",
-                "reference": "45f2b83ceed5231afa7b3d5b12b58ad335edd82e"
-            },
-            "type": "bower-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "bower-asset/select2-bootstrap-theme",
-            "version": "0.1.0-beta.10",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:fk/select2-bootstrap-theme.git",
-                "reference": "7ad6e79f01dbb67c5f77ef102f9570266eca1aea"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/fk/select2-bootstrap-theme/zipball/7ad6e79f01dbb67c5f77ef102f9570266eca1aea",
-                "reference": "7ad6e79f01dbb67c5f77ef102f9570266eca1aea"
-            },
-            "require": {
-                "bower-asset/bootstrap": ">=3.3.4,<4.0.0",
-                "bower-asset/select2": ">=4.0.0,<5.0.0"
-            },
-            "type": "bower-asset",
-            "license": [
-                "MIT"
-            ]
         },
         {
             "name": "bower-asset/yii2-pjax",
@@ -344,94 +262,6 @@
             "time": "2022-09-18T07:06:19+00:00"
         },
         {
-            "name": "moonlandsoft/helpers",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/moonlandsoft/helpers.git",
-                "reference": "8a8c981b17112f04e1da0bd0de8d56adfb8e5adf"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/moonlandsoft/helpers/zipball/8a8c981b17112f04e1da0bd0de8d56adfb8e5adf",
-                "reference": "8a8c981b17112f04e1da0bd0de8d56adfb8e5adf",
-                "shasum": ""
-            },
-            "require": {
-                "yiisoft/yii2": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "moonland\\helpers\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Moh Khoirul Anam",
-                    "email": "moh.khoirul.anaam@gmail.com"
-                }
-            ],
-            "description": "Helper for all widgets",
-            "keywords": [
-                "extension",
-                "yii2"
-            ],
-            "support": {
-                "issues": "https://github.com/moonlandsoft/helpers/issues",
-                "source": "https://github.com/moonlandsoft/helpers/tree/master"
-            },
-            "time": "2015-01-23T14:45:15+00:00"
-        },
-        {
-            "name": "moonlandsoft/yii2-tinymce",
-            "version": "1.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Kaile/yii2-tinymce.git",
-                "reference": "9528175152c560d93a44a3f28b88ba1b7be8b51f"
-            },
-            "require": {
-                "moonlandsoft/helpers": "*",
-                "npm-asset/tinymce": "^6.2",
-                "npm-asset/tinymce-i18n": "^22.5",
-                "yiisoft/yii2": "*"
-            },
-            "type": "yii2-extension",
-            "autoload": {
-                "psr-4": {
-                    "moonland\\tinymce\\": ""
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Moh Khoirul Anam",
-                    "email": "moh.khoirul.anaam@gmail.com"
-                },
-                {
-                    "name": "Mikhail Kornilov",
-                    "email": "mikh.kornilov@gmail.com"
-                }
-            ],
-            "description": "The TinyMCE Extension for yii framework",
-            "keywords": [
-                "editor",
-                "extension",
-                "text",
-                "tinymce",
-                "wyswyg",
-                "yii2"
-            ],
-            "time": "2022-12-08T14:10:04+00:00"
-        },
-        {
             "name": "npm-asset/abbrev",
             "version": "1.1.1",
             "dist": {
@@ -497,6 +327,22 @@
             "license": [
                 "MIT",
                 "https://raw.githubusercontent.com/dominictarr/config-chain/master/LICENCE"
+            ]
+        },
+        {
+            "name": "npm-asset/devbridge-autocomplete",
+            "version": "1.4.11",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/devbridge-autocomplete/-/devbridge-autocomplete-1.4.11.tgz"
+            },
+            "require": {
+                "npm-asset/jquery": ">=1.7",
+                "npm-asset/types--jquery": ">=2.0.32,<3.0.0"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
             ]
         },
         {
@@ -586,6 +432,18 @@
             "type": "npm-asset",
             "license": [
                 "ISC"
+            ]
+        },
+        {
+            "name": "npm-asset/jquery",
+            "version": "3.6.2",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/jquery/-/jquery-3.6.2.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
             ]
         },
         {
@@ -692,6 +550,18 @@
             ]
         },
         {
+            "name": "npm-asset/select2-bootstrap-theme",
+            "version": "0.1.0-beta.10",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/select2-bootstrap-theme/-/select2-bootstrap-theme-0.1.0-beta.10.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
             "name": "npm-asset/semver",
             "version": "5.7.1",
             "dist": {
@@ -717,10 +587,10 @@
         },
         {
             "name": "npm-asset/tinymce",
-            "version": "6.2.0",
+            "version": "6.3.1",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/tinymce/-/tinymce-6.2.0.tgz"
+                "url": "https://registry.npmjs.org/tinymce/-/tinymce-6.3.1.tgz"
             },
             "type": "npm-asset",
             "license": [
@@ -736,6 +606,18 @@
             },
             "require": {
                 "npm-asset/js-beautify": ">=1.14.3,<2.0.0"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/types--jquery",
+            "version": "2.0.60",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/@types/jquery/-/jquery-2.0.60.tgz"
             },
             "type": "npm-asset",
             "license": [
@@ -1068,7 +950,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "bower-asset/select2-bootstrap-theme": 10
+        "npm-asset/select2-bootstrap-theme": 10
     },
     "prefer-stable": false,
     "prefer-lowest": false,
