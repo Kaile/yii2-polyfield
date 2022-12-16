@@ -8,6 +8,7 @@ use moonland\tinymce\TinyMCELangAsset;
 use Yii;
 use yii\base\Widget;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\web\BadRequestHttpException;
@@ -261,12 +262,6 @@ class Polyfield extends Widget
             'undo redo | fontsizeselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
             'forecolor backcolor | print preview media | blockquote',
         ],
-        'image_advtab' => true,
-        'image_class_list' => [
-            ['title' => 'Без масштабирования', 'value' => 'no-scale-image'],
-            ['title' => 'С масштабированием', 'value' => 'scale-image'],
-        ],
-        'image_caption' => true,
     ];
 
     /**
@@ -329,7 +324,7 @@ class Polyfield extends Widget
 
         $this->defaultEditorConfig['language_url'] = $this->getTinyMceLanguageUrl();
 
-        $this->editorConfig = array_merge($this->defaultEditorConfig, $this->editorConfig);
+        $this->editorConfig = ArrayHelper::merge($this->defaultEditorConfig, $this->editorConfig);
     }
 
     /**
