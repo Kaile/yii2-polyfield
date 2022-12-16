@@ -4,7 +4,7 @@ namespace kaile\polyfield;
 
 use kaile\polyfield\assets\PolyfieldAsset;
 use kaile\polyfield\assets\Select2BootstrapThemeAsset;
-use moonland\tinymce\TinyMCELangAsset;
+use kaile\polyfield\assets\TinyMCELangAsset;
 use Yii;
 use yii\base\Widget;
 use yii\db\ActiveRecord;
@@ -271,6 +271,7 @@ class Polyfield extends Widget
      */
     protected function generateEditorConfig()
     {
+        $this->editorConfig['plugins'] = implode(' ', $this->editorConfig['plugins']);
         return json_encode($this->editorConfig);
     }
 
@@ -325,7 +326,6 @@ class Polyfield extends Widget
         $this->defaultEditorConfig['language_url'] = $this->getTinyMceLanguageUrl();
 
         $this->editorConfig = ArrayHelper::merge($this->defaultEditorConfig, $this->editorConfig);
-        $this->editorConfig['plugins'] = implode(' ', $this->editorConfig['plugins']);
     }
 
     /**
