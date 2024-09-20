@@ -11,7 +11,7 @@
             "version": "1.2.1",
             "source": {
                 "type": "git",
-                "url": "git@github.com:markitosgv/Collapsible.git",
+                "url": "https://github.com/markitosgv/Collapsible.git",
                 "reference": "5128df45cc8ee28224545407bd387d9503ebaed2"
             },
             "dist": {
@@ -23,16 +23,16 @@
         },
         {
             "name": "bower-asset/eonasdan-bootstrap-datetimepicker",
-            "version": "4.17.47",
+            "version": "4.17.49",
             "source": {
                 "type": "git",
                 "url": "git@github.com:Eonasdan/bootstrap-datetimepicker.git",
-                "reference": "25c11d79e614bc6463a87c3dd9cbf8280422e006"
+                "reference": "5b97d5b89e4bcbded740efed7dfb1f3ec4c745a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Eonasdan/bootstrap-datetimepicker/zipball/25c11d79e614bc6463a87c3dd9cbf8280422e006",
-                "reference": "25c11d79e614bc6463a87c3dd9cbf8280422e006"
+                "url": "https://api.github.com/repos/Eonasdan/bootstrap-datetimepicker/zipball/5b97d5b89e4bcbded740efed7dfb1f3ec4c745a2",
+                "reference": "5b97d5b89e4bcbded740efed7dfb1f3ec4c745a2"
             },
             "require": {
                 "bower-asset/jquery": ">=1.8.3",
@@ -45,16 +45,16 @@
         },
         {
             "name": "bower-asset/inputmask",
-            "version": "3.3.11",
+            "version": "5.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/RobinHerbots/Inputmask.git",
-                "reference": "5e670ad62f50c738388d4dcec78d2888505ad77b"
+                "reference": "310a33557e2944daf86d5946a5e8c82b9118f8f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RobinHerbots/Inputmask/zipball/5e670ad62f50c738388d4dcec78d2888505ad77b",
-                "reference": "5e670ad62f50c738388d4dcec78d2888505ad77b"
+                "url": "https://api.github.com/repos/RobinHerbots/Inputmask/zipball/310a33557e2944daf86d5946a5e8c82b9118f8f7",
+                "reference": "310a33557e2944daf86d5946a5e8c82b9118f8f7"
             },
             "require": {
                 "bower-asset/jquery": ">=1.7"
@@ -66,16 +66,16 @@
         },
         {
             "name": "bower-asset/jquery",
-            "version": "3.6.1",
+            "version": "3.6.4",
             "source": {
                 "type": "git",
                 "url": "git@github.com:jquery/jquery-dist.git",
-                "reference": "3711efedf0ca2e998cd0417324f717f2e0b828ec"
+                "reference": "91ef2d8836342875f2519b5815197ea0f23613cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jquery/jquery-dist/zipball/3711efedf0ca2e998cd0417324f717f2e0b828ec",
-                "reference": "3711efedf0ca2e998cd0417324f717f2e0b828ec"
+                "url": "https://api.github.com/repos/jquery/jquery-dist/zipball/91ef2d8836342875f2519b5815197ea0f23613cf",
+                "reference": "91ef2d8836342875f2519b5815197ea0f23613cf"
             },
             "type": "bower-asset",
             "license": [
@@ -84,16 +84,16 @@
         },
         {
             "name": "bower-asset/moment",
-            "version": "2.29.1",
+            "version": "2.30.1",
             "source": {
                 "type": "git",
-                "url": "git@github.com:moment/moment.git",
-                "reference": "b7ec8e2ec068e03de4f832f28362675bb9e02261"
+                "url": "https://github.com/moment/moment.git",
+                "reference": "485d9a7d709bd5f3869a7ad24630cf0746d072dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/moment/moment/zipball/b7ec8e2ec068e03de4f832f28362675bb9e02261",
-                "reference": "b7ec8e2ec068e03de4f832f28362675bb9e02261"
+                "url": "https://api.github.com/repos/moment/moment/zipball/485d9a7d709bd5f3869a7ad24630cf0746d072dc",
+                "reference": "485d9a7d709bd5f3869a7ad24630cf0746d072dc"
             },
             "type": "bower-asset",
             "license": [
@@ -102,16 +102,16 @@
         },
         {
             "name": "bower-asset/punycode",
-            "version": "v1.3.2",
+            "version": "v2.3.1",
             "source": {
                 "type": "git",
-                "url": "git@github.com:bestiejs/punycode.js.git",
-                "reference": "38c8d3131a82567bfef18da09f7f4db68c84f8a3"
+                "url": "https://github.com/mathiasbynens/punycode.js.git",
+                "reference": "9e1b2cda98d215d3a73fcbfe93c62e021f4ba768"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bestiejs/punycode.js/zipball/38c8d3131a82567bfef18da09f7f4db68c84f8a3",
-                "reference": "38c8d3131a82567bfef18da09f7f4db68c84f8a3"
+                "url": "https://api.github.com/repos/mathiasbynens/punycode.js/zipball/9e1b2cda98d215d3a73fcbfe93c62e021f4ba768",
+                "reference": "9e1b2cda98d215d3a73fcbfe93c62e021f4ba768"
             },
             "type": "bower-asset"
         },
@@ -202,20 +202,20 @@
         },
         {
             "name": "ezyang/htmlpurifier",
-            "version": "v4.16.0",
+            "version": "v4.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "523407fb06eb9e5f3d59889b3978d5bfe94299c8"
+                "reference": "bbc513d79acf6691fa9cf10f192c90dd2957f18c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/523407fb06eb9e5f3d59889b3978d5bfe94299c8",
-                "reference": "523407fb06eb9e5f3d59889b3978d5bfe94299c8",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/bbc513d79acf6691fa9cf10f192c90dd2957f18c",
+                "reference": "bbc513d79acf6691fa9cf10f192c90dd2957f18c",
                 "shasum": ""
             },
             "require": {
-                "php": "~5.6.0 || ~7.0.0 || ~7.1.0 || ~7.2.0 || ~7.3.0 || ~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0"
+                "php": "~5.6.0 || ~7.0.0 || ~7.1.0 || ~7.2.0 || ~7.3.0 || ~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0"
             },
             "require-dev": {
                 "cerdic/css-tidy": "^1.7 || ^2.0",
@@ -257,77 +257,9 @@
             ],
             "support": {
                 "issues": "https://github.com/ezyang/htmlpurifier/issues",
-                "source": "https://github.com/ezyang/htmlpurifier/tree/v4.16.0"
+                "source": "https://github.com/ezyang/htmlpurifier/tree/v4.17.0"
             },
-            "time": "2022-09-18T07:06:19+00:00"
-        },
-        {
-            "name": "npm-asset/abbrev",
-            "version": "1.1.1",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/abbrev/-/abbrev-1.1.1.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "ISC"
-            ]
-        },
-        {
-            "name": "npm-asset/balanced-match",
-            "version": "1.0.2",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/balanced-match/-/balanced-match-1.0.2.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/brace-expansion",
-            "version": "2.0.1",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-2.0.1.tgz"
-            },
-            "require": {
-                "npm-asset/balanced-match": ">=1.0.0,<2.0.0"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/commander",
-            "version": "2.20.3",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/commander/-/commander-2.20.3.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/config-chain",
-            "version": "1.1.13",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/config-chain/-/config-chain-1.1.13.tgz"
-            },
-            "require": {
-                "npm-asset/ini": ">=1.3.4,<2.0.0",
-                "npm-asset/proto-list": "~1.2.1"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT",
-                "https://raw.githubusercontent.com/dominictarr/config-chain/master/LICENCE"
-            ]
+            "time": "2023-11-17T15:01:25+00:00"
         },
         {
             "name": "npm-asset/devbridge-autocomplete",
@@ -346,207 +278,15 @@
             ]
         },
         {
-            "name": "npm-asset/editorconfig",
-            "version": "0.15.3",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/editorconfig/-/editorconfig-0.15.3.tgz"
-            },
-            "require": {
-                "npm-asset/commander": ">=2.19.0,<3.0.0",
-                "npm-asset/lru-cache": ">=4.1.5,<5.0.0",
-                "npm-asset/semver": ">=5.6.0,<6.0.0",
-                "npm-asset/sigmund": ">=1.0.1,<2.0.0"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/fs.realpath",
-            "version": "1.0.0",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "ISC"
-            ]
-        },
-        {
-            "name": "npm-asset/glob",
-            "version": "8.0.3",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/glob/-/glob-8.0.3.tgz"
-            },
-            "require": {
-                "npm-asset/fs.realpath": ">=1.0.0,<2.0.0",
-                "npm-asset/inflight": ">=1.0.4,<2.0.0",
-                "npm-asset/inherits": "~2",
-                "npm-asset/minimatch": ">=5.0.1,<6.0.0",
-                "npm-asset/once": ">=1.3.0,<2.0.0"
-            },
-            "type": "npm-asset",
-            "license": [
-                "ISC"
-            ]
-        },
-        {
-            "name": "npm-asset/inflight",
-            "version": "1.0.6",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/inflight/-/inflight-1.0.6.tgz"
-            },
-            "require": {
-                "npm-asset/once": ">=1.3.0,<2.0.0",
-                "npm-asset/wrappy": "~1"
-            },
-            "type": "npm-asset",
-            "license": [
-                "ISC"
-            ]
-        },
-        {
-            "name": "npm-asset/inherits",
-            "version": "2.0.4",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/inherits/-/inherits-2.0.4.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "ISC"
-            ]
-        },
-        {
-            "name": "npm-asset/ini",
-            "version": "1.3.8",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/ini/-/ini-1.3.8.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "ISC"
-            ]
-        },
-        {
             "name": "npm-asset/jquery",
-            "version": "3.6.2",
+            "version": "3.7.1",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/jquery/-/jquery-3.6.2.tgz"
+                "url": "https://registry.npmjs.org/jquery/-/jquery-3.7.1.tgz"
             },
             "type": "npm-asset",
             "license": [
                 "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/js-beautify",
-            "version": "1.14.7",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/js-beautify/-/js-beautify-1.14.7.tgz"
-            },
-            "require": {
-                "npm-asset/config-chain": ">=1.1.13,<2.0.0",
-                "npm-asset/editorconfig": ">=0.15.3,<0.16.0",
-                "npm-asset/glob": ">=8.0.3,<9.0.0",
-                "npm-asset/nopt": ">=6.0.0,<7.0.0"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/lru-cache",
-            "version": "4.1.5",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/lru-cache/-/lru-cache-4.1.5.tgz"
-            },
-            "require": {
-                "npm-asset/pseudomap": ">=1.0.2,<2.0.0",
-                "npm-asset/yallist": ">=2.1.2,<3.0.0"
-            },
-            "type": "npm-asset",
-            "license": [
-                "ISC"
-            ]
-        },
-        {
-            "name": "npm-asset/minimatch",
-            "version": "5.1.1",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/minimatch/-/minimatch-5.1.1.tgz"
-            },
-            "require": {
-                "npm-asset/brace-expansion": ">=2.0.1,<3.0.0"
-            },
-            "type": "npm-asset",
-            "license": [
-                "ISC"
-            ]
-        },
-        {
-            "name": "npm-asset/nopt",
-            "version": "6.0.0",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/nopt/-/nopt-6.0.0.tgz"
-            },
-            "require": {
-                "npm-asset/abbrev": ">=1.0.0,<2.0.0"
-            },
-            "type": "npm-asset",
-            "license": [
-                "ISC"
-            ]
-        },
-        {
-            "name": "npm-asset/once",
-            "version": "1.4.0",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/once/-/once-1.4.0.tgz"
-            },
-            "require": {
-                "npm-asset/wrappy": "~1"
-            },
-            "type": "npm-asset",
-            "license": [
-                "ISC"
-            ]
-        },
-        {
-            "name": "npm-asset/proto-list",
-            "version": "1.2.4",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/proto-list/-/proto-list-1.2.4.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "ISC"
-            ]
-        },
-        {
-            "name": "npm-asset/pseudomap",
-            "version": "1.0.2",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/pseudomap/-/pseudomap-1.0.2.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "ISC"
             ]
         },
         {
@@ -562,35 +302,11 @@
             ]
         },
         {
-            "name": "npm-asset/semver",
-            "version": "5.7.1",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/semver/-/semver-5.7.1.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "ISC"
-            ]
-        },
-        {
-            "name": "npm-asset/sigmund",
-            "version": "1.0.1",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/sigmund/-/sigmund-1.0.1.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "ISC"
-            ]
-        },
-        {
             "name": "npm-asset/tinymce",
-            "version": "6.3.1",
+            "version": "6.8.4",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/tinymce/-/tinymce-6.3.1.tgz"
+                "url": "https://registry.npmjs.org/tinymce/-/tinymce-6.8.4.tgz"
             },
             "type": "npm-asset",
             "license": [
@@ -599,13 +315,10 @@
         },
         {
             "name": "npm-asset/tinymce-i18n",
-            "version": "22.5.2",
+            "version": "22.12.27",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/tinymce-i18n/-/tinymce-i18n-22.5.2.tgz"
-            },
-            "require": {
-                "npm-asset/js-beautify": ">=1.14.3,<2.0.0"
+                "url": "https://registry.npmjs.org/tinymce-i18n/-/tinymce-i18n-22.12.27.tgz"
             },
             "type": "npm-asset",
             "license": [
@@ -614,38 +327,14 @@
         },
         {
             "name": "npm-asset/types--jquery",
-            "version": "2.0.60",
+            "version": "2.0.68",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/@types/jquery/-/jquery-2.0.60.tgz"
+                "url": "https://registry.npmjs.org/@types/jquery/-/jquery-2.0.68.tgz"
             },
             "type": "npm-asset",
             "license": [
                 "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/wrappy",
-            "version": "1.0.2",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/wrappy/-/wrappy-1.0.2.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "ISC"
-            ]
-        },
-        {
-            "name": "npm-asset/yallist",
-            "version": "2.1.2",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/yallist/-/yallist-2.1.2.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "ISC"
             ]
         },
         {
@@ -749,30 +438,30 @@
         },
         {
             "name": "yiisoft/yii2",
-            "version": "2.0.47",
+            "version": "2.0.51",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "8ecf57895d9c4b29cf9658ffe57af5f3d0e25254"
+                "reference": "ea1f112f4dc9a9824e77b788019e2d53325d823c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/8ecf57895d9c4b29cf9658ffe57af5f3d0e25254",
-                "reference": "8ecf57895d9c4b29cf9658ffe57af5f3d0e25254",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/ea1f112f4dc9a9824e77b788019e2d53325d823c",
+                "reference": "ea1f112f4dc9a9824e77b788019e2d53325d823c",
                 "shasum": ""
             },
             "require": {
-                "bower-asset/inputmask": "~3.2.2 | ~3.3.5",
-                "bower-asset/jquery": "3.6.*@stable | 3.5.*@stable | 3.4.*@stable | 3.3.*@stable | 3.2.*@stable | 3.1.*@stable | 2.2.*@stable | 2.1.*@stable | 1.11.*@stable | 1.12.*@stable",
-                "bower-asset/punycode": "1.3.*",
+                "bower-asset/inputmask": "^5.0.8 ",
+                "bower-asset/jquery": "3.7.*@stable | 3.6.*@stable | 3.5.*@stable | 3.4.*@stable | 3.3.*@stable | 3.2.*@stable | 3.1.*@stable | 2.2.*@stable | 2.1.*@stable | 1.11.*@stable | 1.12.*@stable",
+                "bower-asset/punycode": "^2.2",
                 "bower-asset/yii2-pjax": "~2.0.1",
                 "cebe/markdown": "~1.0.0 | ~1.1.0 | ~1.2.0",
                 "ext-ctype": "*",
                 "ext-mbstring": "*",
-                "ezyang/htmlpurifier": "~4.6",
+                "ezyang/htmlpurifier": "^4.17",
                 "lib-pcre": "*",
                 "paragonie/random_compat": ">=1",
-                "php": ">=5.4.0",
+                "php": ">=7.3.0",
                 "yiisoft/yii2-composer": "~2.0.4"
             },
             "bin": [
@@ -867,7 +556,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-11-18T16:21:58+00:00"
+            "time": "2024-07-18T19:50:00+00:00"
         },
         {
             "name": "yiisoft/yii2-composer",
@@ -958,5 +647,5 @@
         "php": ">=5.4.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
