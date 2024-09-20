@@ -7,6 +7,7 @@ use kaile\polyfield\assets\Select2BootstrapThemeAsset;
 use kaile\polyfield\assets\TinyMCELangAsset;
 use Yii;
 use yii\base\Widget;
+use yii\caching\DbDependency;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -265,6 +266,13 @@ class Polyfield extends Widget
     ];
 
     /**
+     * Using cache for loading data
+     *
+     * @var bool
+     */
+    public $cacheEnabled = true;
+
+    /**
      * Generate configuration for TinyMCE editor in string format to set it via client script
      *
      * @return string
@@ -377,11 +385,16 @@ class Polyfield extends Widget
         echo Html::endTag('fieldset');
 
         if ($this->type === self::TYPE_DROPDOWN) {
-            $tmp = $this->model->find();
-            if ($this->filterAttribute) {
-                $tmp->orderBy($this->filterAttribute);
-            }
-            $model['dropdownValues'] = $tmp->all();
+            $model['dropdownValues'] = Yii::$app->cache->getOrSet("yii2-polyfield-{$this->modelClass}{$this->filterAttribute}", function () {
+                $tmp = $this->model->find();
+                if ($this->filterAttribute) {
+                    $tmp->orderBy($this->filterAttribute);
+                }
+                return $tmp->all();
+            }, 7 * 24 * 60 * 60, new DbDependency([
+                'sql' => "CHECKSUM TABLE `{$this->modelClass::tableName()}`",
+            ]));
+
             if (empty($model['dropdownValues'])) {
                 echo Html::tag('div', Yii::t('app', 'Данные для выбора отсутствуют'), [
                     'class' => 'alert alert-info',
@@ -394,7 +407,6 @@ class Polyfield extends Widget
             'class' => 'row',
         ]);
 
-
         echo Html::button(($this->buttonCaption) ? $this->buttonCaption : Yii::t('app', 'Добавить поле'), [
             'id' => 'button_' . $modelId,
             'class' => 'btn btn-success center-block',
@@ -403,11 +415,7 @@ class Polyfield extends Widget
 
         echo Html::endTag('div');
 
-        /**
-         * Сделано конечно костыльно, но все же интернационализация достигается
-         * стандартными средствами Yii2 и не приходится запиливать ничего
-         * сложного на клиентской стороне.
-         */
+        // Интернационализация с базовым Русским
         $i18n = [
             'deleteElement' => Yii::t('app', 'Удалить элемент'),
             'deleteConfirmation' => Yii::t('app', 'Вы уверены, что хотите выполнить удаление?'),
