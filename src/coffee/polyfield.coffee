@@ -648,7 +648,6 @@ class Polyfield
 
     createSelect2: (sectionId) ->
         jQuery("##{sectionId}").next().contents().find('select.select2').select2
-            placeholder: 'Выберите элемент'
             allowClear: true 
 
     # Public: sets translation parameters for polyfield widget

@@ -824,7 +824,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         key: 'createSelect2',
         value: function createSelect2(sectionId) {
           return jQuery('#' + sectionId).next().contents().find('select.select2').select2({
-            placeholder: 'Выберите элемент',
             allowClear: true
           });
         }
