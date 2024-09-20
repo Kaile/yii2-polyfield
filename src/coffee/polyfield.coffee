@@ -193,6 +193,12 @@ class Polyfield
         valueAttribute = 'id' unless valueAttribute
         exists = [] unless exists
         options = document.createDocumentFragment()
+        # Set empty option
+        options.appendChild document.createElement 'option'
+
+        # Set empty option is selected if not sets exists values
+        unless exists
+            options[0].setAttribute 'selected', true
 
         if values.sort
             values = values.sort (a, b) ->
@@ -641,7 +647,9 @@ class Polyfield
         @completes = []
 
     createSelect2: (sectionId) ->
-        jQuery("##{sectionId}").next().contents().find('select.select2').select2()
+        jQuery("##{sectionId}").next().contents().find('select.select2').select2
+            placeholder: 'Выберите элемент'
+            allowClear: true 
 
     # Public: sets translation parameters for polyfield widget
     #
