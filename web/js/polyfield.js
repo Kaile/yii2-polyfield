@@ -4,6 +4,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 (function () {
@@ -671,7 +673,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           jQuery('#' + sectionId).collapsible({
             defaultOpen: '' + sectionId
           });
-          this.createSelect2(sectionId);
+          this.createSelect2(sectionId, model);
           return this.bindAutocomplete();
         }
 
@@ -754,7 +756,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             jQuery('#' + sectionId).collapsible({
               defaultOpen: sectionId
             });
-            this.createSelect2(sectionId);
+            this.createSelect2(sectionId, model);
             this.bindAutocomplete();
           }
           return model.existsShowen = true;
@@ -822,10 +824,22 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }
       }, {
         key: 'createSelect2',
-        value: function createSelect2(sectionId) {
-          return jQuery('#' + sectionId).next().contents().find('select.select2').select2({
+        value: function createSelect2(sectionId, model) {
+          var select2Params;
+          select2Params = {
             allowClear: true
-          });
+          };
+          if (model.dropdownDataUrl) {
+            select2Params.ajax = {
+              url: model.dropdownDataUrl,
+              data: function data(params) {
+                return _defineProperty({}, model.dropdownDataUrlSearchParam, params.term);
+              },
+              delay: 400,
+              dataType: 'json'
+            };
+          }
+          return jQuery('#' + sectionId).next().contents().find('select.select2').select2(select2Params);
         }
 
         // Public: sets translation parameters for polyfield widget
