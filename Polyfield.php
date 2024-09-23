@@ -229,6 +229,20 @@ class Polyfield extends Widget
     public $dropdownAttributeTemplate = '{__dropdownAttribute}';
 
     /**
+     * URL to search values
+     *
+     * @var string
+     */
+    public $dropdownDataUrl = '';
+
+    /**
+     * Query parameter to set search query
+     *
+     * @var string
+     */
+    public $dropdownDataUrlSearchParam = 'query';
+
+    /**
      * Exclude from dropdown list existing values
      *
      * @var bool
@@ -273,7 +287,7 @@ class Polyfield extends Widget
     ];
 
     /**
-     * Using cache for loading data
+     * Using cache for loadede data
      *
      * @var bool
      */
@@ -378,6 +392,8 @@ class Polyfield extends Widget
             'dropdownValueAttribute' => $this->dropdownValueAttribute,
             'dropdownPrefixAttribute' => $this->dropdownPrefixAttribute,
             'dropdownAttributeTemplate' => $this->dropdownAttributeTemplate,
+            'dropdownDataUrl' => $this->dropdownDataUrl,
+            'dropdownDataUrlSearchParam' => $this->dropdownDataUrlSearchParam,
             'dropdownUnique' => $this->dropdownUnique,
             'filterAttribute' => $this->filterAttribute,
             'sortAttribute' => $this->sortAttribute,
@@ -393,17 +409,21 @@ class Polyfield extends Widget
         echo Html::endTag('fieldset');
 
         if ($this->type === self::TYPE_DROPDOWN) {
-            $model['dropdownValues'] = Yii::$app->cache->getOrSet("yii2-polyfield-{$this->modelClass}{$this->filterAttribute}", function () {
-                $tmp = $this->model->find();
-                if ($this->filterAttribute) {
-                    $tmp->orderBy($this->filterAttribute);
-                }
-                return $tmp->all();
-            }, 7 * 24 * 60 * 60, new DbDependency([
-                'sql' => "CHECKSUM TABLE `{$this->modelClass::tableName()}`",
-            ]));
+            if ($this->dropdownDataUrl) {
+                $model['dropdownValues'] = $this->exists ?: [];
+            } else {
+                $model['dropdownValues'] = Yii::$app->cache->getOrSet("yii2-polyfield-{$this->modelClass}{$this->filterAttribute}", function () {
+                    $tmp = $this->model->find();
+                    if ($this->filterAttribute) {
+                        $tmp->orderBy($this->filterAttribute);
+                    }
+                    return $tmp->all();
+                }, 7 * 24 * 60 * 60, new DbDependency([
+                    'sql' => "CHECKSUM TABLE `{$this->modelClass::tableName()}`",
+                ]));
+            }
 
-            if (empty($model['dropdownValues'])) {
+            if (empty($model['dropdownValues']) && ! $this->dropdownDataUrl) {
                 echo Html::tag('div', Yii::t('app', 'Данные для выбора отсутствуют'), [
                     'class' => 'alert alert-info',
                 ]);

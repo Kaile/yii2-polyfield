@@ -4,6 +4,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 (function () {
@@ -681,7 +683,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           jQuery('#' + sectionId).collapsible({
             defaultOpen: '' + sectionId
           });
-          this.createSelect2(sectionId, true);
+          this.createSelect2(sectionId, model, true);
           return this.bindAutocomplete();
         }
 
@@ -764,7 +766,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             jQuery('#' + sectionId).collapsible({
               defaultOpen: sectionId
             });
-            this.createSelect2(sectionId, false);
+            this.createSelect2(sectionId, model);
             this.bindAutocomplete();
           }
           return model.existsShowen = true;
@@ -832,14 +834,25 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }
       }, {
         key: 'createSelect2',
-        value: function createSelect2(sectionId) {
-          var opened = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+        value: function createSelect2(sectionId, model) {
+          var opened = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 
-          var select2, selector;
+          var select2, select2Params, selector;
           selector = jQuery('#' + sectionId).next().contents().find('select.select2');
-          select2 = selector.select2({
+          select2Params = {
             allowClear: true
-          });
+          };
+          if (model.dropdownDataUrl) {
+            select2Params.ajax = {
+              url: model.dropdownDataUrl,
+              data: function data(params) {
+                return _defineProperty({}, model.dropdownDataUrlSearchParam, params.term);
+              },
+              delay: 400,
+              dataType: 'json'
+            };
+          }
+          select2 = selector.select2(select2Params);
           select2.on('select2:open', function () {
             return document.querySelector('.select2-search__field').focus();
           });
