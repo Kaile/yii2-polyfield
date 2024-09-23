@@ -832,11 +832,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           if (model.dropdownDataUrl) {
             select2Params.ajax = {
               url: model.dropdownDataUrl,
-              data: function data(params) {
-                return _defineProperty({}, model.dropdownDataUrlSearchParam, params.term);
-              },
               delay: 400,
-              dataType: 'json'
+              dataType: 'json',
+              data: function data(params) {
+                var _ref;
+
+                return _ref = {}, _defineProperty(_ref, model.dropdownDataUrlSearchParam, params.term), _defineProperty(_ref, 'page', params.page || 1), _defineProperty(_ref, 'prefix', model.dropdownPrefixAttribute ? model.dropdownPrefixAttribute : void 0), _defineProperty(_ref, 'template', model.dropdownAttributeTemplate ? model.dropdownAttributeTemplate : void 0), _ref;
+              }
             };
           }
           return jQuery('#' + sectionId).next().contents().find('select.select2').select2(select2Params);

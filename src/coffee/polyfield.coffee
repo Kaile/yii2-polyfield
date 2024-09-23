@@ -653,10 +653,13 @@ class Polyfield
         if model.dropdownDataUrl
             select2Params.ajax =
                 url: model.dropdownDataUrl
-                data: (params) ->
-                    [model.dropdownDataUrlSearchParam]: params.term
                 delay: 400
                 dataType: 'json'
+                data: (params) ->
+                    [model.dropdownDataUrlSearchParam]: params.term
+                    page: params.page || 1
+                    prefix: model.dropdownPrefixAttribute if model.dropdownPrefixAttribute
+                    template: model.dropdownAttributeTemplate if model.dropdownAttributeTemplate
 
         jQuery("##{sectionId}").next().contents().find('select.select2').select2 select2Params
 
