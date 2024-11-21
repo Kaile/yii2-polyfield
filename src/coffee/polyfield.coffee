@@ -186,19 +186,22 @@ class Polyfield
     # * `excludeExistingValues` enable/disable show in list existing values
     #
     # Returns the document element as Node
-    generateOptions: (values, attribute, selected, sortAttr, attributePrefix, valueAttribute, exists, template, excludeExistingValues) ->
+    generateOptions: (values, attribute, selected, sortAttr, attributePrefix, valueAttribute, exists, template, excludeExistingValues, emptyFirstOption) ->
         attributePrefix = '' if typeof attributePrefix is 'undefined'
         filter = off if typeof filter is 'undefined'
         sortAttr = sortAttr or attribute
         valueAttribute = 'id' unless valueAttribute
         exists = [] unless exists
         options = document.createDocumentFragment()
-        # Set empty option
-        options.appendChild document.createElement 'option'
+        emptyFirstOption = yes if emptyFirstOption is 'undefined'
 
-        # Set empty option is selected if not sets exists values
-        unless exists
-            options[0].setAttribute 'selected', true
+        if emptyFirstOption
+            # Set empty option
+            options.appendChild document.createElement 'option'
+
+            # Set empty option is selected if not sets exists values
+            unless exists
+                options[0].setAttribute 'selected', yes
 
         if values.sort
             values = values.sort (a, b) ->
@@ -262,13 +265,14 @@ class Polyfield
     # * `excludeExistingValues` enable/disable show in list existing values
     #
     # Returns the document element as Node.
-    generateDropdown: (id, modelName, attribute, counter, label, values, selected, filterAttr, sortAttr, attributePrefix, valueAttribute, exists, template, excludeExistingValues) ->
+    generateDropdown: (id, modelName, attribute, counter, label, values, selected, filterAttr, sortAttr, attributePrefix, valueAttribute, exists, template, excludeExistingValues, emptyFirstOption) ->
         attributePrefix = '' if typeof attributePrefix is 'undefined'
         selected = no if typeof selected is 'undefined'
         filterAttr = off if typeof filterAttr is 'undefined'
         formGroup = document.createElement 'div'
         ddFragment = document.createDocumentFragment()
         selectId = attribute + id + counter;
+        emptyFirstOption= yes if typeof emptyFirstOption is 'undefined'
 
         formGroup.setAttribute 'class', 'form-group'
         formGroup.appendChild @generateLabel(selectId, label)
@@ -279,7 +283,7 @@ class Polyfield
         select = document.createElement 'select'
         select.setAttribute 'name', "#{modelName}[#{counter}][#{valueAttribute}]"
 
-        select.appendChild @generateOptions(values, attribute, selected, sortAttr, attributePrefix, valueAttribute, exists, template, excludeExistingValues)
+        select.appendChild @generateOptions(values, attribute, selected, sortAttr, attributePrefix, valueAttribute, exists, template, excludeExistingValues, emptyFirstOption)
         select.setAttribute 'id', selectId
         select.setAttribute 'class', 'form-control select2'
 
@@ -290,11 +294,14 @@ class Polyfield
             filterSelect = document.createElement 'select'
             filterSelect.setAttribute 'id', "filter#{counter}"
             filterValues = values.filter (value, index, array) -> not value[filterAttr]
-            emptyOption = document.createElement 'option'
-            emptyOption.setAttribute 'value', 0
-            emptyOption.appendChild document.createTextNode @translate 'noFilter'
-            filterSelect.appendChild emptyOption
-            filterSelect.appendChild @generateOptions(filterValues, attribute, null, sortAttr, attributePrefix, valueAttribute, null, template, excludeExistingValues)
+
+            if emptyFirstOption
+                emptyOption = document.createElement 'option'
+                emptyOption.setAttribute 'value', 0
+                emptyOption.appendChild document.createTextNode @translate 'noFilter'
+                filterSelect.appendChild emptyOption
+
+            filterSelect.appendChild @generateOptions(filterValues, attribute, null, sortAttr, attributePrefix, valueAttribute, null, template, excludeExistingValues, emptyFirstOption)
             filterSelect.setAttribute 'class', 'form-control'
             filterDiv = div.cloneNode()
             filterDiv.appendChild filterSelect
@@ -323,7 +330,7 @@ class Polyfield
                 $select.empty()
 
                 filteredValues = filterValues($filter.val(), values, filterAttr)
-                select.appendChild @generateOptions(filteredValues, attribute, selected, sortAttr, attributePrefix, valueAttribute, null, template, excludeExistingValues)
+                select.appendChild @generateOptions(filteredValues, attribute, selected, sortAttr, attributePrefix, valueAttribute, null, template, excludeExistingValues, emptyFirstOption)
 
         div.appendChild select
         formGroup.appendChild div
@@ -524,7 +531,7 @@ class Polyfield
                     when attrType is @inputTypes.TEXT then @generateEditor id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute], model.editorConfig
                     when attrType is @inputTypes.HIDDEN then @generateInput id, model.name, attribute, model.counter, '', 'hidden', model.attributeLabels[attribute]
                     when attrType is @inputTypes.BOOLEAN then @generateInput id, model.name, attribute, model.counter, '', 'checkbox', model.attributeLabels[attribute]
-                    when attrType is @inputTypes.DROPDOWN then @generateDropdown id, model.name, attribute, model.counter, model.attributeLabels[attribute], attrValues ||model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, attribute, (if model.dropdownUnique then model.exists else []), model.dropdownAttributeTemplate, model.excludeExistingValues
+                    when attrType is @inputTypes.DROPDOWN then @generateDropdown id, model.name, attribute, model.counter, model.attributeLabels[attribute], attrValues ||model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, attribute, (if model.dropdownUnique then model.exists else []), model.dropdownAttributeTemplate, model.excludeExistingValues, model.dropdownEmptyFirstOption
                     else document.createElement 'div'
                 contentBody.appendChild inputElement
         else
@@ -536,7 +543,7 @@ class Polyfield
                     else
                         contentBody.appendChild @generateInput id, model.name, attribute, model.counter, '', 'text', model.attributeLabels[attribute], model.autocomplete
             else if model.type is @types.DROPDOWN
-                contentBody.appendChild @generateDropdown id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute, (if model.dropdownUnique then model.exists else []), model.dropdownAttributeTemplate, model.excludeExistingValues
+                contentBody.appendChild @generateDropdown id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, '', model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute, (if model.dropdownUnique then model.exists else []), model.dropdownAttributeTemplate, model.excludeExistingValues, model.dropdownEmptyFirstOption
 
         collapseFragment = document.createDocumentFragment()
         collapseFragment.appendChild collapsible
@@ -581,7 +588,7 @@ class Polyfield
                         when attrType is @inputTypes.TEXT then @generateEditor id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute], model.editorConfig
                         when attrType is @inputTypes.HIDDEN then @generateInput id, model.name, attribute, model.counter, object[attribute], 'hidden', model.attributeLabels[attribute]
                         when attrType is @inputTypes.BOOLEAN then @generateInput id, model.name, attribute, model.counter, object[attribute], 'checkbox', model.attributeLabels[attribute]
-                        when attrType is @inputTypes.DROPDOWN then @generateDropdown id, model.name, attribute, model.counter, model.attributeLabels[attribute], attrValues || model.dropdownValues, object[dropdownValueAttribute], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, attribute, [], model.dropdownAttributeTemplate, model.excludeExistingValues
+                        when attrType is @inputTypes.DROPDOWN then @generateDropdown id, model.name, attribute, model.counter, model.attributeLabels[attribute], attrValues || model.dropdownValues, object[dropdownValueAttribute], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, attribute, [], model.dropdownAttributeTemplate, model.excludeExistingValues, model.dropdownEmptyFirstOption
                         else document.createElement 'div'
                     contentBody.appendChild inputElement
             else
@@ -595,7 +602,7 @@ class Polyfield
                         else
                             contentBody.appendChild @generateInput id, model.name, attribute, model.counter, object[attribute], 'text', model.attributeLabels[attribute], model.autocomplete
                 else if model.type is @types.DROPDOWN
-                    contentBody.appendChild @generateDropdown id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, object[model.dropdownValueAttribute], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute, [], model.dropdownAttributeTemplate, model.excludeExistingValues
+                    contentBody.appendChild @generateDropdown id, model.name, model.dropdownAttribute, model.counter, model.attributeLabels[model.dropdownAttribute], model.dropdownValues, object[model.dropdownValueAttribute], model.filterAttribute, model.sortAttribute, model.dropdownPrefixAttribute, model.dropdownValueAttribute, [], model.dropdownAttributeTemplate, model.excludeExistingValues, model.dropdownEmptyFirstOption
 
             collapsibleFragment = document.createDocumentFragment()
             collapsibleFragment.appendChild collapsible

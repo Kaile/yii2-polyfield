@@ -250,6 +250,13 @@ class Polyfield extends Widget
     public $excludeExistingValues = true;
 
     /**
+     * Empty first option in dropdown list
+     *
+     * @var bool
+     */
+    public $dropdownEmptyFirstOption = true;
+
+    /**
      * TinyMCE editor configuration
      *
      * @var array
@@ -392,6 +399,7 @@ class Polyfield extends Widget
             'sortAttribute' => $this->sortAttribute,
             'autocomplete' => $this->autocomplete,
             'excludeExistingValues' => $this->excludeExistingValues,
+            'dropdownEmptyFirstOption' => $this->dropdownEmptyFirstOption,
         ];
 
         if ($this->isNeedEditor()) {
