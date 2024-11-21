@@ -4,6 +4,7 @@
   "description": "Extension for Yii2 PHP framework.",
   "main": "web/js/polyfield.coffee",
   "scripts": {
+    "build": "gulp coffee",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
