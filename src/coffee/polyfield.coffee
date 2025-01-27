@@ -553,7 +553,7 @@ class Polyfield
         content_.appendChild collapseFragment
         jQuery('#' + sectionId).collapsible
             defaultOpen: "#{sectionId}"
-        @createSelect2(sectionId)
+        @createSelect2(sectionId, true)
         @bindAutocomplete()
 
     # Public: generates existing models structure in view
@@ -612,7 +612,7 @@ class Polyfield
             content_.appendChild collapsibleFragment
             jQuery('#' + sectionId).collapsible
                 defaultOpen: sectionId
-            @createSelect2(sectionId)
+            @createSelect2(sectionId, false)
             @bindAutocomplete()
         model.existsShowen = on
 
@@ -653,9 +653,16 @@ class Polyfield
                 triggerSelectOnValidInput: false
         @completes = []
 
-    createSelect2: (sectionId) ->
-        jQuery("##{sectionId}").next().contents().find('select.select2').select2
-            allowClear: true 
+    createSelect2: (sectionId, opened = false) ->
+        selector = jQuery("##{sectionId}").next().contents().find('select.select2')
+        select2 = selector.select2
+            allowClear: true
+        
+        select2.on('select2:open', () => document.querySelector('.select2-search__field').focus())
+
+        if opened
+            selector.select2('open')
+
 
     # Public: sets translation parameters for polyfield widget
     #
