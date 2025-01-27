@@ -683,7 +683,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           jQuery('#' + sectionId).collapsible({
             defaultOpen: '' + sectionId
           });
-          this.createSelect2(sectionId, model);
+          this.createSelect2(sectionId, model, true);
           return this.bindAutocomplete();
         }
 
@@ -835,7 +835,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: 'createSelect2',
         value: function createSelect2(sectionId, model) {
-          var select2Params;
+          var opened = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+          var select2, select2Params, selector;
+          selector = jQuery('#' + sectionId).next().contents().find('select.select2');
           select2Params = {
             allowClear: true
           };
@@ -851,7 +854,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               }
             };
           }
-          return jQuery('#' + sectionId).next().contents().find('select.select2').select2(select2Params);
+          select2 = selector.select2(select2Params);
+          select2.on('select2:open', function () {
+            return document.querySelector('.select2-search__field').focus();
+          });
+          if (opened) {
+            return selector.select2('open');
+          }
         }
 
         // Public: sets translation parameters for polyfield widget
