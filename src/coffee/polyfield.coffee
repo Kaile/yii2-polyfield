@@ -553,7 +553,7 @@ class Polyfield
         content_.appendChild collapseFragment
         jQuery('#' + sectionId).collapsible
             defaultOpen: "#{sectionId}"
-        @createSelect2(sectionId, model, true)
+        @createSelect2(sectionId, model, model.dropdownFocus)
         @bindAutocomplete()
 
     # Public: generates existing models structure in view
@@ -656,7 +656,7 @@ class Polyfield
     createSelect2: (sectionId, model, opened = false) ->
         selector = jQuery("##{sectionId}").next().contents().find('select.select2')
 
-        select2Params = 
+        select2Params =
             allowClear: true
 
         if model.dropdownDataUrl
