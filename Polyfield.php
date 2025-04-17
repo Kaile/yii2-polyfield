@@ -293,6 +293,8 @@ class Polyfield extends Widget
      */
     public $cacheEnabled = true;
 
+    public $dropdownFocus = true;
+
     /**
      * Generate configuration for TinyMCE editor in string format to set it via client script
      *
@@ -400,6 +402,7 @@ class Polyfield extends Widget
             'autocomplete' => $this->autocomplete,
             'excludeExistingValues' => $this->excludeExistingValues,
             'dropdownEmptyFirstOption' => $this->dropdownEmptyFirstOption,
+            'dropdownFocus' => $this->dropdownFocus,
         ];
 
         if ($this->isNeedEditor()) {

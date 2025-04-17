@@ -683,7 +683,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           jQuery('#' + sectionId).collapsible({
             defaultOpen: '' + sectionId
           });
-          this.createSelect2(sectionId, model, true);
+          this.createSelect2(sectionId, model, model.dropdownFocus);
           return this.bindAutocomplete();
         }
 
